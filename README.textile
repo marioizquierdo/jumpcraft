@@ -27,7 +27,8 @@ h2. Development
 
 h2. Email
 
-The application is configured to send email using a Gmail account.
+Sending emails is not supported for now.
+If needed, it would be easy to setup a Gmail account (settings are ready for it).
 
 h2. Contributing
 
