@@ -74,4 +74,5 @@ pickle-email-*.html
 **.swp
 
 # Ignore application configuration
+# THIS IS IMPORTANT for security. You don't waht to put passwords and stuff in the repo
 /config/application.yml
