@@ -80,13 +80,13 @@ test:
         max_retries: 1
         retry_interval: 0
 
+<% if ENV['MONGOHQ_URL'] %> <%# MONGOHQ_URL is defined as ENV variable in heroku %>
 production:
   sessions:
     default:
-      database: infiltration_prototype
-      # Using for production a Mongo DB hosted in MONGOHQ
-      hosts:
-        - mongodb://heroku_infiltration_app:beginmore@alex.mongohq.com:10011/infiltration_prototype
+      uri: <%= ENV['MONGOHQ_URL'] %>
       options:
-        retry_interval: 1
+        skip_version_check: true
+        safe: true
+<% end %>
 

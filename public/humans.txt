@@ -3,10 +3,9 @@
 
 
 /* TEAM */
-  <your title>: <your name>
-  Site:
-  Twitter:
-  Location:
+  Engineer: Mario Izquierdo
+  Twitter: @tothemario
+  Location: San Francisco
 
 /* THANKS */
   Daniel Kehoe (@rails_apps) for the RailsApps project

@@ -25,7 +25,7 @@ group :development do
   gem 'binding_of_caller', '>= 0.7.1', :platforms => [:mri_19, :rbx]
 end
 
-group [:development, :test] do
+group :development, :test do
   gem 'rspec-rails', '>= 2.12.2'
   gem 'factory_girl_rails', '>= 4.2.0'
 end
