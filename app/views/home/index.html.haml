@@ -1,4 +1,16 @@
 %h3 Home
-- @users.each do |user|
-  %p
-    User: #{link_to user.name, user}
+
+%p
+  Welcome to our prototype.
+  %br/
+  This website is used to create accounts for the Infiltration Prototype Flash Game.
+
+%p
+  - if user_signed_in?
+    Ok #{current_user.name}, now use your email and password to login when you are in the Flash client (link goes here).
+  - else
+    If you already have an account, you can go to the Flash client and login from there,
+    %br/
+    if you don't have an account, please
+    = link_to 'Sign up', new_user_registration_path
+

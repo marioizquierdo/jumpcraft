@@ -11,6 +11,7 @@ gem 'jquery-rails'
 gem 'haml-rails', '>= 0.4'
 gem 'devise', '>= 2.2.3'
 gem 'figaro', '>= 0.6.3'
+gem 'twitter-bootstrap-rails'
 
 group :assets do
   gem 'sass-rails',   '~> 3.2.3'

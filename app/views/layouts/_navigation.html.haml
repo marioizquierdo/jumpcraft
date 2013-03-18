@@ -1,7 +1,11 @@
-= link_to "Home", root_path, :class => 'brand'
 
-%ul.nav
+%ul.nav.pull-left
+  %li.divider-vertical
+  %li
+    = link_to 'users', users_path
+  %li.divider-vertical
 
+%ul.nav.pull-right
   %li
     - if user_signed_in?
       = link_to 'Edit account', edit_user_registration_path
