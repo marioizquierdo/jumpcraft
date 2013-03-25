@@ -11,4 +11,9 @@ class UsersController < ApplicationController
     respond_with @user
   end
 
+  def test
+    authenticate_user!
+    render :json => {ok: true}
+  end
+
 end

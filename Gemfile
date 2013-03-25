@@ -3,6 +3,7 @@ source 'https://rubygems.org'
 ruby '1.9.3'
 gem 'rails', '3.2.12'
 gem 'thin', '>= 1.5.0'
+
 gem 'mongoid', '>= 3.1.2'
 
 gem 'heroku'
@@ -23,7 +24,7 @@ group :development do
   gem 'html2haml', '>= 1.0.1'
   gem 'quiet_assets', '>= 1.0.2'
   gem 'better_errors', '>= 0.7.2'
-  gem 'binding_of_caller', '>= 0.7.1', :platforms => [:mri_19, :rbx]
+  gem 'binding_of_caller', '>= 0.7.1', platforms: [:mri_19, :rbx]
 end
 
 group :development, :test do
@@ -35,7 +36,7 @@ group :test do
   gem 'database_cleaner', '>= 1.0.0.RC1'
   gem 'mongoid-rspec', '>= 1.7.0'
   gem 'email_spec', '>= 1.4.0'
-  gem 'cucumber-rails', '>= 1.3.1', :require => false
+  gem 'cucumber-rails', '>= 1.3.1', require: false
   gem 'launchy', '>= 2.2.0'
   gem 'capybara', '>= 2.0.2'
 end
