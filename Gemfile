@@ -14,6 +14,10 @@ gem 'devise', '>= 2.2.3'
 gem 'figaro', '>= 0.6.3'
 gem 'twitter-bootstrap-rails'
 
+gem 'rabl' # JSON view template engine
+gem 'oj' # JSON parser (for rabl)
+
+
 group :assets do
   gem 'sass-rails',   '~> 3.2.3'
   gem 'coffee-rails', '~> 3.2.1'
