@@ -2,4 +2,10 @@
 %p
   User: #{@user.name}
 %p
-  Email: #{@user.email if @user.email}
+  Email: #{@user.email}
+
+- if @user.maps.present?
+  %h5 Created Maps:
+  %ul
+    - @user.maps.each do |map|
+      %li= map.name
