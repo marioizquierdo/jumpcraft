@@ -10,10 +10,4 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
     respond_with @user
   end
-
-  def test
-    authenticate_user!
-    render :json => {ok: true}
-  end
-
 end
