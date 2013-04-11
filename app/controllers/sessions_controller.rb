@@ -7,7 +7,7 @@ class SessionsController < Devise::SessionsController
 
     respond_to do |format|
       format.html do
-        respond_with resource, location: redirect_location(resource_name, resource)
+        redirect_to after_sign_in_path_for(resource)
       end
       format.json do
         render json: { success: true, auth_token: current_user.authentication_token }.to_json, status: :ok
