@@ -12,23 +12,6 @@ This application requires:
 
 Learn more about "Installing Rails":http://railsapps.github.com/installing-rails.html.
 
-h2. Simple ELO rating used to climb in the ladder
-
-We calculate rating as follows (based on http://aoe3.jpcommunity.com/rating2/):
-
- * AR = 16 + (LR - WR) x 2 / (16 / 400)
- * if (AR > 31) AR = 31;  if (AR < 0) AR = 0; // Keep AR between 0 and 31
- * Where:
- ** AR: difference value of rating, each winner/loser gains/loses
- ** WR: winner's current rating (in team, sum of team's rating)
- ** LR: loser's current rating (in team, sum of team's rating)
-
-Example:
-
- * GIVEN winner: 1700;  loser: 1600
- * AR = 16 + (1600 - 1700) x (16 / 400) = 12
- * THEN winner: 1712, loser: 1588
-
 h2. Database
 
 This application uses MongoDB with the Mongoid ORM.

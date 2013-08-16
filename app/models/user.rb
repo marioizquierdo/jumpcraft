@@ -8,6 +8,9 @@ class User
   devise :database_authenticatable, :token_authenticatable,
     :registerable, :recoverable, :rememberable, :trackable, :validatable
 
+  ## Infiltration fields
+  field :score, type: Integer, default: 1000 # default score for new comers
+
   ## Database authenticatable
   field :email,              type: String, default: ''
   field :encrypted_password, type: String, default: ''

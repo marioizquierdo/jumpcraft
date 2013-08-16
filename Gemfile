@@ -26,6 +26,7 @@ end
 
 group :development do
   gem 'quiet_assets', '>= 1.0.2'
+  gem 'pry'
 end
 
 group :development, :test do
