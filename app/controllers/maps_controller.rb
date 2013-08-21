@@ -37,8 +37,10 @@ class MapsController < ApplicationController
     winner, loser = params[:map_defeated] ? [player, map] : [map, player]
     SimpleELO.assign_new_scores!(winner, loser)
 
-    # Add coins to player
+    # Update user stats
     player.coins += params[:collected_coins].to_i
+    player.played_games += 1
+    player.won_games += 1 if params[:map_defeated]
 
     # Save
     player.save!

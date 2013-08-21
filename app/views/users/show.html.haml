@@ -1,9 +1,25 @@
 %h3 User
 %p
   User: #{@user.name}
+%p
+  Score: #{@user.score}
+%p
+  Coins: #{@user.coins}
 
-- if @user.maps.present?
+%p
+  Times played on the ladder: #{@user.played_games}
+  - if @user.played_games > 0
+    %br/
+    #{@user.won_games} victories (#{(100 * @user.won_games / @user.played_games).to_i}% win rate)
+
+- if @maps.present?
   %h5 Created Maps:
   %ul
-    - @user.maps.each do |map|
-      %li= map.name
+    - @maps.each do |map|
+      %li
+        = map.name
+        (
+        = map.score
+        )
+- else
+  %p Maps: none

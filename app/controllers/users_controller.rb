@@ -9,6 +9,6 @@ class UsersController < ApplicationController
 
   def show
     @user = User.find(params[:id])
+    @maps = @user.maps.desc(:score)
   end
-
 end

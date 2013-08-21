@@ -11,6 +11,8 @@ class User
   ## Infiltration fields
   field :score, type: Integer, default: 1000 # default score for new comers
   field :coins, type: Integer, default: 0
+  field :played_games, type: Integer, default: 0 # number of games played in the ladder
+  field :won_games, type: Integer, default: 0 # number of defeated maps in the ladder
 
   ## Database authenticatable
   field :email,              type: String, default: ''
