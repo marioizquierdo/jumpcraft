@@ -1,9 +1,14 @@
 class MapsController < ApplicationController
 
   # GET /maps
+  # Used to check the ladder of maps
   def index
     scope = Map.all
-    scope = scope.desc(params[:desc]) if params[:desc]
+    if params[:desc]
+      scope = scope.desc(params[:desc])
+    else
+      score = scope.desc(:score) # order by score as default
+    end
     scope = scope.asc(params[:asc]) if params[:asc]
     @maps = scope
   end
@@ -24,6 +29,8 @@ class MapsController < ApplicationController
   # POST params [map_defeated=true, collected_coins=99]
   # After playing a map (not practice), update map/user scores
   def game
+    authenticate_user!
+
     # Check params
     if !params.include?(:map_defeated) or !params.include?(:collected_coins)
       render json: {error: 'params map_defeated and collected_coins are mandatory'}, status: :forbidden # 403

@@ -2,7 +2,11 @@ class UsersController < ApplicationController
 
   def index
     scope = User.all
-    scope = scope.desc(params[:desc]) if params[:desc]
+    if params[:desc]
+      scope = scope.desc(params[:desc])
+    else
+      score = scope.desc(:score, :coins) # order by score as default
+    end
     scope = scope.asc(params[:asc]) if params[:asc]
     @users = scope
   end

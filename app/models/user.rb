@@ -8,11 +8,14 @@ class User
   devise :database_authenticatable, :token_authenticatable,
     :registerable, :recoverable, :rememberable, :trackable, :validatable
 
+  ## -------------------
   ## Infiltration fields
   field :score, type: Integer, default: 1000 # default score for new comers
   field :coins, type: Integer, default: 0
   field :played_games, type: Integer, default: 0 # number of games played in the ladder
   field :won_games, type: Integer, default: 0 # number of defeated maps in the ladder
+  has_many :maps, inverse_of: :creator
+  ## -------------------
 
   ## Database authenticatable
   field :email,              type: String, default: ''
@@ -57,6 +60,4 @@ class User
   field :name, type: String
   validates_presence_of :name
   attr_accessible :name, :email, :password, :password_confirmation, :remember_me, :created_at, :updated_at
-
-  has_many :maps, inverse_of: :creator
 end

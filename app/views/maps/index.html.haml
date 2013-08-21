@@ -1,0 +1,6 @@
+%h3 Maps Ladder
+%ol.users
+  - @maps.each do |map|
+    %li
+      = link_to map.name, map
+      (score #{map.score})

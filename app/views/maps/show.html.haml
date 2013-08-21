@@ -1,0 +1,17 @@
+%h3 Map
+%p
+  Map: #{@map.name}
+%p
+  Score: #{@map.score}
+
+%p
+  Times this mas was played on the ladder: #{@map.played_games}
+  - if @map.played_games > 0
+    %br/
+    #{@map.played_games - @map.won_games} player victories (#{100 - (100 * @map.won_games / @map.played_games).to_i}% players win rate)
+
+%p
+  Creator: #{link_to @map.creator.name, @map.creator}
+
+%p
+  Created on: #{l @map.created_at.to_date, :format => :long}

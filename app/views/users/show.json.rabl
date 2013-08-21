@@ -1,5 +1,6 @@
 object @user
-attributes :id, :name, :score
+attributes :id, :name, :score, :coins, :played_games, :won_games
+
 child @maps do
-  attributes :name, :score, :description
+  attributes :id, :name, :score, :played_games, :won_games
 end

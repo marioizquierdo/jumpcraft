@@ -3,7 +3,6 @@ class Map
   include Mongoid::Timestamps
 
   field :name, type: String
-  field :description, type: String
   field :data, type: String # tiles map array serialized as String, only the client cares about understanding what this means
   field :score, type: Integer
   field :played_games, type: Integer, default: 0 # number of times this map was played in the ladder

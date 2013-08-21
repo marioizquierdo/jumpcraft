@@ -17,9 +17,12 @@
   %ul
     - @maps.each do |map|
       %li
-        = map.name
+        = link_to map.name, map
         (
         = map.score
         )
 - else
   %p Maps: none
+
+%p
+  Account created: #{l @user.created_at.to_date, :format => :long}
