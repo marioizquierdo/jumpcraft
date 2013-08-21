@@ -10,6 +10,7 @@ class User
 
   ## Infiltration fields
   field :score, type: Integer, default: 1000 # default score for new comers
+  field :coins, type: Integer, default: 0
 
   ## Database authenticatable
   field :email,              type: String, default: ''

@@ -5,5 +5,9 @@ Infiltration::Application.routes.draw do
   root :to => "home#index"
   devise_for :users, token_authentication_key: 'auth_token', controllers: {sessions: 'sessions'}
   resources :users
-  resources :maps
+  resources :maps do
+    member do
+      post 'game'
+    end
+  end
 end
