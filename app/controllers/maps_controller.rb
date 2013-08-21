@@ -42,6 +42,10 @@ class MapsController < ApplicationController
     player.played_games += 1
     player.won_games += 1 if params[:map_defeated]
 
+    # Update map stats
+    map.played_games += 1
+    map.won_games += 1 unless params[:map_defeated]
+
     # Save
     player.save!
     map.save!
