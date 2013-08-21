@@ -2,7 +2,10 @@ class MapsController < ApplicationController
 
   # GET /maps
   def index
-    @maps = Map.all
+    scope = Map.all
+    scope = scope.desc(params[:desc]) if params[:desc]
+    scope = scope.asc(params[:asc]) if params[:asc]
+    @maps = scope
   end
 
   # GET /maps/:id

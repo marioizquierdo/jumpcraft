@@ -1,5 +1,5 @@
 object @user
-attributes :id, :email, :name
+attributes :id, :name, :score
 child :maps do
-  attributes :name, :description
+  attributes :name, :score, :description
 end
