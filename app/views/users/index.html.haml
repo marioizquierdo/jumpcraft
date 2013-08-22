@@ -1,6 +1,15 @@
-%h3 Users Ladder
-%ol.users
-  - @users.each do |user|
-    %li
-      = link_to user.name, user
-      (score #{user.score}, coins #{user.coins})
+%h3 Users Ranking
+
+%table.table.table-condensed.ranking
+  %thead
+    %th Rank
+    %th Score
+    %th Coins
+    %th Player
+  %tbody
+    - @users.each_with_index do |user, i|
+      %tr{ class: ('info' if user == current_user) }
+        %td.short= i + 1
+        %td.short= user.score
+        %td.short= user.coins
+        %td= link_to user.name, user

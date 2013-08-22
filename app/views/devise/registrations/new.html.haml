@@ -3,10 +3,10 @@
 = form_for(resource, :as => resource_name, :url => registration_path(resource_name)) do |f|
   = devise_error_messages!
 
-  = f.label 'Name (game name)'
+  = f.label 'Player Name (how others recognize you in the game)'
   = f.text_field :name, placeholder: "Player's name"
 
-  = f.label 'Email (for sign-in, will not be shown to other users)'
+  = f.label 'Email (for login only, not visible by other users)'
   = f.email_field :email, placeholder: "example@gmail.com"
 
   = f.label 'Password'

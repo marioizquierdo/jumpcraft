@@ -1,6 +1,15 @@
-%h3 Maps Ladder
-%ol.users
-  - @maps.each do |map|
-    %li
-      = link_to map.name, map
-      (score #{map.score})
+%h3 Maps Ranking
+
+%table.table.table-condensed.ranking
+  %thead
+    %th Rank
+    %th Score
+    %th Map Name
+    %th Map Creator
+  %tbody
+    - @maps.each_with_index do |map, i|
+      %tr{ class: ('info' if current_user.maps.include? map) }
+        %td.short= i + 1
+        %td.short= map.score
+        %td= link_to map.name, map
+        %td= link_to map.creator.name, map.creator

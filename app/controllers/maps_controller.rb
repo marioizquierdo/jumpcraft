@@ -4,12 +4,14 @@ class MapsController < ApplicationController
   # Used to check the ladder of maps
   def index
     scope = Map.all
-    if params[:desc]
-      scope = scope.desc(params[:desc])
+    if params[:desc] or params[:asc]
+      scope = scope.asc(params[:asc]) if params[:asc]
+      scope = scope.desc(params[:desc]) if params[:desc]
     else
-      score = scope.desc(:score) # order by score as default
+      scope = scope.desc(:score) # order by score as default
     end
-    scope = scope.asc(params[:asc]) if params[:asc]
+
+    scope = scope.includes(:creator)
     @maps = scope
   end
 
