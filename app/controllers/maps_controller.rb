@@ -37,23 +37,32 @@ class MapsController < ApplicationController
     if !params.include?(:map_defeated) or !params.include?(:collected_coins)
       render json: {error: 'params map_defeated and collected_coins are mandatory'}, status: :forbidden # 403
     end
+    map_defeated = params[:map_defeated] == 'true'
+    collected_coins = params[:collected_coins].to_i
 
     # Find map and player
     map = Map.find(params[:id])
     player = current_user
 
+    # Create game record
+    Game.create user: player, map: map, map_defeated: map_defeated, coins: collected_coins,
+      user_score: player.score,
+      map_score: map.score,
+      user_played_games: user.played_games,
+      map_played_games: map.played_games
+
     # Assign new scores
-    winner, loser = params[:map_defeated] ? [player, map] : [map, player]
+    winner, loser = map_defeated ? [player, map] : [map, player]
     SimpleELO.assign_new_scores!(winner, loser)
 
     # Update user stats
-    player.coins += params[:collected_coins].to_i
+    player.coins += collected_coins
     player.played_games += 1
-    player.won_games += 1 if params[:map_defeated]
+    player.won_games += 1 if map_defeated
 
     # Update map stats
     map.played_games += 1
-    map.won_games += 1 unless params[:map_defeated]
+    map.won_games += 1 unless map_defeated
 
     # Save
     player.save!
