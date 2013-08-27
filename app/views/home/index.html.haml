@@ -5,6 +5,14 @@
   %br/
   This website is used to create accounts for the Infiltration Prototype Flash Game.
 
+.flash-game
+  - flash_game_url = "https://dl.dropboxusercontent.com/u/8856856/Infiltration.swf"
+  - flash_game_width = 640
+  - flash_game_height = 480
+  %object(width="#{flash_game_width}" height="#{flash_game_height}" id="flash-game" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000")
+    %param(name="movie" value="#{flash_game_url}")/
+    %embed(src="#{flash_game_url}" width="#{flash_game_width}" height="#{flash_game_height}" name="flash-game" type="application/x-shockwave-flash")/
+
 %p
   - if user_signed_in?
     Ok #{current_user.name}, now use your email and password to login when you are in the Flash client (link goes here).
