@@ -8,8 +8,13 @@ class User
   devise :database_authenticatable, :token_authenticatable,
     :registerable, :recoverable, :rememberable, :trackable, :validatable
 
+  attr_accessible :name, :email, :password, :password_confirmation, :remember_me, :created_at, :updated_at, :authentication_token
+
   ## -------------------
   ## Infiltration fields
+  field :name, type: String
+  validates_presence_of :name
+
   field :score, type: Integer, default: 1000 # default score for new comers
   field :coins, type: Integer, default: 0
   field :played_games, type: Integer, default: 0 # number of games played in the ladder
@@ -56,8 +61,4 @@ class User
   # run 'rake db:mongoid:create_indexes' to create indexes
   index({ email: 1 }, { unique: true, background: true })
   index({ authentication_token: 1 }, { unique: true, background: true })
-
-  field :name, type: String
-  validates_presence_of :name
-  attr_accessible :name, :email, :password, :password_confirmation, :remember_me, :created_at, :updated_at
 end

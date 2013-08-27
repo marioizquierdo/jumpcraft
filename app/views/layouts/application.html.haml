@@ -16,6 +16,10 @@
     %link(href="images/apple-touch-icon.png" rel="apple-touch-icon-precomposed")
     %link(href="/favicon.ico" rel="shortcut icon")
 
+    / Bootstrap current_user data in JS
+    - if user_signed_in?
+      :javascript
+        window.current_user = #{current_user.attributes.to_json};
 
   %body
     .navbar.navbar-fixed-top
@@ -35,9 +39,8 @@
 
       %footer
         %p &copy; LindenLab 2013
-    /
-      Javascripts
-      \==================================================
+
+    / Javascripts
     / Placed at the end of the document so the pages load faster
     = javascript_include_tag "application"
 
