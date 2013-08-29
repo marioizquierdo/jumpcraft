@@ -30,4 +30,12 @@ describe MapsController do
     end
   end
 
+  describe "POST #game" do
+    it "fails if user is not logged in" do
+      post :game
+      expect(response).not_to be_success
+    end
+    context "with "
+  end
+
 end

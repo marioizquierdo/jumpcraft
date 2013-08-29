@@ -23,6 +23,9 @@ RSpec.configure do |config|
   # Use FactoryGirl short-cuts
   config.include FactoryGirl::Syntax::Methods
 
+  # Mock current_user if needed
+  config.include Devise::TestHelpers, type: :controller
+
   config.before(:suite) do
     DatabaseCleaner.orm = :mongoid
     DatabaseCleaner.strategy = :truncation
