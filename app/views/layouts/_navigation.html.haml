@@ -7,14 +7,24 @@
   %li.divider-vertical
 
 %ul.nav.pull-right
-  %li
-    - if user_signed_in?
-      = link_to 'Edit account', edit_user_registration_path
-    - else
-      = link_to 'Sign up', new_user_registration_path
+  - if user_signed_in?
+    %li.dropdown
+      %a.dropdown-toggle(data-toggle="dropdown" href="#" role="button")
+        %i.icon-user
+        = current_user.name
+        %b.caret
+      %ul.dropdown-menu(role="menu" aria-labelledby="dLabel")
+        %li
+          %a{ href: edit_user_registration_path }
+            %i.icon-edit
+            Edit account
+        %li
+          %a{ href: destroy_user_session_path, data: {method: 'delete'}, rel: 'nofollow' }
+            %i.icon-off
+            Logout
 
-  %li
-    - if user_signed_in?
-      = link_to 'Logout', destroy_user_session_path, :method=>'delete'
-    - else
+  - else
+    %li
       = link_to 'Login', new_user_session_path
+    %li
+      = link_to 'Sign up', new_user_registration_path
