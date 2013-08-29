@@ -8,7 +8,7 @@
     %th Map Creator
   %tbody
     - @maps.each_with_index do |map, i|
-      %tr{ class: ('info' if current_user.maps.include? map) }
+      %tr{ class: ('info' if current_user && current_user.maps.include?(map)) }
         %td.short= i + 1
         %td.short= map.score
         %td= link_to map.name, map
