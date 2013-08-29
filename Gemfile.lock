@@ -41,6 +41,7 @@ GEM
       execjs
     coffee-script-source (1.6.1)
     daemons (1.1.9)
+    database_cleaner (0.9.1)
     devise (2.2.3)
       bcrypt-ruby (~> 3.0)
       orm_adapter (~> 0.1)
@@ -185,8 +186,9 @@ PLATFORMS
 
 DEPENDENCIES
   coffee-rails (~> 3.2.1)
+  database_cleaner
   devise (>= 2.2.3)
-  factory_girl_rails (>= 4.2.0)
+  factory_girl_rails
   figaro (>= 0.6.3)
   haml-rails (>= 0.4)
   heroku
