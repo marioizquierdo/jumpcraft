@@ -73,6 +73,10 @@ pickle-email-*.html
 # vim artifacts
 **.swp
 
+# zeus
+zeus.json
+custom_plan.rb
+
 # Ignore application configuration
 # THIS IS IMPORTANT for security. You don't waht to put passwords and stuff in the repo
 /config/application.yml
