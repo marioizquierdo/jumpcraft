@@ -30,15 +30,9 @@ group :development do
 end
 
 group :development, :test do
-  gem 'rspec-rails', '>= 2.12.2'
+  gem 'rspec-rails', '~> 2.0'
   gem 'factory_girl_rails', '>= 4.2.0'
 end
 
 group :test do
-  gem 'database_cleaner', '>= 1.0.0.RC1'
-  gem 'mongoid-rspec', '>= 1.7.0'
-  gem 'email_spec', '>= 1.4.0'
-  gem 'cucumber-rails', '>= 1.3.1', require: false
-  gem 'launchy', '>= 2.2.0'
-  gem 'capybara', '>= 2.0.2'
 end
