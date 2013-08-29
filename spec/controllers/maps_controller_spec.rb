@@ -14,6 +14,20 @@ describe MapsController do
       get :index
       expect(assigns(:maps)).to match_array([map1, map2])
     end
+
+    context "filtered by creator_id" do
+      before do
+        @creator = create :user
+        @map1, @map2 = create(:map, creator: @creator), create(:map, creator: @creator)
+
+        @otheruser = create :user
+        @othermap = create :map, creator: @otheruser
+      end
+      it "loads only the maps created by that creator" do
+        get :index, creator_id: @creator.id.to_s
+        expect(assigns(:maps)).to match_array([@map1, @map2])
+      end
+    end
   end
 
 end

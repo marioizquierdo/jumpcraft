@@ -4,6 +4,13 @@ class MapsController < ApplicationController
   # Used to check the ladder of maps
   def index
     scope = Map.all
+
+    # Filter by creator_id
+    if params[:creator_id]
+      scope = scope.where(creator_id: params[:creator_id])
+    end
+
+    # Order
     if params[:desc] or params[:asc]
       scope = scope.asc(params[:asc]) if params[:asc]
       scope = scope.desc(params[:desc]) if params[:desc]
