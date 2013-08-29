@@ -3,17 +3,17 @@
 = form_for(resource, :as => resource_name, :url => registration_path(resource_name)) do |f|
   = devise_error_messages!
 
-  = f.label 'Player Name (how others recognize you in the game)'
-  = f.text_field :name, placeholder: "Player's name"
-
-  = f.label 'Email (for login only, not visible by other users)'
+  = f.label 'Email (for login only, not visible to other users)'
   = f.email_field :email, placeholder: "example@gmail.com"
 
   = f.label 'Password'
-  = f.password_field :password, placeholder: "Password for sign-in"
+  = f.password_field :password, placeholder: "Enter Password"
 
   = f.label 'Password Confirmation'
   = f.password_field :password_confirmation, placeholder: "Repeat password"
+
+  = f.label 'Player Name (your identity in the game)'
+  = f.text_field :name, placeholder: "nickname"
 
   %br/
   %button.btn{type: "submit"} Sign Up
