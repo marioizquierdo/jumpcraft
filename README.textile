@@ -27,8 +27,8 @@ h2. Development
 
 h2. Email
 
-Sending emails is not supported for now.
-If needed, it would be easy to setup a Gmail account (settings are ready for it).
+The app will send emails to restore passwords, etc.
+We send emails as "infiltration.prototype@gmail.com", and the delibery system is smtp.sendgrid.net, using the free Sendgrid plan, that allows to send up to 200 emails per day.
 
 h2. Contributing
 
