@@ -1,11 +1,16 @@
 if Rails.env.development?
   Infiltration::Application.configure do
-    # Use Pry instead of IRB
+
     silence_warnings do
-      begin
-        require 'pry'
-        IRB = Pry
-      rescue LoadError
+      require 'pry'
+      IRB = Pry
+    end
+
+    if defined?(Zeus::Rails)
+      class Zeus::Rails
+        def console
+          Pry.start
+        end
       end
     end
   end
