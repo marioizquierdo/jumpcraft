@@ -1,25 +1,20 @@
 class MapsController < ApplicationController
 
-  # GET /maps
-  # Used to check the ladder of maps
-  def index
-    scope = Map.all
+  # GET /maps/ladder
+  def ladder
+    @maps = Map.includes(:creator).desc(:score)
+  end
 
-    # Filter by creator_id
-    if params[:creator_id]
-      scope = scope.where(creator_id: params[:creator_id])
-    end
+  # GET /maps/near_score.json?auth_token=1234
+  # Responds with a list of 50 maps that have a score around the player's score
+  def near_score
+    authenticate_user!
+    score = current_user.score
+    maps_below = Map.where(:score.lt => score).asc(:score).limit(25)
+    maps_over = Map.where(:score.gte => score).asc(:score).limit(25)
+    @maps = maps_below.to_a + maps_over.to_a
 
-    # Order
-    if params[:desc] or params[:asc]
-      scope = scope.asc(params[:asc]) if params[:asc]
-      scope = scope.desc(params[:desc]) if params[:desc]
-    else
-      scope = scope.desc(:score) # order by score as default
-    end
-
-    scope = scope.includes(:creator)
-    @maps = scope
+    render json: { maps: @maps }
   end
 
   # GET /maps/:id
