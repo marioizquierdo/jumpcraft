@@ -1,15 +1,9 @@
 class UsersController < ApplicationController
 
-  def index
-    scope = User.all
-    if params[:desc] or params[:asc]
-      scope = scope.asc(params[:asc]) if params[:asc]
-      scope = scope.desc(params[:desc]) if params[:desc]
-    else
-      scope = scope.desc(:score) # order by score as default
-    end
 
-    @users = scope
+  # GET /users/ladder
+  def ladder
+    @users = User.desc(:score)
   end
 
   def show
