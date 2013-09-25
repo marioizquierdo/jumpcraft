@@ -28,7 +28,7 @@ describe MapsController do
       sign_in @user
     end
     it "responds successfully with an HTTP 200 status code" do
-      get :suggestions
+      get :suggestions, format: 'json'
       expect(response.status).to eq(200)
     end
     it "loads up to three map suggestions" do
@@ -36,24 +36,25 @@ describe MapsController do
       create :map, score: 1500
       create :map, score: 1600
       create :map, score: 1700
-      get :suggestions
+      get :suggestions, format: 'json'
       maps = assigns(:maps)
-      maps.should have(3).suggestions
+      maps.should have(3).elements
     end
     it "loads only one suggestion if that's the only available one" do
       create :map, score: 1500
-      get :suggestions
+      get :suggestions, format: 'json'
       maps = assigns(:maps)
-      maps.should have(1).suggestions
+      maps.should have(1).elements
     end
     it "load only medium maps if those are the only available maps" do
       create :map, score: @user.score # with user score, the difficulty should be medium
       create :map, score: @user.score
       create :map, score: @user.score
-      get :suggestions
+      get :suggestions, format: 'json'
       maps = assigns(:maps)
-      maps.each do |suggestion|
-        suggestion[0].should == :medium
+      maps.should have(3).elements
+      maps.each do |map|
+        map.dificulty_relative_to(@user.score).should == :medium
       end
     end
   end

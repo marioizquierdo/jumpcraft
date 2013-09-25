@@ -16,16 +16,7 @@ class MapsController < ApplicationController
     map2 = Map.find_near_dificulty score, :medium, exclude: [map1]
     map3 = Map.find_near_dificulty score, :hard,   exclude: [map1, map2]
 
-    @maps = [map1, map2, map3].compact.map do |map|
-      [map.dificulty_relative_to(score), map]
-    end
-
-    # Return examples:
-    # { maps: [[:easy, map1], [:medium, map2], [:hard, map3]] }
-    # { maps: [[:very_easy, map1], [:hard, map2], [:hard, map3]] }
-    # { maps: [[:very_easy, map1], [:very_easy, map2], [:very_easy, map3]] }
-    # { maps: [[:hard, map2]] }
-    render json: { maps: @maps}
+    @maps = [map1, map2, map3].compact
   end
 
   # GET /maps/near_score.json?auth_token=1234
