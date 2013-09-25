@@ -22,6 +22,42 @@ describe MapsController do
     end
   end
 
+  describe "GET #suggestions" do
+    before do
+      @user = create :user, score: 1500
+      sign_in @user
+    end
+    it "responds successfully with an HTTP 200 status code" do
+      get :suggestions
+      expect(response.status).to eq(200)
+    end
+    it "loads up to three map suggestions" do
+      create :map, score: 1000
+      create :map, score: 1500
+      create :map, score: 1600
+      create :map, score: 1700
+      get :suggestions
+      maps = assigns(:maps)
+      maps.should have(3).suggestions
+    end
+    it "loads only one suggestion if that's the only available one" do
+      create :map, score: 1500
+      get :suggestions
+      maps = assigns(:maps)
+      maps.should have(1).suggestions
+    end
+    it "load only medium maps if those are the only available maps" do
+      create :map, score: @user.score # with user score, the difficulty should be medium
+      create :map, score: @user.score
+      create :map, score: @user.score
+      get :suggestions
+      maps = assigns(:maps)
+      maps.each do |suggestion|
+        suggestion[0].should == :medium
+      end
+    end
+  end
+
   describe "GET #near_score" do
     before do
       @user = create :user, score: 1500

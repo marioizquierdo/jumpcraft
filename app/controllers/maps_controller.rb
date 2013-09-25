@@ -12,38 +12,19 @@ class MapsController < ApplicationController
     authenticate_user!
     score = current_user.score
 
-    distance = 16 # score distance used to define each map difficulty category
-    very_easy_score_low = score - 7*distance
-    easy_score_low = score - 3*distance
-    easy_score_hig = score - distance
-    hard_score_low = score + distance
-    hard_score_hig = score + 3*distance
-    very_hard_score_hig = score + 7*distance
+    map1 = Map.find_near_dificulty score, :easy
+    map2 = Map.find_near_dificulty score, :medium, exclude: [map1]
+    map3 = Map.find_near_dificulty score, :hard,   exclude: [map1, map2]
 
-    easy   = Map.find_near_score(easy_score_low, easy_score_hig)
-    medium = Map.find_near_score(easy_score_hig + 1, hard_score_low - 1)
-    hard   = Map.find_near_score(hard_score_low, hard_score_hig)
-
-    if not easy
-      very_easy = Map.find_near_score(very_easy_score_low, easy_score_low)
+    @maps = [map1, map2, map3].compact.map do |map|
+      [map.dificulty_relative_to(score), map]
     end
 
-    if not hard
-      very_hard = Map.find_near_score(hard_score_hig, very_hard_score_hig)
-      if not very_hard
-        other_medium = Map.find_near_score(easy_score_hig + 1, hard_score_low - 1)
-        other_medium = nil if other_medium == medium
-      end
-    end
-
-    if not very_easy or not very_hard
-      other_medium = Map.find_near_score(easy_score_hig + 1, hard_score_low - 1)
-      other_medium = nil if other_medium == medium
-    end
-
-    @maps = [[:very_easy, very_easy], [easy: easy], [medium: medium], [medium: other_medium], [hard: hard], [very_hard: very_hard]]
-    @maps.reject!{|m| m[1] == nil}
-
+    # Return examples:
+    # { maps: [[:easy, map1], [:medium, map2], [:hard, map3]] }
+    # { maps: [[:very_easy, map1], [:hard, map2], [:hard, map3]] }
+    # { maps: [[:very_easy, map1], [:very_easy, map2], [:very_easy, map3]] }
+    # { maps: [[:hard, map2]] }
     render json: { maps: @maps}
   end
 

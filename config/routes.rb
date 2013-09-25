@@ -9,6 +9,7 @@ Infiltration::Application.routes.draw do
   get '/users/:id' => 'users#show', as: 'user'
 
   get '/maps/ladder' => 'maps#ladder', as: 'maps_ladder'
+  get '/maps/suggestions' => 'maps#suggestions', as: 'maps_suggestions'
   get '/maps/near_score' => 'maps#near_score', as: 'maps_near_score'
   get '/maps/:id' => 'maps#show', as: 'map'
   post '/maps' => 'maps#create'
