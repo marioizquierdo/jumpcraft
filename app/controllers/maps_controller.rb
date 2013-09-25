@@ -11,14 +11,40 @@ class MapsController < ApplicationController
   def suggestions
     authenticate_user!
     score = current_user.score
-    difficulty_step = 32 # how many points difference for each category
-    easy_score   = score - difficulty_step
-    medium_score = score
-    hard_score   = score + difficulty_step
 
-    # Find an easy map
-    Map.find_near_score(easy_score, difficulty_step/2)
+    distance = 16 # score distance used to define each map difficulty category
+    very_easy_score_low = score - 7*distance
+    easy_score_low = score - 3*distance
+    easy_score_hig = score - distance
+    hard_score_low = score + distance
+    hard_score_hig = score + 3*distance
+    very_hard_score_hig = score + 7*distance
 
+    easy   = Map.find_near_score(easy_score_low, easy_score_hig)
+    medium = Map.find_near_score(easy_score_hig + 1, hard_score_low - 1)
+    hard   = Map.find_near_score(hard_score_low, hard_score_hig)
+
+    if not easy
+      very_easy = Map.find_near_score(very_easy_score_low, easy_score_low)
+    end
+
+    if not hard
+      very_hard = Map.find_near_score(hard_score_hig, very_hard_score_hig)
+      if not very_hard
+        other_medium = Map.find_near_score(easy_score_hig + 1, hard_score_low - 1)
+        other_medium = nil if other_medium == medium
+      end
+    end
+
+    if not very_easy or not very_hard
+      other_medium = Map.find_near_score(easy_score_hig + 1, hard_score_low - 1)
+      other_medium = nil if other_medium == medium
+    end
+
+    @maps = [[:very_easy, very_easy], [easy: easy], [medium: medium], [medium: other_medium], [hard: hard], [very_hard: very_hard]]
+    @maps.reject!{|m| m[1] == nil}
+
+    render json: { maps: @maps}
   end
 
   # GET /maps/near_score.json?auth_token=1234
