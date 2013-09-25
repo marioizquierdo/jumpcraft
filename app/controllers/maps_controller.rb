@@ -5,6 +5,22 @@ class MapsController < ApplicationController
     @maps = Map.includes(:creator).desc(:score)
   end
 
+  # GET /maps/suggestions.json?auth_token=1234
+  # Get 3 map suggestions: easy, medium or hard,
+  # or try to get something as close as possible to that.
+  def suggestions
+    authenticate_user!
+    score = current_user.score
+    difficulty_step = 32 # how many points difference for each category
+    easy_score   = score - difficulty_step
+    medium_score = score
+    hard_score   = score + difficulty_step
+
+    # Find an easy map
+    Map.find_near_score(easy_score, difficulty_step/2)
+
+  end
+
   # GET /maps/near_score.json?auth_token=1234
   # Responds with a list of 50 maps that have a score around the player's score
   def near_score
