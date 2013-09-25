@@ -17,4 +17,17 @@ class Map
     map.save!
     map
   end
+
+  # Find a map which score is within distance from the specified score,
+  # specifically in the range [score - distance <= score < score + distance]
+  # Choose random between all available maps with such score, or return nil if no map has that score.
+  def self.find_near_score(score, distance)
+    criteria = self.where(:score.gte => score - distance, :score.lt => score + distance)
+    n = criteria.count
+    if n == 0
+      nil # return nil if no result within distance
+    else
+      map = criteria.skip(rand n).first # get a random map that
+    end
+  end
 end
