@@ -4,7 +4,6 @@
     / Container to load SWFObject with the infiltration flash project (done on home.js.coffee)
 
 - else
-  %h3 Welcome to Infiltration Prototype
 
   .inline-signin-form
     = form_for(resource, as: resource_name, url: session_path(resource_name),
@@ -27,19 +26,43 @@
       = link_to 'Forgot your password?', new_password_path(resource_name)
       )
 
+
+  = image_tag 'infiltration-logo.jpg', size: '978x422'
+
   %h4 What is Infiltration?
   %p
-    Infiltration is a 2D platformer where all maps are created by the comunity.
-
+    Play a game where all maps are created by the community. Would you be able to beat your friends's maps?
   %p
-    With a competitive ranking, every game counts to get a better score to be the king of the ladder.
-
+    Design and create your own maps. It is easy and fun with our WYSIWYG map editor.
   %p
-    Creating maps is easy and fun. The maps will also get ranked against other maps, based on their dificulty. But remember that creators have to defeat their own maps before being able to submit them to the ladder.
+    Do you have what it takes to be a map designer master?
 
+  = image_tag 'infiltration-slogan.jpg', size: '300x270', class: 'img-rounded', style: 'float: left; margin-right: 20px'
+
+  %h4 How to play
+  %p
+    Sign up with your email and a password. The password will be encrypted and secured.
+    %br/
+    = link_to 'Play now', new_user_registration_path
+
+  %h4 The Rankings
+  %p
+    Infiltration is PvM (player versus map). This is a new concept, since both players and maps have a score.
+  %p
+    Everytime you beat a map, you gain ranking score, and the map loses ranking score. But if you lose, the map will take the score from you.
+  %p
+    The score calculation is done using the ELO rating system, in a similar way to chess tournaments. This means that if you can create a map that is very difficult to beat, it will eventually get a better score. Also, the system will be able to offer you maps that are of your current player level.
+
+
+  %h4 Just a Prototype
+  %p
+    This is a proof of concept. You should expect bugs and security flaws. Our goal is to try the concept of PvM and automatically ranked user generated content. Please, tell us what you feel in the blog.
   %p
     Good luck and have fun!
 
+  %h4 Credits
+  %p
+    Infiltration Prototype was designed and implemented by Mario Izquierdo and Alex Cho
 
 
 
