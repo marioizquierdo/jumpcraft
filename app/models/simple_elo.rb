@@ -8,7 +8,7 @@ class SimpleElo
   # Example:
   #  GIVEN winner.score = 1700; loser.score = 1600
   #  diff = 16 + (1600 - 1700) x (16 / 400) = 12
-  #  THEN winner.scpre = 1712, loser.score = 1588
+  #  THEN winner.score = 1712, loser.score = 1588
   def self.assign_new_scores!(winner, loser)
     loser_score = loser.score || 1000
     winner_score = winner.score || 1000

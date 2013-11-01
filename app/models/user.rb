@@ -11,15 +11,18 @@ class User
   attr_accessible :name, :email, :password, :password_confirmation, :remember_me, :created_at, :updated_at, :authentication_token
 
   ## -------------------
-  ## Infiltration fields
+
   field :name, type: String
   validates_presence_of :name
 
-  field :score, type: Integer, default: 1000 # default score for new comers
+  field :intro, type: Boolean, default: true # true if this user is still playing the intro maps to set the initial score
+  field :score, type: Integer, default: 1000 # score is adjusted during the intro state and then playing ladder maps
   field :coins, type: Integer, default: 0
   field :played_games, type: Integer, default: 0 # number of games played in the ladder
   field :won_games, type: Integer, default: 0 # number of defeated maps in the ladder
+
   has_many :maps, inverse_of: :creator
+
   ## -------------------
 
   ## Database authenticatable

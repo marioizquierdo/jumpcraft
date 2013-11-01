@@ -7,6 +7,7 @@ class Map
   field :score, type: Integer
   field :played_games, type: Integer, default: 0 # number of times this map was played in the ladder
   field :won_games, type: Integer, default: 0 # number of times this map was NOT defeated in the ladder
+  field :intro, type: Boolean, default: false # flag to mark maps dedicated for the first play experience
 
   belongs_to :creator, class_name: "User"
 
@@ -33,6 +34,7 @@ class Map
   ]
 
   # Return the label for the difficulty of the map score in relation to the user_score.
+  # that is one of DIFFICULTY_TRESHOLDS: very_easy, easy, medium, etc..
   def dificulty_relative_to(user_score)
     score_diff = self.score - user_score
     difficulty = :trivial
