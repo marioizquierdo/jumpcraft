@@ -11,6 +11,11 @@ class Map
 
   belongs_to :creator, class_name: "User"
 
+  scope :intro, where(intro: true)
+
+  # Query non intro maps by default. (Use Map.intro to query intro maps)
+  default_scope ne(intro: true)
+
   def self.create_for_user(user, attrs = {})
     map = Map.new(attrs)
     map.creator = user
@@ -74,14 +79,14 @@ class Map
   def self.find_random_within_score(lower, upper, options = {})
     criteria = self.where(:score.gte => lower, :score.lte => upper)
     if options[:exclude]
-      exclude_ids = options[:exclude].compact.map{|map| map.id}
+      exclude_ids = options[:exclude].compact.map(&:id)
       criteria = criteria.nin(_id: exclude_ids)
     end
     n = criteria.count
     if n == 0
       nil # return nil if no result within distance
     else
-      map = criteria.skip(rand n).first # get a random map that
+      map = criteria.skip(rand n).first # get a random map that matches the criteria
     end
   end
 end
