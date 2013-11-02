@@ -16,6 +16,7 @@ class Game
 
   scope :user, ->(user){ where user_id: user.id }
   scope :map, ->(map){ where map_id: map.id }
+  scope :maps, ->(maps){ where :map_id.in => maps.collect(&:id) }
   scope :unfinished, ne( finished: true )
 
   def finish_and_save!

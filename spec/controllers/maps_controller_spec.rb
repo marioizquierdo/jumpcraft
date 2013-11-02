@@ -66,7 +66,7 @@ describe MapsController do
     end
 
     it "responds successfully with an HTTP 200 status code" do
-      get :near_score
+      get :near_score, format: 'json'
       expect(response.status).to eq(200)
     end
 
@@ -76,7 +76,7 @@ describe MapsController do
         create :map, score: @user.score + diff
       end
 
-      get :near_score
+      get :near_score, format: 'json'
       maps = assigns(:maps)
       maps.size.should == 50
       under_score = @user.score - 26
@@ -87,6 +87,30 @@ describe MapsController do
       maps.select{|m| m.score < @user.score}.size.should == 25
       maps.select{|m| m.score == @user.score }.size.should == 1
       maps.select{|m| m.score > @user.score}.size.should == 24
+    end
+    context "rendered json" do
+      render_views
+      it "includes played_by_current_user in the generated map json, with the number of times user played the map" do
+        create :map, score: @user.score
+        get :near_score, format: 'json'
+        map = assigns(:maps).first
+        json = response.body
+        maps_data_list = JSON.parse(json)['maps']
+        map_data = maps_data_list.first
+        map_data['played_by_current_user'].should == 0
+      end
+
+      it "includes played_by_current_user properly if the player did play the map before" do
+        map = create :map, score: @user.score
+        Game.create user: @user, map: map, finished: true # 1
+        Game.create user: @user, map: map, finished: true # 2
+        get :near_score, format: 'json'
+        map = assigns(:maps).first
+        json = response.body
+        maps_data_list = JSON.parse(json)['maps']
+        map_data = maps_data_list.first
+        map_data['played_by_current_user'].should == 2
+      end
     end
   end
 
