@@ -7,8 +7,9 @@ if window.current_user
   swf_url = "https://dl.dropboxusercontent.com/u/8856856/Infiltration.swf"
   flashvars =
     {
-      email: window.current_user.email,
-      name: window.current_user.name,
+      id:         window.current_user._id,
+      email:      window.current_user.email,
+      name:       window.current_user.name,
       auth_token: window.current_user.authentication_token
     }
   swfobject.embedSWF(swf_url, "swf-container", "640", "480", "10.0.0", false, flashvars)
