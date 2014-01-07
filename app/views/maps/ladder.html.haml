@@ -5,7 +5,7 @@
     %th Rank
     %th Score
     %th Map Name
-    %th Map Creator
+    %th Created By
   %tbody
     - @maps.each_with_index do |map, i|
       %tr{ class: ('info' if current_user && current_user.maps.include?(map)) }

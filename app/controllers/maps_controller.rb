@@ -26,6 +26,7 @@ class MapsController < ApplicationController
   def near_score
     authenticate_user!
     score = current_user.score
+    
     maps_below = Map.where(:score.lt => score).asc(:score).limit(25)
     maps_over = Map.where(:score.gte => score).asc(:score).limit(25)
 

@@ -5,15 +5,15 @@ Infiltration::Application.routes.draw do
   root to: "home#index"
   devise_for :users, token_authentication_key: 'auth_token', controllers: {sessions: 'sessions'}
 
-  get '/users/ladder' => 'users#ladder', as: 'users_ladder'
-  get '/users/:id' => 'users#show', as: 'user'
+  get '/users/ladder'     => 'users#ladder', as: 'users_ladder'
+  get '/users/:id'        => 'users#show', as: 'user'
 
-  get '/maps/ladder' => 'maps#ladder', as: 'maps_ladder'
+  get '/maps/ladder'      => 'maps#ladder', as: 'maps_ladder'
   get '/maps/suggestions' => 'maps#suggestions', as: 'maps_suggestions'
-  get '/maps/near_score' => 'maps#near_score', as: 'maps_near_score'
-  get '/maps/:id' => 'maps#show', as: 'map'
-  post '/maps' => 'maps#create'
+  get '/maps/near_score'  => 'maps#near_score', as: 'maps_near_score'
+  get '/maps/:id'         => 'maps#show', as: 'map'
+  post '/maps'            => 'maps#create'
 
-  post '/games/start'  => 'games#start'
-  post '/games/finish' => 'games#finish'
+  post '/games/start'     => 'games#start'
+  post '/games/finish'    => 'games#finish'
 end
