@@ -6,8 +6,6 @@ gem 'thin', '>= 1.5.0'
 
 gem 'mongoid', '>= 3.1.2'
 
-gem 'heroku'
-
 gem 'jquery-rails'
 gem 'haml-rails', '>= 0.4'
 gem 'devise', '>= 2.2.3'
