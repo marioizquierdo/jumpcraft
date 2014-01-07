@@ -66,6 +66,8 @@ describe MapsController do
     end
 
     it "responds successfully with an HTTP 200 status code" do
+      create :map # ensure map collection exists, needed to perform the mapreduce in get_plays_count_for with no errors
+      
       get :near_score, format: 'json'
       expect(response.status).to eq(200)
     end
