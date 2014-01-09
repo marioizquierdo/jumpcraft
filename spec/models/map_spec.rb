@@ -117,13 +117,13 @@ describe Map do
     context "with maps in that score range" do
       before do
         # within range
-        create :map, score: low_score
-        create :map, score: (low_score + upp_score) / 2
-        create :map, score: upp_score
+        @m1 = create :map, score: low_score
+        @m2 = create :map, score: (low_score + upp_score) / 2
+        @m3 = create :map, score: upp_score
 
         # outside range
-        create :map, score: upp_score + 1
-        create :map, score: low_score - 1
+        @m4 = create :map, score: upp_score + 1
+        @m5 = create :map, score: low_score - 1
       end
       it "returns one random map with the desired range" do
         5.times do # try several times because the result is random
@@ -142,6 +142,35 @@ describe Map do
           new_map = Map.find_random_within_score(low_score, upp_score)
         end
         new_map.should_not == map
+      end
+      context "with :exclude option" do
+        it "exludes those maps" do
+          5.times do # try several times because the result is random
+            map = Map.find_random_within_score(low_score, upp_score, exclude: [@m1, @m2])
+            map.should == @m3 # this is the only one left under scope
+          end
+        end
+      end
+      context "with :scope option" do
+        before do
+          # create a map within range that has specific name, to test the scope
+          @map = create :map, score: low_score+1, name: 'target map yupi yupi'
+          @scope = ->(criteria){ criteria.where(name: 'target map yupi yupi') }
+        end
+        it "filters the maps based on that scope" do
+          5.times do # try several times because the result is random
+            map = Map.find_random_within_score(low_score, upp_score, scope: @scope)
+            map.should == @map
+          end
+        end
+        it "works nicely with :exclude option" do
+          5.times do # try several times because the result is random
+            map = Map.find_random_within_score(low_score, upp_score, scope: @scope, exclude: [@m1, @m2])
+            map.should == @map
+          end
+          map = Map.find_random_within_score(low_score, upp_score, scope: @scope, exclude: [@map])
+          map.should == nil
+        end
       end
     end
     context "with no maps within score range" do
