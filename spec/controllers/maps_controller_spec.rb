@@ -46,7 +46,7 @@ describe MapsController do
       maps = assigns(:maps)
       maps.should have(1).elements
     end
-    it "load only medium maps if those are the only available maps" do
+    it "loads only medium maps if those are the only available maps" do
       create :map, score: @user.score # with user score, the difficulty should be medium
       create :map, score: @user.score
       create :map, score: @user.score
@@ -56,6 +56,14 @@ describe MapsController do
       maps.each do |map|
         map.dificulty_relative_to(@user.score).should == :medium
       end
+    end
+    it "excludes own user maps" do
+      @m1 = create :map, score: 1500
+      @m2 = create :map, score: 1500, creator: @user
+      get :suggestions, format: 'json'
+      maps = assigns(:maps)
+      maps.should have(1).element
+      maps.first.should == @m1
     end
   end
 

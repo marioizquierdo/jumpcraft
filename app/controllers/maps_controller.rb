@@ -12,9 +12,12 @@ class MapsController < ApplicationController
     authenticate_user!
     score = current_user.score
 
-    map1 = Map.find_near_dificulty score, :easy
-    map2 = Map.find_near_dificulty score, :medium, exclude: [map1]
-    map3 = Map.find_near_dificulty score, :hard,   exclude: [map1, map2]
+    # Exclude user own maps
+    scope = ->(s){ s.ne(creator_id: current_user.id) }
+
+    map1 = Map.find_near_dificulty score, :easy,   scope: scope
+    map2 = Map.find_near_dificulty score, :medium, scope: scope, exclude: [map1]
+    map3 = Map.find_near_dificulty score, :hard,   scope: scope, exclude: [map1, map2]
 
     @maps = [map1, map2, map3].compact
     @plays_count = get_plays_count_for(current_user, @maps)
