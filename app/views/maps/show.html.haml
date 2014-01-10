@@ -16,7 +16,7 @@
       (difficulty: #{@map.dificulty_relative_to(current_user.score)})
 
 %p
-  Times this mas was played on the ladder: #{@map.played_games}
+  Times this map was played on the ladder: #{@map.played_games}
   - if @map.played_games > 0
     %br/
     #{@map.played_games - @map.won_games} player victories (#{100 - (100 * @map.won_games / @map.played_games).to_i}% players win rate)
