@@ -10,6 +10,7 @@ if window.current_user
       id:         window.current_user._id,
       email:      window.current_user.email,
       name:       window.current_user.name,
-      auth_token: window.current_user.authentication_token
+      auth_token: window.current_user.authentication_token,
+      host:       window.location.protocol + '//' + window.location.host
     }
   swfobject.embedSWF(swf_url, "swf-container", "640", "480", "10.0.0", false, flashvars)
