@@ -41,6 +41,7 @@ class Map
   # Return the label for the difficulty of the map score in relation to the user_score.
   # that is one of DIFFICULTY_TRESHOLDS: very_easy, easy, medium, etc..
   def dificulty_relative_to(user_score)
+    return nil unless self.score
     score_diff = self.score - user_score
     difficulty = :trivial
     DIFFICULTY_TRESHOLDS.each do |treshold|

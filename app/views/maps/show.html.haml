@@ -1,10 +1,13 @@
 %h3 Map
+
 %p
   Map: #{@map.name}
-%p
-  Score: #{@map.score}
-  - if current_user
-    (difficulty: #{@map.dificulty_relative_to(current_user.score)})
+
+- if @map.score
+  %p
+    Score: #{@map.score}
+    - if current_user
+      (difficulty: #{@map.dificulty_relative_to(current_user.score)})
 
 %p
   Times this mas was played on the ladder: #{@map.played_games}
