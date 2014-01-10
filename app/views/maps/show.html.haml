@@ -1,12 +1,18 @@
-%h3 Map
+%h3 Map: #{@map.name}
 
-%p
-  Map: #{@map.name}
+- if user_signed_in?
+  - content_for :bootstrap_javascripts do
+    :javascript
+      window.flashvars_map_id = "#{@map.id.to_s}"; // map id will be used as flashvars
+  #swf-container.map-practice
+    / Container to load SWFObject with the infiltration flash project (done on map_show.js.coffee)
 
+%p By #{link_to @map.creator.name, @map.creator}
+  
 - if @map.score
   %p
     Score: #{@map.score}
-    - if current_user
+    - if user_signed_in?
       (difficulty: #{@map.dificulty_relative_to(current_user.score)})
 
 %p
@@ -14,9 +20,6 @@
   - if @map.played_games > 0
     %br/
     #{@map.played_games - @map.won_games} player victories (#{100 - (100 * @map.won_games / @map.played_games).to_i}% players win rate)
-
-%p
-  Creator: #{link_to @map.creator.name, @map.creator}
 
 %p
   Created on: #{l @map.created_at.to_date, :format => :long}

@@ -21,6 +21,9 @@
       :javascript
         window.current_user = #{current_user.attributes.to_json};
 
+    / Other JS bootstrap data from views 
+    = yield :bootstrap_javascripts
+
   %body
     .navbar.navbar-fixed-top
       .navbar-inner
