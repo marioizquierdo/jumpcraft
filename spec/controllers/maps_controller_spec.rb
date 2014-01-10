@@ -65,6 +65,15 @@ describe MapsController do
       maps.should have(1).element
       maps.first.should == @m1
     end
+    it "excludes previosly played maps" do
+      @m1 = create :map, score: 1500
+      @m2 = create :map, score: 1500
+      create :game, user: @user, map: @m2 # user played map @m2
+      get :suggestions, format: 'json'
+      maps = assigns(:maps)
+      maps.should have(1).element
+      maps.first.should == @m1
+    end
   end
 
   describe "GET #near_score" do

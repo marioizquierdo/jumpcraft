@@ -145,8 +145,14 @@ describe Map do
       end
       context "with :exclude option" do
         it "exludes those maps" do
-          5.times do # try several times because the result is random
+          3.times do # try several times because the result is random
             map = Map.find_random_within_score(low_score, upp_score, exclude: [@m1, @m2])
+            map.should == @m3 # this is the only one left under scope
+          end
+        end
+        it "accepts maps, ids and nil values" do
+          3.times do # try several times because the result is random
+            map = Map.find_random_within_score(low_score, upp_score, exclude: [@m1.id, nil, @m2])
             map.should == @m3 # this is the only one left under scope
           end
         end
@@ -158,13 +164,13 @@ describe Map do
           @scope = ->(criteria){ criteria.where(name: 'target map yupi yupi') }
         end
         it "filters the maps based on that scope" do
-          5.times do # try several times because the result is random
+          3.times do # try several times because the result is random
             map = Map.find_random_within_score(low_score, upp_score, scope: @scope)
             map.should == @map
           end
         end
         it "works nicely with :exclude option" do
-          5.times do # try several times because the result is random
+          3.times do # try several times because the result is random
             map = Map.find_random_within_score(low_score, upp_score, scope: @scope, exclude: [@m1, @m2])
             map.should == @map
           end

@@ -75,12 +75,12 @@ class Map
   # Find a map which score is within [lower <= score <= upper]
   # If more than one map have that score range, then choose random.
   # If no maps in that score range, then return nil.
-  # Use option :exclude => [map1, map2] to ensure that those maps are not returned in the search.
+  # Use option :exclude => [map1.id, map2.id] to ensure that those maps are not returned in the search.
   # Use option :scope => ->(criteria){ ... } to filter the results
   def self.find_random_within_score(lower, upper, options = {})
     criteria = self.where(:score.gte => lower, :score.lte => upper)
     if options[:exclude]
-      exclude_ids = options[:exclude].compact.map(&:id)
+      exclude_ids = options[:exclude].compact.map{|x| x.is_a?(Map) ? x.id : x } # remove nil and get only ids
       criteria = criteria.nin(_id: exclude_ids)
     end
     if options[:scope]

@@ -11,13 +11,12 @@ class MapsController < ApplicationController
   def suggestions
     authenticate_user!
     score = current_user.score
+    last_played = Game.last_played_map_ids(current_user, 20)
+    scope = ->(s) {s.ne(creator_id: current_user.id) } # exclude own maps
 
-    # Exclude user own maps
-    scope = ->(s){ s.ne(creator_id: current_user.id) }
-
-    map1 = Map.find_near_dificulty score, :easy,   scope: scope
-    map2 = Map.find_near_dificulty score, :medium, scope: scope, exclude: [map1]
-    map3 = Map.find_near_dificulty score, :hard,   scope: scope, exclude: [map1, map2]
+    map1 = Map.find_near_dificulty score, :easy,   scope: scope, exclude: last_played
+    map2 = Map.find_near_dificulty score, :medium, scope: scope, exclude: last_played + [map1]
+    map3 = Map.find_near_dificulty score, :hard,   scope: scope, exclude: last_played + [map1, map2]
 
     @maps = [map1, map2, map3].compact
     @plays_count = get_plays_count_for(current_user, @maps)
