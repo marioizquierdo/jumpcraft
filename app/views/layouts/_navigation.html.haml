@@ -5,6 +5,9 @@
   %li.divider-vertical
   %li= link_to 'Maps Ranking', maps_ladder_path
   %li.divider-vertical
+  - if user_signed_in?
+    %li= link_to 'My Maps', maps_my_maps_path
+    %li.divider-vertical
 
 %ul.nav.pull-right
   - if user_signed_in?

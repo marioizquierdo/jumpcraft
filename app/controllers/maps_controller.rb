@@ -5,6 +5,11 @@ class MapsController < ApplicationController
     @maps = Map.includes(:creator).desc(:score)
   end
 
+  # GET /maps/my_maps?auth_token=1234
+  def my_maps
+    @maps = Map.where(creator: current_user).desc(:score)
+  end
+
   # GET /maps/suggestions.json?auth_token=1234
   # Get 3 map suggestions: easy, medium or hard,
   # or try to get something as close as possible to that.
