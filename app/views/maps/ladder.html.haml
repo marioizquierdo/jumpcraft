@@ -1,15 +1,26 @@
 %h3 Maps Ranking
 
-%table.table.table-condensed.ranking
+%table.table.table-condensed.table-bordered.ranking
   %thead
     %th Rank
     %th Score
     %th Map Name
     %th Created By
   %tbody
+    - my_maps = current_user ? current_user.maps.to_a : []
+    - items_in_page = 0 # count like this because @maps.entries.size makes another query
     - @maps.each_with_index do |map, i|
-      %tr{ class: ('info' if current_user && current_user.maps.include?(map)) }
-        %td.short= i + 1
+      - items_in_page += 1
+      %tr{ class: ('info' if my_maps.include?(map)) }
+        %td.short=  @offset + i + 1
         %td.short= map.score
         %td= link_to map.name, map
         %td= link_to map.creator.name, map.creator
+
+%ul.pager
+  - if current_page > 1
+    %li
+      %a{href: url_for(page: current_page - 1)} &laquo; Previous
+  - if @page_size == items_in_page
+    %li
+      %a{href: url_for(page: current_page + 1)} Next &raquo;

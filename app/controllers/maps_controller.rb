@@ -1,8 +1,11 @@
 class MapsController < ApplicationController
 
-  # GET /maps/ladder
+  # GET /maps/ladder?page=1
   def ladder
-    @maps = Map.includes(:creator).desc(:score)
+    @page_size = 100
+    @offset = offset_from_page_param
+    @maps = Map.includes(:creator).desc(:score).
+      skip(@offset).limit(@page_size) # pagination
   end
 
   # GET /maps/my_maps?auth_token=1234

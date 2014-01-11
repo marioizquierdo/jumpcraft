@@ -1,9 +1,12 @@
 class UsersController < ApplicationController
 
 
-  # GET /users/ladder
+  # GET /users/ladder?page=1
   def ladder
-    @users = User.desc(:score)
+    @page_size = 100
+    @offset = offset_from_page_param
+    @users = User.desc(:score).
+      skip(@offset).limit(@page_size) # pagination
   end
 
   def show

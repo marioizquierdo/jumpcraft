@@ -1,15 +1,25 @@
 %h3 Users Ranking
 
-%table.table.table-condensed.ranking
+%table.table.table-condensed.table-bordered.ranking
   %thead
     %th Rank
     %th Score
     %th Coins
     %th Player
   %tbody
+    - items_in_page = 0 # count like this because @users.entries.size makes another query
     - @users.each_with_index do |user, i|
+      - items_in_page += 1
       %tr{ class: ('info' if user == current_user) }
-        %td.short= i + 1
+        %td.short= @offset + i + 1
         %td.short= user.score
         %td.short= user.coins
         %td= link_to user.name, user
+        
+%ul.pager
+  - if current_page > 1
+    %li
+      %a{href: url_for(page: current_page - 1)} &laquo; Previous
+  - if @page_size == items_in_page
+    %li
+      %a{href: url_for(page: current_page + 1)} Next &raquo;

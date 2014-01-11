@@ -13,4 +13,9 @@ module ApplicationHelper
     @devise_mapping ||= Devise.mappings[:user]
   end
 
+  # Return page from params[:page] as integer, being 1 the default first page
+  def current_page
+    (params[:page] || 1).to_i
+  end
+
 end
