@@ -3,15 +3,13 @@
 - if @maps.present?
   %table.table.table-condensed.ranking
     %thead
-      %th Rank
       %th Score
       %th Map Name
-      %th Times played
-      %th Times player died
+      %th{title: 'Times this map was played on the ladder'} Games
+      %th{title: 'Ladder games where the played died on this map'} Deaths
     %tbody
       - @maps.each_with_index do |map, i|
         %tr
-          %td.short= i + 1
           %td.short= map.score
           %td= link_to map.name, map
           %td= map.played_games
