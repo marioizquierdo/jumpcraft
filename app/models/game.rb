@@ -10,6 +10,7 @@ class Game
 
   field :coins, type: Integer, default: 0 # number of collected coins in this map
   field :user_score, type: Integer # before game
+  field :user_score_delta, type: Integer, default: 0 # diff of user score after playing the game
   field :map_score, type: Integer # before game
   field :user_played_games, type: Integer # before game
   field :map_played_games, type: Integer # before game
@@ -40,7 +41,7 @@ class Game
 
     # Assign new scores (updates user and map scored)
     winner, loser = map_defeated ? [user, map] : [map, user]
-    SimpleElo.assign_new_scores!(winner, loser)
+    score_diff = SimpleElo.assign_new_scores(winner, loser)
 
     # Update user
     user.coins += self.coins
@@ -52,9 +53,10 @@ class Game
     map.won_games += 1 unless map_defeated
 
     # Update game
-    user_score = user.score
-    map_score = map.score
-    user_played_games = user.played_games
-    map_played_games = map.played_games
+    self.user_score = user.score
+    self.user_score_delta = user == winner ? score_diff : -score_diff
+    self.map_score = map.score
+    self.user_played_games = user.played_games
+    self.map_played_games = map.played_games
   end
 end
