@@ -8,12 +8,19 @@
       %th{title: 'Times this map was played on the ladder'} Games
       %th{title: 'Ladder games where the played died on this map'} Deaths
     %tbody
+      - n = 0 # count like this because .entries.size makes another query
       - @maps.each_with_index do |map, i|
+        - n += 1
         %tr
           %td.short= map.score
           %td= link_to map.name, map
           %td= map.played_games
           %td= map.won_games
+
+  %p
+    You have created #{n} maps.
+    %a{href: root_path} Create another map
+
 
 - else
   %p You have not created any map yet.
