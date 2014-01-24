@@ -1,10 +1,10 @@
 %h3 Maps Ranking
 
-%table.table.table-condensed.table-bordered.ranking
+%table.table.table-condensed.ranking
   %thead
     %th Rank
     %th Score
-    %th Map Name
+    %th Map
     %th Created By
   %tbody
     - my_maps = current_user ? current_user.maps.to_a : []
@@ -14,7 +14,10 @@
       %tr{ class: ('info' if my_maps.include?(map)) }
         %td.short=  @offset + i + 1
         %td.short= map.score
-        %td= link_to map.name, map
+        %td
+          %canvas.map-canvas{width: '80px', height: '60px', style: 'border: 1px solid #d3d3d3;', 
+              'data-mapdata' => map.data, 'data-href' => url_for(map)}
+          = link_to map.name, map
         %td= link_to map.creator.name, map.creator
 
 %ul.pager

@@ -12,12 +12,12 @@
  *= require_tree .
 */
 
-table.ranking {
+table {
   td.short {
     width: 60px;
   }
 
-  canvas {
+  canvas.map-canvas {
     display: block;
     float: left;
     margin-right: 10px;

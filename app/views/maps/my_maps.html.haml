@@ -1,7 +1,7 @@
 %h3 My created maps
 
 - if @maps.present?
-  %table.table.table-condensed.ranking
+  %table.table.table-condensed
     %thead
       %th Score
       %th Map Name
@@ -13,7 +13,10 @@
         - n += 1
         %tr
           %td.short= map.score
-          %td= link_to map.name, map
+          %td
+            %canvas.map-canvas{width: '80px', height: '60px', style: 'border: 1px solid #d3d3d3;', 
+              'data-mapdata' => map.data, 'data-href' => url_for(map)}
+            = link_to map.name, map
           %td= map.played_games
           %td= map.won_games
 
