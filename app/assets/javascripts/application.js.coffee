@@ -43,3 +43,20 @@ $ ->
   $(".tooltip").tooltip()
   $("a[rel=tooltip]").tooltip()
 
+  # Draw map canvas
+  $('canvas.map-canvas').each (i, el)->
+    ctx = el.getContext("2d")
+    width = 80
+    height = 60
+    imgData = ctx.createImageData(width*4, height*4)
+    for i in [0..imgData.data.length-1] by 4
+      imgData.data[i+0]=255;
+      imgData.data[i+1]=0;
+      imgData.data[i+2]=0;
+      imgData.data[i+3]=255;
+
+    ctx.putImageData(imgData, 0, 0);
+
+
+
+
