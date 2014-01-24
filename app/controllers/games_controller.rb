@@ -1,7 +1,15 @@
 class GamesController < ApplicationController
   before_filter :authenticate_user!
 
-  # POST /games/start.json
+  # GET /games/my_games
+  def my_games
+    @page_size = 100
+    @offset = offset_from_page_param
+    @games = Game.user(current_user).includes(:map).desc(:_id). # order by id works ok to get the last inserted ones
+      skip(@offset).limit(@page_size) # pagination
+  end
+
+  # POST /games/start.json?auth_token=1234
   # params {map_id=aa99}
   def start
     # Find map and player
@@ -27,7 +35,7 @@ class GamesController < ApplicationController
     render json: { success: true }
   end
 
-  # POST /games/finish.json
+  # POST /games/finish.json?auth_token=1234
   # params {map_defeated=true, collected_coins=99}
   # After playing a map (not practice), update map/user scores
   def finish

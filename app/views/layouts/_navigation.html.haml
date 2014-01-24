@@ -6,7 +6,9 @@
   %li= link_to 'Maps Ranking', maps_ladder_path
   %li.divider-vertical
   - if user_signed_in?
-    %li= link_to 'My Maps', maps_my_maps_path
+    %li= link_to 'Created Maps', maps_my_maps_path
+    %li.divider-vertical
+    %li= link_to 'Played Maps', games_my_games_path
     %li.divider-vertical
 
 %ul.nav.pull-right

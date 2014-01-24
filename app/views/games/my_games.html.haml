@@ -1,0 +1,33 @@
+%h3 Last maps played in the ladder
+
+- if @games.present?
+  %table.table.table-condensed.table-bordered.ranking
+    %thead
+      %th
+      %th Map
+      %th Coins
+    %tbody
+      - items_in_page = 0 # count like this because @games.entries.size makes another query
+      - @games.each_with_index do |game, i|
+        - items_in_page += 1
+        %tr{ class: ('success' if game.map_defeated) }
+          - if game.map_defeated
+            %td.short{title: 'Map defeated'}
+              %i.icon-ok
+          - else
+            %td.short
+          %td= link_to game.map.name, game.map
+          %td= game.coins
+
+  %ul.pager
+    - if current_page > 1
+      %li
+        %a{href: url_for(page: current_page - 1)} &laquo; Previous
+    - if @page_size == items_in_page
+      %li
+        %a{href: url_for(page: current_page + 1)} Next &raquo;
+
+- else
+  %p You have not played any map in the ladder yet.
+  %p
+    %a{href: root_path} Go Play!

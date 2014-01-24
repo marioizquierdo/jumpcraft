@@ -15,6 +15,7 @@ Infiltration::Application.routes.draw do
   get '/maps/:id'         => 'maps#show', as: 'map'
   post '/maps'            => 'maps#create'
 
+  get '/games/my_games'   => 'games#my_games'
   post '/games/start'     => 'games#start'
   post '/games/finish'    => 'games#finish'
 end
