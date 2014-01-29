@@ -9,8 +9,10 @@ class UsersController < ApplicationController
       skip(@offset).limit(@page_size) # pagination
   end
 
+  # GET /users/:id
   def show
     @user = User.find(params[:id])
     @maps = @user.maps.desc(:score)
   end
+
 end

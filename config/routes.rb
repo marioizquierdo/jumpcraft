@@ -18,4 +18,5 @@ Infiltration::Application.routes.draw do
   get '/games/my_games'   => 'games#my_games'
   post '/games/start'     => 'games#start'
   post '/games/finish'    => 'games#finish'
+  post '/games/update_tutorial' => 'games#update_tutorial'
 end
