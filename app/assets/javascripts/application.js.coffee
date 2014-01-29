@@ -28,10 +28,10 @@ if $swf_container.length and window.current_user
       email:      window.current_user.email
       name:       window.current_user.name
       auth_token: window.current_user.authentication_token
+      tutorial:   window.current_user.tutorial
       host:       window.location.protocol + '//' + window.location.host
       map_id:     window.flashvars_map_id # null if not in a map view
     }
-  console.log 'flashvars', flashvars
   swfobject.embedSWF(swf_url, "swf-container", "640", "480", "10.0.0", false, flashvars)
 
 # Convert hex colors "ff0000" to rgb {r: 255, g: 0, b: 0}
