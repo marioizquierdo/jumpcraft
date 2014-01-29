@@ -7,14 +7,8 @@ class Map
   field :score, type: Integer
   field :played_games, type: Integer, default: 0 # number of times this map was played in the ladder
   field :won_games, type: Integer, default: 0 # number of times this map was NOT defeated in the ladder
-  field :intro, type: Boolean, default: false # flag to mark maps dedicated for the first play experience
 
   belongs_to :creator, class_name: "User"
-
-  scope :intro, where(intro: true)
-
-  # Query non intro maps by default. (Use Map.intro to query intro maps)
-  default_scope ne(intro: true)
 
   def self.create_for_user(user, attrs = {})
     map = Map.new(attrs)

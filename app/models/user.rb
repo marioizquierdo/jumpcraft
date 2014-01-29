@@ -15,8 +15,8 @@ class User
   field :name, type: String
   validates_presence_of :name
 
-  field :intro, type: Boolean, default: true # true if this user is still playing the intro maps to set the initial score
-  field :score, type: Integer, default: 1000 # score is adjusted during the intro state and then playing ladder maps
+  field :tutorial, type: Integer, default: 0 # increments after playing each tutorial
+  field :score, type: Integer, default: 1000 # score is adjusted during the placement matches and then playing ladder maps
   field :coins, type: Integer, default: 0
   field :played_games, type: Integer, default: 0 # number of games played in the ladder
   field :won_games, type: Integer, default: 0 # number of defeated maps in the ladder
