@@ -16,15 +16,23 @@ class GamesController < ApplicationController
     map = Map.find(params[:map_id])
     player = current_user
 
-    # If the user didn't properly finish any of the previous games,
-    # finish them with a lose. He probably was trying to cheat.
+    # If the user didn't properly finish any of the previous games, finish them with a lose
     if game = Game.user(player).unfinished.first
-      game.map_defeated = false # player lose
+      game.map_defeated = false # player lose, he was trying to cheat.
       game.finish_and_save!
       render json: {
         error: 'Unfinished Game Found',
         error_message: 'There was an unfinished game, that was fast-finished with the player being defeated. Please try again.',
         player_new_score: player.score
+      }, status: 403
+      return
+    end
+
+    # Make sure that the game is in one of the suggested maps
+    if not (player.suggested_map_ids || []).include?(map.id)
+      render json: {
+        error: 'Not a suggested map',
+        error_message: 'Can only play maps suggested by the system. Visit /maps/suggestions first.',
       }, status: 403
       return
     end

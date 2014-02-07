@@ -5,7 +5,7 @@ describe GamesController do
   before do
     @creator = create :user
     @map = create :map, creator: @creator
-    @player = create :user
+    @player = create :user, suggested_map_ids: [@map.id]
     sign_in @player
   end
 
@@ -50,13 +50,25 @@ describe GamesController do
     context "if a game was already in progress in another map" do
       before do
         @other_map = create :map, creator: @creator
-        post :start, map_id: @other_map.id.to_s, format: 'json'
-        @other_game = Game.unfinished.first
+        @other_game = create :game, user: @player, map: @other_map, finished: false
       end
       it "responds with error" do
         post :start, map_id: @map.id.to_s, format: 'json'
         expect(response).not_to be_success
         expect(response.status).to eq(403) # redirect to login page
+      end
+    end
+
+    context "if the map is not one of the suggested maps" do
+      before do
+        @other_map = create :map
+        (@player.suggested_map_ids || []).should_not include @other_map
+      end
+      it "fails with a 403 error" do
+        post :start, map_id: @other_map.id.to_s, format: 'json'
+        expect(response.status).to eq(403)
+        json = JSON.parse(response.body)
+        json['error'].should == 'Not a suggested map'
       end
     end
 
