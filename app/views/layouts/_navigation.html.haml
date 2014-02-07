@@ -20,6 +20,10 @@
         %b.caret
       %ul.dropdown-menu(role="menu" aria-labelledby="dLabel")
         %li
+          %a{ href: url_for(current_user) }
+            %i.icon-user
+            My profile
+        %li
           %a{ href: edit_user_registration_path }
             %i.icon-edit
             Edit account
