@@ -4,7 +4,7 @@ class Map
 
   field :name, type: String
   field :data, type: String # tiles map array serialized as String, only the client cares about understanding what this means
-  field :score, type: Integer
+  field :score, type: Integer, default: 0
   field :played_games, type: Integer, default: 0 # number of times this map was played in the ladder
   field :won_games, type: Integer, default: 0 # number of times this map was NOT defeated in the ladder
 
@@ -95,7 +95,7 @@ class Map
   # Useful to set the default page to send the user when going to the maps ladder, so the user sees maps that are around her level.
   # Implemented using binary search on the score of the maps page by page
   def self.ladder_page_for_score(score, page_size = 100)
-    count = Map.count
+    count = self.count
     return 1 if count == 0 # no maps, no pages
     pmin = 1 # first page
     pmax = (count.to_f / page_size).ceil # last page = number of pages
@@ -106,7 +106,7 @@ class Map
       pmid = (pmin + pmax) / 2
 
       offset = (pmid - 1) * page_size # offset of the first map of the pmid page
-      map = Map.only(:score).desc(:score).skip(offset).first # get the first map in the page
+      map = self.only(:score).desc(:score).skip(offset).first # get the first map in the page
 
       if pmax == pmin # end of search, we just need to know if the page is the one before or after.
         if score <= map.score
