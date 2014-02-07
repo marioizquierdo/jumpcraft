@@ -18,15 +18,25 @@ class MapsController < ApplicationController
   # or try to get something as close as possible to that.
   def suggestions
     authenticate_user!
-    score = current_user.score
-    last_played = Game.last_played_map_ids(current_user, 20)
-    scope = ->(s) {s.ne(creator_id: current_user.id) } # exclude own maps
 
-    map1 = Map.find_near_dificulty score, :easy,   scope: scope, exclude: last_played
-    map2 = Map.find_near_dificulty score, :medium, scope: scope, exclude: last_played + [map1]
-    map3 = Map.find_near_dificulty score, :hard,   scope: scope, exclude: last_played + [map1, map2]
+    if current_user.suggested_map_ids # already suggested maps
+      maps = Map.find(current_user.suggested_map_ids)
+      @maps = current_user.suggested_map_ids.map{|id| maps.find{|m| m.id == id} } # ensure same order as in the suggested_map_ids
 
-    @maps = [map1, map2, map3].compact
+    else
+      score = current_user.score
+      last_played = Game.last_played_map_ids(current_user, 20)
+      scope = ->(s) {s.ne(creator_id: current_user.id) } # exclude own maps
+
+      map1 = Map.find_near_dificulty score, :easy,   scope: scope, exclude: last_played
+      map2 = Map.find_near_dificulty score, :medium, scope: scope, exclude: last_played + [map1]
+      map3 = Map.find_near_dificulty score, :hard,   scope: scope, exclude: last_played + [map1, map2]
+      @maps = [map1, map2, map3].compact
+
+      # Save suggestions for next time
+      current_user.update_attribute(:suggested_map_ids, @maps.map(&:id))
+    end
+
     @plays_count = get_plays_count_for(current_user, @maps)
     render :list
   end

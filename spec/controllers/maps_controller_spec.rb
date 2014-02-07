@@ -58,21 +58,59 @@ describe MapsController do
       end
     end
     it "excludes own user maps" do
-      @m1 = create :map, score: 1500
-      @m2 = create :map, score: 1500, creator: @user
+      @m1 = create :map, score: @user.score
+      @m2 = create :map, score: @user.score, creator: @user
       get :suggestions, format: 'json'
       maps = assigns(:maps)
       maps.should have(1).element
       maps.first.should == @m1
     end
     it "excludes previosly played maps" do
-      @m1 = create :map, score: 1500
-      @m2 = create :map, score: 1500
+      @m1 = create :map, score: @user.score
+      @m2 = create :map, score: @user.score
       create :game, user: @user, map: @m2 # user played map @m2
       get :suggestions, format: 'json'
       maps = assigns(:maps)
       maps.should have(1).element
       maps.first.should == @m1
+    end
+    it "should not return maps that are too hard or too easy" do
+      @m1 = create :map, score: @user.score
+      @m2 = create :map, score: @user.score + 10*Map::DIFFICULTY_RANGE # too hard
+      @m3 = create :map, score: @user.score - 10*Map::DIFFICULTY_RANGE # too easy
+      get :suggestions, format: 'json'
+      maps = assigns(:maps)
+      maps.should have(1).element
+      maps.first.should == @m1
+    end
+    it "returns same suggestions if called multiple times" do
+      6.times{ create :map, score: @user.score }
+      get :suggestions, format: 'json'
+      maps = assigns(:maps)
+      maps.should have(3).elements
+      
+      get :suggestions, format: 'json'
+      maps2 = assigns(:maps)
+      maps2.should == maps
+
+      get :suggestions, format: 'json'
+      maps3 = assigns(:maps)
+      maps3.should == maps
+    end
+    it "returns new suggestions after finishing a game" do
+      4.times{ create :map, score: @user.score }
+      get :suggestions, format: 'json'
+      maps = assigns(:maps)
+      maps.should have(3).elements
+
+      # user plays one of the suggested maps
+      game = create :game, user: @user.reload, map: maps[0], finished: false
+      game.finish_and_save! # will invalidate the cached suggestions on the user
+      sign_out @user; sign_in @user; # have to do this in order to reload the mocked current_user from DB
+
+      get :suggestions, format: 'json'
+      maps2 = assigns(:maps)
+      maps2.should_not == maps
     end
   end
 

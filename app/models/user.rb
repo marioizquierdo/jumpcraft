@@ -20,6 +20,7 @@ class User
   field :coins, type: Integer, default: 0
   field :played_games, type: Integer, default: 0 # number of games played in the ladder
   field :won_games, type: Integer, default: 0 # number of defeated maps in the ladder
+  field :suggested_map_ids, type: Array # memory for last suggested maps, invalidated after playing one of them
 
   has_many :maps, inverse_of: :creator
 

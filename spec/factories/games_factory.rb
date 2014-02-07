@@ -2,8 +2,8 @@ FactoryGirl.define do
   factory :game do
     user
     map
-    finished :true
-    map_defeated :true
+    finished true
+    map_defeated true
 
     coins 10
     user_score 1000

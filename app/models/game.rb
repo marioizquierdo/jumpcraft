@@ -47,6 +47,7 @@ class Game
     user.coins += self.coins
     user.played_games += 1
     user.won_games += 1 if map_defeated
+    user.suggested_map_ids = nil # Refresh map suggestions
 
     # Update map
     map.played_games += 1

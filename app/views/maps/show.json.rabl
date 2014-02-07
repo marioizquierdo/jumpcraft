@@ -1,7 +1,6 @@
 object @map
 
 attributes :id, :name, :score, :played_games, :won_games, :created_at
-puts params[:no_data]
 attributes :data unless params[:no_data]
 
 if current_user
