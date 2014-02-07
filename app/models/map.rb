@@ -90,7 +90,6 @@ class Map
     end
   end
 
-
   # Find the page number to be loaded in order to get maps around the given score.
   # Useful to set the default page to send the user when going to the maps ladder, so the user sees maps that are around her level.
   # Implemented using binary search on the score of the maps page by page
