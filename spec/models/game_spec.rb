@@ -1,3 +1,5 @@
+require 'spec_helper'
+
 describe Game do
   describe "last_played_map_ids" do
   	before do

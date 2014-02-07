@@ -1,3 +1,5 @@
+require 'spec_helper'
+
 describe Map do
 
   describe "dificulty_relative_to(user_score)" do
