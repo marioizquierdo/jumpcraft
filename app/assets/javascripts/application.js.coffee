@@ -32,7 +32,7 @@ if $swf_container.length and window.current_user
       host:       window.location.protocol + '//' + window.location.host
       map_id:     window.flashvars_map_id # null if not in a map view
     }
-  swfobject.embedSWF(swf_url, "swf-container", "640", "480", "10.0.0", false, flashvars)
+  swfobject.embedSWF(swf_url, "swf-container", "960", "720", "10.0.0", false, flashvars)
 
 # Convert hex colors "ff0000" to rgb {r: 255, g: 0, b: 0}
 hexToRgb = (hex)->
@@ -52,7 +52,7 @@ draw_map_on_canvas = (el, mapdatadata)->
 
   data = dataItems[dataItems.length-1] # data is the last item
   data = data.replace(/_/g, '') # cleanup "_" separators
-      
+
   # Iterate data tiles and paint into the imgData object
   for i in [0...data.length]
     tile = data.charAt(i)
