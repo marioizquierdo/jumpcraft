@@ -213,6 +213,22 @@ describe GamesController do
         json['user_tutorial'].should == 99
       end
     end
+    context "with a coins param" do
+      it "adds that number of coins to the user" do
+        @player.update_attribute(:coins, 22)
+        post :update_tutorial, tutorial: '99', coins: '2',format: 'json'
+        @player.reload.coins.should == 24 # 22 + 2
+      end
+      it "responds with 200 status value and the new user_coins value" do
+        post :update_tutorial, tutorial: '99', coins: '10', format: 'json'
+        expect(response.status).to eq(200)
+        json = JSON.parse(response.body)
+        json['user_coins'].should == 10
+        post :update_tutorial, tutorial: '99', coins: '10', format: 'json'
+        json = JSON.parse(response.body)
+        json['user_coins'].should == 20
+      end
+    end
   end
 
 end

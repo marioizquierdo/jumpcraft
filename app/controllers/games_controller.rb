@@ -72,10 +72,12 @@ class GamesController < ApplicationController
   end
 
   # POST /games/update_tutorial.json?auth_token=1234
-  # params {tutorial=99}
+  # params {tutorial=99, coins=99}
   # After completing a tutorial, update the user.tutorial field
   def update_tutorial
-    current_user.update_attribute(:tutorial, params[:tutorial].to_i)
-    render json: { sucess: true, user_tutorial: current_user.tutorial }
+    current_user.tutorial = params[:tutorial].to_i
+    current_user.coins += params[:coins].to_i
+    current_user.save!
+    render json: { sucess: true, user_tutorial: current_user.tutorial, user_coins: current_user.coins }
   end
 end
