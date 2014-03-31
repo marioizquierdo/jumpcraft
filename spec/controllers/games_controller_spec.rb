@@ -200,34 +200,28 @@ describe GamesController do
         expect(response.status).to eq(401) # not authorized
       end
     end
-    context "with a tutorial param" do
-      it "sets current_user.tutorial" do
-        @player.tutorial.should_not == 99 # ensure we are actually seting a new value
-        post :update_tutorial, tutorial: '99', format: 'json'
-        @player.reload.tutorial.should == 99 # modified in DB
-      end
-      it "responds with 200 status value and the new user_tutorial value" do
-        post :update_tutorial, tutorial: '99', format: 'json'
-        expect(response.status).to eq(200)
-        json = JSON.parse(response.body)
-        json['user_tutorial'].should == 99
-      end
+
+    it "responds with 200 status, the new user_tutorial and user_coins value" do
+      post :update_tutorial, tutorial: '99', coins: '10', format: 'json'
+      expect(response.status).to eq(200)
+      json = JSON.parse(response.body)
+      json['user_tutorial'].should == 99
+      json['user_coins'].should == 10
     end
-    context "with a coins param" do
-      it "adds that number of coins to the user" do
-        @player.update_attribute(:coins, 22)
-        post :update_tutorial, tutorial: '99', coins: '2',format: 'json'
-        @player.reload.coins.should == 24 # 22 + 2
-      end
-      it "responds with 200 status value and the new user_coins value" do
-        post :update_tutorial, tutorial: '99', coins: '10', format: 'json'
-        expect(response.status).to eq(200)
-        json = JSON.parse(response.body)
-        json['user_coins'].should == 10
-        post :update_tutorial, tutorial: '99', coins: '10', format: 'json'
-        json = JSON.parse(response.body)
-        json['user_coins'].should == 20
-      end
+    it "sets current_user.tutorial" do
+      @player.tutorial.should_not == 99 # ensure we are actually seting a new value
+      post :update_tutorial, tutorial: '99', format: 'json'
+      @player.reload.tutorial.should == 99 # modified in DB
+    end
+    it "adds that number of coins to the user" do
+      @player.update_attribute(:coins, 22)
+      post :update_tutorial, tutorial: '99', coins: '2',format: 'json'
+      @player.reload.coins.should == 24 # 22 + 2
+    end
+    it "sets the initial_score of the user" do
+      @player.score.should_not == 99 # ensure we are actually seting a new value
+      post :update_tutorial, tutorial: '99', coins: '99', initial_score: '800', format: 'json'
+      @player.reload.score.should == 800
     end
   end
 
