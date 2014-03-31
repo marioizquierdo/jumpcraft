@@ -26,7 +26,7 @@ class MapsController < ApplicationController
 
     else
       score = current_user.score
-      last_played = Game.last_played_map_ids(current_user, 20)
+      last_played = Game.last_played_map_ids(current_user, 20) # exclude last 20 maps
       scope = ->(s) {s.ne(creator_id: current_user.id) } # exclude own maps
 
       map1 = Map.find_near_dificulty score, :easy,   scope: scope, exclude: last_played
@@ -34,11 +34,18 @@ class MapsController < ApplicationController
       map3 = Map.find_near_dificulty score, :hard,   scope: scope, exclude: last_played + [map1, map2]
       @maps = [map1, map2, map3].compact
 
+      # if there are not enough maps on the DB yet, then suggest 3 random maps
+      if @maps.empty?
+        map1 = Map.find_near_dificulty score, :easy
+        map2 = Map.find_near_dificulty score, :medium, exclude: [map1]
+        map3 = Map.find_near_dificulty score, :hard,   exclude: [map1, map2]
+        @maps = [map1, map2, map3].compact
+      end
+
       # Save suggestions for next time
       current_user.update_attribute(:suggested_map_ids, @maps.map(&:id))
     end
 
-    @plays_count = get_plays_count_for(current_user, @maps)
     render :list
   end
 
@@ -47,7 +54,7 @@ class MapsController < ApplicationController
   def near_score
     authenticate_user!
     score = current_user.score
-    
+
     maps_below = Map.where(:score.lt => score).asc(:score).limit(25)
     maps_over = Map.where(:score.gte => score).asc(:score).limit(25)
 

@@ -74,6 +74,19 @@ describe MapsController do
       maps.should have(1).element
       maps.first.should == @m1
     end
+    it "does not exclude own user maps or previosly played maps if those are the only ones available" do
+      @m1 = create :map, score: @user.score
+      @m2 = create :map, score: @user.score
+      @m3 = create :map, score: @user.score, creator: @user # own map
+      create :game, user: @user, map: @m1 # user played map @m1
+      create :game, user: @user, map: @m2 # user played map @m2
+      get :suggestions, format: 'json'
+      maps = assigns(:maps)
+      maps.should have(3).elements
+      maps.should include @m1
+      maps.should include @m2
+      maps.should include @m3
+    end
     it "should not return maps that are too hard or too easy" do
       @m1 = create :map, score: @user.score
       @m2 = create :map, score: @user.score + 10*Map::DIFFICULTY_RANGE # too hard
@@ -88,7 +101,7 @@ describe MapsController do
       get :suggestions, format: 'json'
       maps = assigns(:maps)
       maps.should have(3).elements
-      
+
       get :suggestions, format: 'json'
       maps2 = assigns(:maps)
       maps2.should == maps
@@ -122,7 +135,7 @@ describe MapsController do
 
     it "responds successfully with an HTTP 200 status code" do
       create :map # ensure map collection exists, needed to perform the mapreduce in get_plays_count_for with no errors
-      
+
       get :near_score, format: 'json'
       expect(response.status).to eq(200)
     end
