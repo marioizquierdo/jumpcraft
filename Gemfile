@@ -1,14 +1,14 @@
 source 'https://rubygems.org'
 
 ruby '2.0.0'
-gem 'rails', '3.2.12'
+gem 'rails', '~> 3.2.12'
 gem 'thin', '>= 1.5.0'
 
 gem 'mongoid', '>= 3.1.2'
 
 gem 'jquery-rails'
 gem 'haml-rails', '>= 0.4'
-gem 'devise', '>= 2.2.3'
+gem 'devise', '~> 3.1.0'
 gem 'figaro', '>= 0.6.3'
 gem 'twitter-bootstrap-rails'
 
