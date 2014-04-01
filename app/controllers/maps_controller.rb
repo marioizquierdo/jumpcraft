@@ -20,7 +20,7 @@ class MapsController < ApplicationController
   def suggestions
     authenticate_user!
 
-    if current_user.suggested_map_ids # already suggested maps
+    if current_user.suggested_map_ids.present? # already suggested maps
       maps = Map.find(current_user.suggested_map_ids)
       @maps = current_user.suggested_map_ids.map{|id| maps.find{|m| m.id == id} } # ensure same order as in the suggested_map_ids
 

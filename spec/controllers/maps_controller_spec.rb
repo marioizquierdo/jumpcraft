@@ -110,6 +110,16 @@ describe MapsController do
       maps3 = assigns(:maps)
       maps3.should == maps
     end
+    it "retries new suggestions if previously there were no suggestions" do
+      get :suggestions, format: 'json'
+      maps = assigns(:maps)
+      maps.should have(0).elements
+
+      3.times{ create :map, score: @user.score }
+      get :suggestions, format: 'json'
+      maps = assigns(:maps)
+      maps.should have(3).elements
+    end
     it "returns new suggestions after finishing a game" do
       4.times{ create :map, score: @user.score }
       get :suggestions, format: 'json'

@@ -14,7 +14,7 @@ class UsersController < ApplicationController
   # GET /users/:id
   def show
     @user = User.find(params[:id])
-    @maps = @user.maps.desc(:score)
+    @maps = @user.maps.desc(:score).entries
   end
 
 end

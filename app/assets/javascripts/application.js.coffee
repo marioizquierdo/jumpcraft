@@ -22,16 +22,14 @@ $swf_container = $('#' + swf_container_id)
 if $swf_container.length and window.current_user
 
   swf_url = "https://dl.dropboxusercontent.com/u/8856856/Infiltration.swf"
-  flashvars =
-    {
-      id:         window.current_user._id
-      email:      window.current_user.email
-      name:       window.current_user.name
-      auth_token: window.current_user.authentication_token
-      tutorial:   window.current_user.tutorial
-      host:       window.location.protocol + '//' + window.location.host
-      map_id:     window.flashvars_map_id # null if not in a map view
-    }
+  flashvars = {}
+  flashvars.id =         window.current_user._id
+  flashvars.email =      window.current_user.email
+  flashvars.name =       window.current_user.name
+  flashvars.auth_token = window.current_user.authentication_token
+  flashvars.tutorial =   window.current_user.tutorial
+  flashvars.host =       window.location.protocol + '//' + window.location.host
+  flashvars.map_id =     window.flashvars_map_id if window.flashvars_map_id # null if not in a map view
   swfobject.embedSWF(swf_url, "swf-container", "960", "720", "10.0.0", false, flashvars)
 
 # Convert hex colors "ff0000" to rgb {r: 255, g: 0, b: 0}
