@@ -30,7 +30,11 @@ if $swf_container.length and window.current_user
   flashvars.tutorial =   window.current_user.tutorial
   flashvars.host =       window.location.protocol + '//' + window.location.host
   flashvars.map_id =     window.flashvars_map_id if window.flashvars_map_id # null if not in a map view
-  swfobject.embedSWF(swf_url, "swf-container", "960", "720", "10.0.0", false, flashvars)
+
+  swfobject.embedSWF(swf_url, swf_container_id, "640", "480", "10.0.0", false, flashvars)
+  swfobject.addDomLoadEvent -> # Hack to try set the keyboard focus
+    fl = document.getElementById(swf_container_id);
+    fl.focus() if fl and fl.focus
 
 # Convert hex colors "ff0000" to rgb {r: 255, g: 0, b: 0}
 hexToRgb = (hex)->
@@ -82,7 +86,4 @@ $ ->
     $el = $(el)
     draw_map_on_canvas(el, $el.attr('data-mapdata'))
     $el.on 'click', -> window.location.href = $el.attr('data-href')
-
-
-
 

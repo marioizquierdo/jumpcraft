@@ -1,5 +1,3 @@
-%h3 Map: #{@map.name}
-
 - if user_signed_in?
   - content_for :bootstrap_javascripts do
     :javascript
@@ -7,8 +5,10 @@
   #swf-container.map-practice
     / Container to load SWFObject with the infiltration flash project (done on map_show.js.coffee)
 
+%h3 Map: #{@map.name}
+
 %p By #{link_to @map.creator.name, @map.creator}
-  
+
 - if @map.score
   %p
     Score: #{@map.score}
