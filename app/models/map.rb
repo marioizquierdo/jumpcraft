@@ -20,7 +20,7 @@ class Map
     map
   end
 
-  DIFFICULTY_RANGE = 32 # how many points separate each difficulty category
+  DIFFICULTY_RANGE = 48 # how many points separate each difficulty category
   HALF_RANGE = DIFFICULTY_RANGE / 2 # half of a difficulty range, used to compute difficulty ranges.
 
   DIFFICULTY_TRESHOLDS = [

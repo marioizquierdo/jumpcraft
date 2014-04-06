@@ -10,7 +10,7 @@ describe Map do
       map.dificulty_relative_to(user_score).should == :trivial
     end
     it "returns :very_easy" do
-      map.score = 1950
+      map.score = 1900
       map.dificulty_relative_to(user_score).should == :very_easy
     end
     it "returns :easy" do
@@ -26,7 +26,7 @@ describe Map do
       map.dificulty_relative_to(user_score).should == :hard
     end
     it "returns :very_hard" do
-      map.score = 2050
+      map.score = 2100
       map.dificulty_relative_to(user_score).should == :very_hard
     end
     it "returns :impossible" do
