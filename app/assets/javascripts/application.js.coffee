@@ -87,3 +87,8 @@ $ ->
     draw_map_on_canvas(el, $el.attr('data-mapdata'))
     $el.on 'click', -> window.location.href = $el.attr('data-href')
 
+  # Close alert messages if any
+  setTimeout ->
+    $('.alert').slideUp()
+  , 2000
+

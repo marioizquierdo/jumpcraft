@@ -21,7 +21,7 @@
       :javascript
         window.current_user = #{current_user.attributes.to_json};
 
-    / Other JS bootstrap data from views 
+    / Other JS bootstrap data from views
     = yield :bootstrap_javascripts
 
   %body
@@ -37,8 +37,8 @@
             = render 'layouts/navigation'
 
     .container
-      = bootstrap_flash
       = yield
+      = bootstrap_flash
 
       %footer
         %p Infiltration Prototype - Created by Mario Izquierdo and Alex Cho Snyder
