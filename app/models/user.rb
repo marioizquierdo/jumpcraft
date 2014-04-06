@@ -2,6 +2,9 @@ class User
   include Mongoid::Document
   include Mongoid::Timestamps
 
+  # Id of the "infiltration" user. It is a constant, because is used to find trial maps.
+  INFILTRATION_USER_ID = "5340a9730482933613000001"
+
   # Include default devise modules. Others available are:
   # :token_authenticatable, :confirmable,
   # :lockable, :timeoutable and :omniauthable
@@ -16,7 +19,7 @@ class User
   validates_presence_of :name
 
   field :tutorial, type: Integer, default: 0 # increments after playing each tutorial
-  field :score, type: Integer # score is adjusted during the placement matches and then playing ladder maps
+  field :score, type: Integer, default: 500 # score is adjusted during the placement matches and then playing ladder maps
   field :coins, type: Integer, default: 0
   field :played_games, type: Integer, default: 0 # number of games played in the ladder
   field :won_games, type: Integer, default: 0 # number of defeated maps in the ladder
@@ -65,4 +68,28 @@ class User
   # run 'rake db:mongoid:create_indexes' to create indexes
   index({ email: 1 }, { unique: true, background: true })
   index({ authentication_token: 1 }, { unique: true, background: true })
+
+  # Rebuild the infiltration user in the DB
+  def self.recreate_infiltration_user
+    u = self.get_infiltration_user
+    u.destroy if u
+    self.create_infiltration_user!
+  end
+
+  # Factory method to create the infiltration user
+  def self.create_infiltration_user!
+    u = self.new(
+      name: 'infiltration',
+      score: 1000,
+      email: 'infiltration@infiltration.com',
+      password: 'none'
+    )
+    u.id = INFILTRATION_USER_ID # ensure id is known, so Map.trial scope works as expected
+    u.save!
+    u
+  end
+
+  def self.get_infiltration_user
+    self.where(_id: INFILTRATION_USER_ID).first
+  end
 end

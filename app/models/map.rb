@@ -10,6 +10,8 @@ class Map
 
   belongs_to :creator, class_name: "User"
 
+  scope :trial, where(creator_id: User::INFILTRATION_USER_ID) # get only trial maps
+
   def self.create_for_user(user, attrs = {})
     map = Map.new(attrs)
     map.creator = user
