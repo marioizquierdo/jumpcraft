@@ -20,6 +20,7 @@ class MapsController < ApplicationController
   def suggestions
     authenticate_user!
 
+    current_user.suggested_map_ids = nil
     if current_user.suggested_map_ids.present? # already suggested maps
       maps = Map.find(current_user.suggested_map_ids)
       @maps = current_user.suggested_map_ids.map{|id| maps.find{|m| m.id == id} } # ensure same order as in the suggested_map_ids
@@ -27,14 +28,20 @@ class MapsController < ApplicationController
     else
       score = current_user.score
       last_played = Game.last_played_map_ids(current_user, 20) # exclude last 20 maps
-      scope = ->(s) {s.ne(creator_id: current_user.id) } # exclude own maps
+      scope = ->(s) do
+        if last_played.size < TRIAL_GAMES_BEFORE_REGULAR_SUGGESTIONS
+          s.trial # if didn't play enough games, show only trial maps
+        else
+          s.ne(creator_id: current_user.id) # exclude own maps
+        end
+      end
 
       map1 = Map.find_near_dificulty score, :easy,   scope: scope, exclude: last_played
       map2 = Map.find_near_dificulty score, :medium, scope: scope, exclude: last_played + [map1]
       map3 = Map.find_near_dificulty score, :hard,   scope: scope, exclude: last_played + [map1, map2]
       @maps = [map1, map2, map3].compact
 
-      # if there are not enough maps on the DB yet, then suggest 3 random maps
+      # if there are not enough maps on the DB yet, then try again without any filtering
       if @maps.empty?
         map1 = Map.find_near_dificulty score, :easy
         map2 = Map.find_near_dificulty score, :medium, exclude: [map1]
