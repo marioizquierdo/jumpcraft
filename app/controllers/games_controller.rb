@@ -72,12 +72,11 @@ class GamesController < ApplicationController
   end
 
   # POST /games/update_tutorial.json?auth_token=1234
-  # params {tutorial=99, coins=99, initial_score=99}
+  # params {tutorial=99, coins=99}
   # After completing a tutorial, update the user.tutorial field
   def update_tutorial
     current_user.tutorial = params[:tutorial].to_i
     current_user.coins += params[:coins].to_i
-    current_user.score = params[:initial_score].to_i # WARNING! this allows users to easily hack their own score, but we don't care about it for the prototype
     current_user.save!
     render json: { sucess: true, user_tutorial: current_user.tutorial, user_coins: current_user.coins }
   end
