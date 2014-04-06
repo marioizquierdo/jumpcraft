@@ -218,11 +218,6 @@ describe GamesController do
       post :update_tutorial, tutorial: '99', coins: '2',format: 'json'
       @player.reload.coins.should == 24 # 22 + 2
     end
-    it "sets the initial_score of the user" do
-      @player.score.should_not == 99 # ensure we are actually seting a new value
-      post :update_tutorial, tutorial: '99', coins: '99', initial_score: '800', format: 'json'
-      @player.reload.score.should == 800
-    end
   end
 
 end

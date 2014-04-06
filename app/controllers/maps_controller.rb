@@ -20,7 +20,6 @@ class MapsController < ApplicationController
   def suggestions
     authenticate_user!
 
-    current_user.suggested_map_ids = nil
     if current_user.suggested_map_ids.present? # already suggested maps
       maps = Map.find(current_user.suggested_map_ids)
       @maps = current_user.suggested_map_ids.map{|id| maps.find{|m| m.id == id} } # ensure same order as in the suggested_map_ids
@@ -29,7 +28,7 @@ class MapsController < ApplicationController
       score = current_user.score
       last_played = Game.last_played_map_ids(current_user, 20) # exclude last 20 maps
       scope = ->(s) do
-        if last_played.size < TRIAL_GAMES_BEFORE_REGULAR_SUGGESTIONS
+        if last_played.size < User::TRIAL_GAMES_BEFORE_REGULAR_SUGGESTIONS
           s.trial # if didn't play enough games, show only trial maps
         else
           s.ne(creator_id: current_user.id) # exclude own maps

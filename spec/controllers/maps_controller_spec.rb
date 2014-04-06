@@ -57,35 +57,52 @@ describe MapsController do
         map.dificulty_relative_to(@user.score).should == :medium
       end
     end
-    it "excludes own user maps" do
-      @m1 = create :map, score: @user.score
-      @m2 = create :map, score: @user.score, creator: @user
-      get :suggestions, format: 'json'
-      maps = assigns(:maps)
-      maps.should have(1).element
-      maps.first.should == @m1
+    context "if didnt play the trial games" do
+      it "only suggests trial maps" do
+        @m1 = create :map, score: @user.score, creator_id: User::INFILTRATION_USER_ID
+        @m2 = create :map, score: @user.score
+
+        get :suggestions, format: 'json'
+        maps = assigns(:maps)
+        maps.should have(1).element
+        maps.first.should == @m1
+      end
     end
-    it "excludes previosly played maps" do
-      @m1 = create :map, score: @user.score
-      @m2 = create :map, score: @user.score
-      create :game, user: @user, map: @m2 # user played map @m2
-      get :suggestions, format: 'json'
-      maps = assigns(:maps)
-      maps.should have(1).element
-      maps.first.should == @m1
-    end
-    it "does not exclude own user maps or previosly played maps if those are the only ones available" do
-      @m1 = create :map, score: @user.score
-      @m2 = create :map, score: @user.score
-      @m3 = create :map, score: @user.score, creator: @user # own map
-      create :game, user: @user, map: @m1 # user played map @m1
-      create :game, user: @user, map: @m2 # user played map @m2
-      get :suggestions, format: 'json'
-      maps = assigns(:maps)
-      maps.should have(3).elements
-      maps.should include @m1
-      maps.should include @m2
-      maps.should include @m3
+    context "after playing the trial games" do
+      before do
+        stub_const("User::TRIAL_GAMES_BEFORE_REGULAR_SUGGESTIONS", 0)
+      end
+
+      it "excludes own user maps" do
+        @m1 = create :map, score: @user.score
+        @m2 = create :map, score: @user.score, creator: @user
+        get :suggestions, format: 'json'
+        maps = assigns(:maps)
+        maps.should have(1).element
+        maps.first.should == @m1
+      end
+      it "excludes previosly played maps" do
+        @m1 = create :map, score: @user.score
+        @m2 = create :map, score: @user.score
+        create :game, user: @user, map: @m2 # user played map @m2
+        get :suggestions, format: 'json'
+        maps = assigns(:maps)
+        maps.should have(1).element
+        maps.first.should == @m1
+      end
+      it "does not exclude own user maps or previosly played maps if those are the only ones available" do
+        @m1 = create :map, score: @user.score
+        @m2 = create :map, score: @user.score
+        @m3 = create :map, score: @user.score, creator: @user # own map
+        create :game, user: @user, map: @m1 # user played map @m1
+        create :game, user: @user, map: @m2 # user played map @m2
+        get :suggestions, format: 'json'
+        maps = assigns(:maps)
+        maps.should have(3).elements
+        maps.should include @m1
+        maps.should include @m2
+        maps.should include @m3
+      end
     end
     it "should not return maps that are too hard or too easy" do
       @m1 = create :map, score: @user.score
