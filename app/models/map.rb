@@ -12,6 +12,10 @@ class Map
 
   scope :trial, where(creator_id: User::INFILTRATION_USER_ID) # get only trial maps
 
+  def trial? # check if this map is a trial map
+    self.creator_id.to_s == User::INFILTRATION_USER_ID
+  end
+
   def self.create_for_user(user, attrs = {})
     map = Map.new(attrs)
     map.creator = user
