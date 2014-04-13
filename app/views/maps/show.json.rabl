@@ -11,7 +11,7 @@ if current_user
 
   # Amount that is added to the user's score if the user wins against this map.
   # The same amount is substracted if the user loses.
-  node(:score_delta_if_win) { |map| SimpleElo.calculate_score_diff(current_user.score, map.score) }
+  node(:score_delta_if_win) { |map| RatingSystem.score_delta_if_win(current_user, map) }
 end
 
 child :creator => :creator do

@@ -44,10 +44,11 @@ class Game
   # update map and user stats.
   def finish
     self.finished = true
+    previous_user_score = user.score
 
     # Assign new scores (updates user and map scored)
     winner, loser = map_defeated ? [user, map] : [map, user]
-    score_diff = SimpleElo.assign_new_scores(winner, loser)
+    RatingSystem.update_skills(winner, loser)
 
     # Update user
     user.coins += self.coins
@@ -61,7 +62,7 @@ class Game
 
     # Update game
     self.user_score = user.score
-    self.user_score_delta = user == winner ? score_diff : -score_diff
+    self.user_score_delta = user.score - previous_user_score
     self.map_score = map.score
     self.user_played_games = user.played_games
     self.map_played_games = map.played_games

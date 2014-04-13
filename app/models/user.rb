@@ -21,6 +21,8 @@ class User
 
   field :tutorial, type: Integer, default: 0 # increments after playing each tutorial
   field :score, type: Integer, default: 500 # score is adjusted during the placement matches and then playing ladder maps
+  field :skill_mean, type: Float, default: RatingSystem::USER_INITIAL_SKILL_MEAN # from TrueSkill, assumed to be between 0 and 50
+  field :skill_deviation, type: Float, default: RatingSystem::USER_INITIAL_SKILL_DEVIATION  # from TrueSkill, standard deviation of the mean, in order to define the Gaussian Distribution
   field :coins, type: Integer, default: 0
   field :played_games, type: Integer, default: 0 # number of games played in the ladder
   field :won_games, type: Integer, default: 0 # number of defeated maps in the ladder
