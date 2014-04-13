@@ -24,7 +24,7 @@ describe MapsController do
 
   describe "GET #suggestions" do
     before do
-      @user = create :user, score: 1500
+      @user = create :user, skill_mean: 25
       sign_in @user
     end
     it "responds successfully with an HTTP 200 status code" do
@@ -32,35 +32,35 @@ describe MapsController do
       expect(response.status).to eq(200)
     end
     it "loads up to three map suggestions" do
-      create :map, score: 1000
-      create :map, score: 1500
-      create :map, score: 1600
-      create :map, score: 1700
+      create :map, skill_mean: 24
+      create :map, skill_mean: 25
+      create :map, skill_mean: 26
+      create :map, skill_mean: 26
       get :suggestions, format: 'json'
       maps = assigns(:maps)
       maps.should have(3).elements
     end
     it "loads only one suggestion if that's the only available one" do
-      create :map, score: 1500
+      create :map, skill_mean: 25
       get :suggestions, format: 'json'
       maps = assigns(:maps)
       maps.should have(1).elements
     end
     it "loads only medium maps if those are the only available maps" do
-      create :map, score: @user.score # with user score, the difficulty should be medium
-      create :map, score: @user.score
-      create :map, score: @user.score
+      create :map, skill_mean: @user.skill_mean
+      create :map, skill_mean: @user.skill_mean
+      create :map, skill_mean: @user.skill_mean
       get :suggestions, format: 'json'
       maps = assigns(:maps)
       maps.should have(3).elements
       maps.each do |map|
-        map.dificulty_relative_to(@user.score).should == :medium
+        map.dificulty_relative_to(@user.skill_mean).should == :medium
       end
     end
     context "if didnt play the trial games" do
       it "only suggests trial maps" do
-        @m1 = create :map, score: @user.score, creator_id: User::INFILTRATION_USER_ID
-        @m2 = create :map, score: @user.score
+        @m1 = create :map, skill_mean: @user.skill_mean, creator_id: User::INFILTRATION_USER_ID
+        @m2 = create :map, skill_mean: @user.skill_mean
 
         get :suggestions, format: 'json'
         maps = assigns(:maps)
@@ -74,16 +74,16 @@ describe MapsController do
       end
 
       it "excludes own user maps" do
-        @m1 = create :map, score: @user.score
-        @m2 = create :map, score: @user.score, creator: @user
+        @m1 = create :map, skill_mean: @user.skill_mean
+        @m2 = create :map, skill_mean: @user.skill_mean, creator: @user
         get :suggestions, format: 'json'
         maps = assigns(:maps)
         maps.should have(1).element
         maps.first.should == @m1
       end
       it "excludes previosly played maps" do
-        @m1 = create :map, score: @user.score
-        @m2 = create :map, score: @user.score
+        @m1 = create :map, skill_mean: @user.skill_mean
+        @m2 = create :map, skill_mean: @user.skill_mean
         create :game, user: @user, map: @m2 # user played map @m2
         get :suggestions, format: 'json'
         maps = assigns(:maps)
@@ -91,9 +91,9 @@ describe MapsController do
         maps.first.should == @m1
       end
       it "does not exclude own user maps or previosly played maps if those are the only ones available" do
-        @m1 = create :map, score: @user.score
-        @m2 = create :map, score: @user.score
-        @m3 = create :map, score: @user.score, creator: @user # own map
+        @m1 = create :map, skill_mean: @user.skill_mean
+        @m2 = create :map, skill_mean: @user.skill_mean
+        @m3 = create :map, skill_mean: @user.skill_mean, creator: @user # own map
         create :game, user: @user, map: @m1 # user played map @m1
         create :game, user: @user, map: @m2 # user played map @m2
         get :suggestions, format: 'json'
@@ -105,16 +105,16 @@ describe MapsController do
       end
     end
     it "should not return maps that are too hard or too easy" do
-      @m1 = create :map, score: @user.score
-      @m2 = create :map, score: @user.score + 10*Map::DIFFICULTY_RANGE # too hard
-      @m3 = create :map, score: @user.score - 10*Map::DIFFICULTY_RANGE # too easy
+      @m1 = create :map, skill_mean: @user.skill_mean
+      @m2 = create :map, skill_mean: @user.skill_mean + 22*Map::DIFFICULTY_RANGE # too hard
+      @m3 = create :map, skill_mean: @user.skill_mean - 22*Map::DIFFICULTY_RANGE # too easy
       get :suggestions, format: 'json'
       maps = assigns(:maps)
       maps.should have(1).element
       maps.first.should == @m1
     end
     it "returns same suggestions if called multiple times" do
-      6.times{ create :map, score: @user.score }
+      6.times{ create :map, skill_mean: @user.skill_mean }
       get :suggestions, format: 'json'
       maps = assigns(:maps)
       maps.should have(3).elements
@@ -132,13 +132,13 @@ describe MapsController do
       maps = assigns(:maps)
       maps.should have(0).elements
 
-      3.times{ create :map, score: @user.score }
+      3.times{ create :map, skill_mean: @user.skill_mean }
       get :suggestions, format: 'json'
       maps = assigns(:maps)
       maps.should have(3).elements
     end
     it "returns new suggestions after finishing a game" do
-      4.times{ create :map, score: @user.score }
+      4.times{ create :map, skill_mean: @user.skill_mean }
       get :suggestions, format: 'json'
       maps = assigns(:maps)
       maps.should have(3).elements
@@ -158,6 +158,10 @@ describe MapsController do
     before do
       @user = create :user, score: 1500
       sign_in @user
+
+      # Allow to create maps specifying the score
+      Map.skip_callback(:build, :after, :calculate_score)
+      Map.skip_callback(:save, :before, :calculate_score)
     end
 
     it "responds successfully with an HTTP 200 status code" do
@@ -211,4 +215,9 @@ describe MapsController do
     end
   end
 
+end
+
+# helper function
+def skill_relative_to(user_skill, difficulty)
+  user_skill + Map.lower_skill_treshold_for(difficulty) + 0.1
 end

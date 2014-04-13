@@ -13,7 +13,7 @@
   %p
     Score: #{@map.score}
     - if user_signed_in?
-      (difficulty: #{@map.dificulty_relative_to(current_user.score)})
+      (difficulty: #{@map.dificulty_relative_to(current_user.skill_mean)})
 
 %p
   Times this map was played on the ladder: #{@map.played_games}

@@ -30,6 +30,9 @@ class User
 
   has_many :maps, inverse_of: :creator
 
+  after_build :calculate_score
+  before_save :calculate_score
+
   ## -------------------
 
   ## Database authenticatable
@@ -94,5 +97,10 @@ class User
 
   def self.get_infiltration_user
     self.where(_id: INFILTRATION_USER_ID).first
+  end
+
+  # Reassign the score value, based on the skill mean and deviation
+  def calculate_score
+    self.score = RatingSystem.calculate_score(self.skill_mean, self.skill_deviation)
   end
 end

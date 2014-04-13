@@ -25,7 +25,7 @@ class MapsController < ApplicationController
       @maps = current_user.suggested_map_ids.map{|id| maps.find{|m| m.id == id} } # ensure same order as in the suggested_map_ids
 
     else
-      score = current_user.score
+      skill = current_user.skill_mean
       last_played = Game.last_played_map_ids(current_user, 20) # exclude last 20 maps
       scope = ->(s) do
         if last_played.size < User::TRIAL_GAMES_BEFORE_REGULAR_SUGGESTIONS
@@ -35,16 +35,16 @@ class MapsController < ApplicationController
         end
       end
 
-      map1 = Map.find_near_dificulty score, :easy,   scope: scope, exclude: last_played
-      map2 = Map.find_near_dificulty score, :medium, scope: scope, exclude: last_played + [map1]
-      map3 = Map.find_near_dificulty score, :hard,   scope: scope, exclude: last_played + [map1, map2]
+      map1 = Map.find_near_dificulty skill, :easy,   scope: scope, exclude: last_played
+      map2 = Map.find_near_dificulty skill, :medium, scope: scope, exclude: last_played + [map1]
+      map3 = Map.find_near_dificulty skill, :hard,   scope: scope, exclude: last_played + [map1, map2]
       @maps = [map1, map2, map3].compact
 
       # if there are not enough maps on the DB yet, then try again without any filtering
       if @maps.empty?
-        map1 = Map.find_near_dificulty score, :easy
-        map2 = Map.find_near_dificulty score, :medium, exclude: [map1]
-        map3 = Map.find_near_dificulty score, :hard,   exclude: [map1, map2]
+        map1 = Map.find_near_dificulty skill, :easy
+        map2 = Map.find_near_dificulty skill, :medium, exclude: [map1]
+        map3 = Map.find_near_dificulty skill, :hard,   exclude: [map1, map2]
         @maps = [map1, map2, map3].compact
       end
 

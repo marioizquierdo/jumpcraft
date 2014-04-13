@@ -3,9 +3,12 @@ include Saulabs::TrueSkill
 
 class RatingSystem
 
-  USER_INITIAL_SKILL_MEAN = 20.0 # asuming it goes from 0 to 50, most new players have a skill below the average
-  USER_INITIAL_SKILL_DEVIATION = 4.0 # their skill belief is pretty blur on the first games
-  MAP_INITIAL_SKILL_DEVIATION = 5.0 # for maps is even less known, because good players could create trivial maps
+  SCORE_FACTOR = 20 # Xbox Live uses a scale of 0-50 for the score. We want to use a scale of 0-1000 (then we just apply a factor of x20 to the calculated score)
+  SCORE_MEAN_DEVIATION_K = 3 # Same as in Xbox Live, to calculate the score, we use the so-called "conservative skill estimate", that is mean - 3 * deviation
+
+  USER_INITIAL_SKILL_MEAN = 25.0 # use same as Xbox Live initial mean
+  USER_INITIAL_SKILL_DEVIATION = (USER_INITIAL_SKILL_MEAN/SCORE_MEAN_DEVIATION_K) # use same as Xbox Live initial deviation (so the initial score is 0)
+  MAP_INITIAL_SKILL_DEVIATION = 1.5*USER_INITIAL_SKILL_DEVIATION # for maps the initial deviation is higher, because good players could easily make trivial maps
 
   # Assign new skill properties (skill_mean and skill_deviation) to the winner and loser,
   # using the TrueSkill algorithm (delegates to trueskill gem).
@@ -18,8 +21,8 @@ class RatingSystem
     loser.skill_deviation ||= USER_INITIAL_SKILL_DEVIATION
 
     # Create teams
-    winner_team = [Rating.new(loser.skill_mean, loser.skill_deviation)]
-    loser_team = [Rating.new(winner.skill_mean, winner.skill_deviation)]
+    winner_team = [Rating.new(winner.skill_mean, winner.skill_deviation)]
+    loser_team = [Rating.new(loser.skill_mean, loser.skill_deviation)]
 
     # Configure Trueskill graph
     opts = {
@@ -32,11 +35,11 @@ class RatingSystem
     graph.update_skills
 
     # assign new scores to winner and loser
-    winner.skill_mean = [winner_team[0].mean, 0].max # ensure loser never gets negative score
+    winner.skill_mean = winner_team[0].mean
     winner.skill_deviation = winner_team[0].deviation
     winner.score = calculate_score(winner.skill_mean, winner.skill_deviation)
 
-    loser.skill_mean = [loser_team[0].mean, 0].max # ensure loser never gets negative score
+    loser.skill_mean = loser_team[0].mean
     loser.skill_deviation = loser_team[0].deviation
     loser.score = calculate_score(loser.skill_mean, loser.skill_deviation)
   end
@@ -47,10 +50,8 @@ class RatingSystem
   # We also multiply it by a factor of 20, because the mean goes between 0 and 50,
   # and we want to show scores between 0 and 1000.
   def self.calculate_score(skill_mean, skill_deviation)
-    k = 3
-    score_factor = 20
-    score = score_factor * (skill_mean - k * skill_deviation)
-    score.to_i # return integer
+    score = SCORE_FACTOR * (skill_mean - SCORE_MEAN_DEVIATION_K * skill_deviation)
+    [score.to_i, 0].max # return positive integer
   end
 
   # Predict the increase in score for the user if it would win the game

@@ -110,7 +110,7 @@ describe GamesController do
       end
     end
 
-    context "with no game in progress" do
+    context "a game that was not started" do
       before do
         Game.unfinished.count.should == 0
       end
@@ -122,7 +122,7 @@ describe GamesController do
       end
     end
 
-    context "with a game in progress" do
+    context "a game in progress" do
       before do
         post :start, map_id: @map.id.to_s, format: 'json'
         @game = Game.unfinished.first
@@ -145,14 +145,21 @@ describe GamesController do
         }.to change{ @player.reload.played_games }.by(1)
       end
       context "if the player wins" do
-        it "updates the score of the map and the player" do
-          @map.update_attribute(:score, 1000)
-          @player.update_attribute(:score, 1000)
+        it "updates the score and skill of the map and the player" do
+          player_previous = {score: @player.score, skill_mean: @player.skill_mean, skill_deviation: @player.skill_deviation}
+          map_previous = {score: @map.score, skill_mean: @map.skill_mean, skill_deviation: @map.skill_deviation}
 
           post :finish, map_defeated: 'true', collected_coins: 99, format: 'json'
 
-          @player.reload.score.should > 1000
-          @map.reload.score.should < 1000
+          @player.reload
+          @player.score.should > player_previous[:score] # more score
+          @player.skill_mean.should > player_previous[:skill_mean] # more skill
+          @player.skill_deviation.should < player_previous[:skill_deviation] # more skill confidence
+
+          @map.reload
+          @map.score.should < map_previous[:score] # less score
+          @map.skill_mean.should < map_previous[:skill_mean] # less skill
+          @map.skill_deviation.should < map_previous[:skill_deviation] # more skill confidence
         end
         it "increments player.won_games, but not map.won_games" do
           expect { expect {
@@ -167,13 +174,20 @@ describe GamesController do
       end
       context "if the player loses" do
         it "updates the score of the map and the player" do
-          @map.update_attribute(:score, 1000)
-          @player.update_attribute(:score, 1000)
+          player_previous = {score: @player.score, skill_mean: @player.skill_mean, skill_deviation: @player.skill_deviation}
+          map_previous = {score: @map.score, skill_mean: @map.skill_mean, skill_deviation: @map.skill_deviation}
 
           post :finish, map_defeated: 'false', collected_coins: 99, format: 'json'
 
-          @player.reload.score.should < 1000
-          @map.reload.score.should > 1000
+          @player.reload
+          @player.score.should < player_previous[:score] # less score
+          @player.skill_mean.should < player_previous[:skill_mean] # less skill
+          @player.skill_deviation.should < player_previous[:skill_deviation] # more skill confidence
+
+          @map.reload
+          @map.score.should > map_previous[:score] # more score
+          @map.skill_mean.should > map_previous[:skill_mean] # more skill
+          @map.skill_deviation.should < map_previous[:skill_deviation] # more skill confidence
         end
         it "increments map.won_games, but not player.won_games" do
           expect { expect {

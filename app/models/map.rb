@@ -2,6 +2,8 @@ class Map
   include Mongoid::Document
   include Mongoid::Timestamps
 
+  AVERAGE_SKILL_PROPORTION_TO_CREATOR = 0.8 # estimate that the map difficulty will be a little less than the user skill, because we know it will not be better (users can not validate maps that are too hard for them), and we know that they could be trivial maps.
+
   field :name, type: String
   field :data, type: String # tiles map array serialized as String, only the client cares about understanding what this means
   field :score, type: Integer, default: 0
@@ -12,6 +14,9 @@ class Map
 
   belongs_to :creator, class_name: "User"
 
+  after_build :calculate_score
+  before_save :calculate_score
+
   scope :trial, where(creator_id: User::INFILTRATION_USER_ID) # get only trial maps
 
   def trial? # check if this map is a trial map
@@ -21,33 +26,41 @@ class Map
   def self.create_for_user(user, attrs = {})
     map = Map.new(attrs)
     map.creator = user
-    map.score = user.score # map score starts being the same as the user score
+    map.skill_mean = AVERAGE_SKILL_PROPORTION_TO_CREATOR * user.skill_mean
+    map.skill_deviation = RatingSystem::MAP_INITIAL_SKILL_DEVIATION
     map.save!
     map
   end
 
-  DIFFICULTY_RANGE = 48 # how many points separate each difficulty category
+  DIFFICULTY_RANGE = 4 # how many points separate each difficulty category
   HALF_RANGE = DIFFICULTY_RANGE / 2 # half of a difficulty range, used to compute difficulty ranges.
 
   DIFFICULTY_TRESHOLDS = [
-    [:trivial,    -999999],
-    [:very_easy,  -7*HALF_RANGE],
-    [:easy,       -3*HALF_RANGE],
+    [:trivial,    -99*HALF_RANGE],
+    [:very_easy,  -6*HALF_RANGE],
+    [:easy,       -2*HALF_RANGE],
     [:medium,     -HALF_RANGE],
     [:hard,       HALF_RANGE],
-    [:very_hard,  3*HALF_RANGE],
-    [:impossible, 7*HALF_RANGE],
-    [:infinite,   999999]
+    [:very_hard,  2*HALF_RANGE],
+    [:impossible, 6*HALF_RANGE],
+    [:infinite,   99*HALF_RANGE]
   ]
 
-  # Return the label for the difficulty of the map score in relation to the user_score.
+  # Map.lower_skill_treshold_for(:very_hard) => 4
+  def self.lower_skill_treshold_for(difficulty = :medium)
+    tr_idx = DIFFICULTY_TRESHOLDS.index{|tr| tr[0] == difficulty}
+    treshold = DIFFICULTY_TRESHOLDS[tr_idx][1]
+  end
+
+  # Return the label for the difficulty of the map score in relation to the user.
   # that is one of DIFFICULTY_TRESHOLDS: very_easy, easy, medium, etc..
-  def dificulty_relative_to(user_score)
-    return nil unless self.score
-    score_diff = self.score - user_score
+  def dificulty_relative_to(user_skill)
+    return :unknown unless self.skill_mean # ensure not nil value errors
+    return :unknown if self.skill_deviation > 4 # more deviation means that we really don't know yet if the skill_mean is accurate
+    skill_diff = self.skill_mean - user_skill
     difficulty = :trivial
     DIFFICULTY_TRESHOLDS.each do |treshold|
-      if score_diff > treshold[1]
+      if skill_diff > treshold[1]
         difficulty = treshold[0]
       else
         break
@@ -61,18 +74,18 @@ class Map
   # but if it can not find any map in that score range then will extend the range and try again,
   # so, it could return a map of that difficutly or not.
   # Return nil if there are no maps in the whole extended range of difficulties.
-  def self.find_near_dificulty(score, difficulty = :medium, options = {})
+  def self.find_near_dificulty(skill, difficulty = :medium, options = {})
     lower_index = DIFFICULTY_TRESHOLDS.index{|tr| tr[0] == difficulty}
 
     # Get lower/upper scores range for the given difficulty (:easy, :medium, :hard)
-    lower = score + DIFFICULTY_TRESHOLDS[lower_index][1]
-    upper = score + DIFFICULTY_TRESHOLDS[lower_index + 1][1]
+    lower = skill + DIFFICULTY_TRESHOLDS[lower_index][1]
+    upper = skill + DIFFICULTY_TRESHOLDS[lower_index + 1][1]
 
     # Start searching in the given range and increase the range up to three times.
-    self.find_random_within_score(lower, upper, options) or
-    self.find_random_within_score(lower - DIFFICULTY_RANGE, upper + DIFFICULTY_RANGE, options) or
-    self.find_random_within_score(lower - 2*DIFFICULTY_RANGE, upper + 2*DIFFICULTY_RANGE, options) or
-    self.find_random_within_score(lower - 6*DIFFICULTY_RANGE, upper + 6*DIFFICULTY_RANGE, options)
+    self.find_random_within_skill(lower, upper, options) or
+    self.find_random_within_skill(lower - DIFFICULTY_RANGE, upper + DIFFICULTY_RANGE, options) or
+    self.find_random_within_skill(lower - 5*DIFFICULTY_RANGE, upper + 5*DIFFICULTY_RANGE, options) or
+    self.find_random_within_skill(lower - 10*DIFFICULTY_RANGE, upper + 10*DIFFICULTY_RANGE, options)
   end
 
   # Find a map which score is within [lower <= score <= upper]
@@ -80,8 +93,8 @@ class Map
   # If no maps in that score range, then return nil.
   # Use option :exclude => [map1.id, map2.id] to ensure that those maps are not returned in the search.
   # Use option :scope => ->(criteria){ ... } to filter the results
-  def self.find_random_within_score(lower, upper, options = {})
-    criteria = self.where(:score.gte => lower, :score.lte => upper)
+  def self.find_random_within_skill(lower, upper, options = {})
+    criteria = self.where(:skill_mean.gte => lower, :skill_mean.lte => upper)
     if options[:exclude]
       exclude_ids = options[:exclude].compact.map{|x| x.is_a?(Map) ? x.id : x } # remove nil and get only ids
       criteria = criteria.nin(_id: exclude_ids)
@@ -96,6 +109,11 @@ class Map
     else
       map = criteria.skip(rand n).first # get a random map that matches the criteria
     end
+  end
+
+  # Reassign the score value, based on the skill mean and deviation
+  def calculate_score
+    self.score = RatingSystem.calculate_score(self.skill_mean, self.skill_deviation)
   end
 
 end
