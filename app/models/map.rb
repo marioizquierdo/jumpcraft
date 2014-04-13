@@ -112,8 +112,12 @@ class Map
   end
 
   # Reassign the score value, based on the skill mean and deviation
+  # For maps, the k is 2 instead of 3, because we don't want to make them look easy and be hard at the end.
+  # For maps we don't need to be 99% sure that they are better, because they don't really compete for the top positions in the ladder,
+  # and we don't want users to challenge maps that seem easy but are not.
   def calculate_score
-    self.score = RatingSystem.calculate_score(self.skill_mean, self.skill_deviation)
+    self.score = RatingSystem::SCORE_FACTOR * (skill_mean - 2 * skill_deviation)
+    self.score = [self.score.to_i, 0].max # ensure not negative
   end
 
 end

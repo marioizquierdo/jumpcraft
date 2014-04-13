@@ -34,24 +34,14 @@ class RatingSystem
     # update team scores
     graph.update_skills
 
-    # assign new scores to winner and loser
+    # assign new skills to winner and loser
     winner.skill_mean = winner_team[0].mean
     winner.skill_deviation = winner_team[0].deviation
-    winner.score = calculate_score(winner.skill_mean, winner.skill_deviation)
+    winner.score = winner.calculate_score # recalculate right away
 
     loser.skill_mean = loser_team[0].mean
     loser.skill_deviation = loser_team[0].deviation
-    loser.score = calculate_score(loser.skill_mean, loser.skill_deviation)
-  end
-
-  # Assign a score based on the skill_mean and skill_deviation.
-  # Use the so-called "conservative skill estimate" = mean - k * deviation,
-  # using a commong k value of 3 (3 times the deviation to ensure a very conservative score).
-  # We also multiply it by a factor of 20, because the mean goes between 0 and 50,
-  # and we want to show scores between 0 and 1000.
-  def self.calculate_score(skill_mean, skill_deviation)
-    score = SCORE_FACTOR * (skill_mean - SCORE_MEAN_DEVIATION_K * skill_deviation)
-    [score.to_i, 0].max # return positive integer
+    loser.score = loser.calculate_score # recalculate right away
   end
 
   # Predict the increase in score for the user if it would win the game

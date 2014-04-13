@@ -100,7 +100,9 @@ class User
   end
 
   # Reassign the score value, based on the skill mean and deviation
+  # For users, use the same method as in Xbox Live: mean - 3 * deviation
   def calculate_score
-    self.score = RatingSystem.calculate_score(self.skill_mean, self.skill_deviation)
+    self.score = RatingSystem::SCORE_FACTOR * (skill_mean - RatingSystem::SCORE_MEAN_DEVIATION_K * skill_deviation)
+    self.score = [self.score.to_i, 0].max # ensure not negative
   end
 end
