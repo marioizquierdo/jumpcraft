@@ -27,15 +27,10 @@ class Game
   end
 
   def finish_and_save!
-    keep_score = map.score
-
     self.finish
 
     user.save!
-
-    map.score = keep_score if map.trial?
     map.save!
-
     self.save!
   end
 

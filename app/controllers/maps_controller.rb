@@ -48,6 +48,9 @@ class MapsController < ApplicationController
         @maps = [map1, map2, map3].compact
       end
 
+      # Order by difficulty
+      @maps = @maps.sort_by(&:skill_mean)
+
       # Save suggestions for next time
       current_user.update_attribute(:suggested_map_ids, @maps.map(&:id))
     end

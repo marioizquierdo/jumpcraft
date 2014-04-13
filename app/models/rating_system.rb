@@ -35,13 +35,16 @@ class RatingSystem
     graph.update_skills
 
     # assign new skills to winner and loser
-    winner.skill_mean = winner_team[0].mean
-    winner.skill_deviation = winner_team[0].deviation
-    winner.score = winner.calculate_score # recalculate right away
-
-    loser.skill_mean = loser_team[0].mean
-    loser.skill_deviation = loser_team[0].deviation
-    loser.score = loser.calculate_score # recalculate right away
+    unless winner.is_a?(Map) && winner.trial?
+      winner.skill_mean = winner_team[0].mean
+      winner.skill_deviation = winner_team[0].deviation
+      winner.score = winner.calculate_score # recalculate right away
+    end
+    unless loser.is_a?(Map) && loser.trial? # trial maps don't update
+      loser.skill_mean = loser_team[0].mean
+      loser.skill_deviation = loser_team[0].deviation
+      loser.score = loser.calculate_score # recalculate right away
+    end
   end
 
   # Predict the increase in score for the user if it would win the game
