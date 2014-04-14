@@ -144,13 +144,13 @@ describe MapsController do
       maps.should have(3).elements
 
       # user plays one of the suggested maps
-      game = create :game, user: @user.reload, map: maps[0], finished: false
+      game = create :game, user: @user.reload, map: maps[0].reload, finished: false
       game.finish_and_save! # will invalidate the cached suggestions on the user
       sign_out @user; sign_in @user; # have to do this in order to reload the mocked current_user from DB
 
       get :suggestions, format: 'json'
-      maps2 = assigns(:maps)
-      maps2.should_not == maps
+      maps_after = assigns(:maps)
+      maps_after.should_not == maps
     end
   end
 
@@ -158,10 +158,6 @@ describe MapsController do
     before do
       @user = create :user, score: 1500
       sign_in @user
-
-      # Allow to create maps specifying the score
-      Map.skip_callback(:build, :after, :calculate_score)
-      Map.skip_callback(:save, :before, :calculate_score)
     end
 
     it "responds successfully with an HTTP 200 status code" do

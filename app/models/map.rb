@@ -17,8 +17,9 @@ class Map
   index score: -1 # for ladder
   index skill_mean: -1 # for suggestions
 
-  after_build :calculate_score
-  before_save :calculate_score
+  after_build :calculate_score, unless: :skip_calculate_score_callback
+  before_save :calculate_score, unless: :skip_calculate_score_callback
+  attr_accessor :skip_calculate_score_callback # set to true on tests to skip calculate_score callback
 
   scope :trial, where(creator_id: User::INFILTRATION_USER_ID) # get only trial maps
 

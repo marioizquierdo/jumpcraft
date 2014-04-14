@@ -33,8 +33,9 @@ class User
   index score: -1 # for ladder
   index email: 1 # for login
 
-  after_build :calculate_score
-  before_save :calculate_score
+  after_build :calculate_score, unless: :skip_calculate_score_callback
+  before_save :calculate_score, unless: :skip_calculate_score_callback
+  attr_accessor :skip_calculate_score_callback # set to true on tests to skip calculate_score callback
 
   ## -------------------
 

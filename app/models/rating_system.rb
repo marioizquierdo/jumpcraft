@@ -49,10 +49,10 @@ class RatingSystem
 
   # Predict the increase in score for the user if it would win the game
   def self.score_delta_if_win(user, map)
-    user2 = user.clone
-    map2 = map.clone
-    update_skills(user, map)
-    user2.score - user.score
+    user_after = user.clone
+    map_after = map.clone
+    update_skills(user_after, map_after)
+    user_after.score - user.score
   end
 
   # Find the page number to be loaded in order to get maps around the given score.
