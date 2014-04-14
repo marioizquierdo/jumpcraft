@@ -12,7 +12,10 @@ class Map
   field :played_games, type: Integer, default: 0 # number of times this map was played in the ladder
   field :won_games, type: Integer, default: 0 # number of times this map was NOT defeated in the ladder
 
-  belongs_to :creator, class_name: "User"
+  belongs_to :creator, class_name: "User", index: true
+
+  index score: -1 # for ladder
+  index skill_mean: -1 # for suggestions
 
   after_build :calculate_score
   before_save :calculate_score

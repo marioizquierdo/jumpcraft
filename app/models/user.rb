@@ -30,6 +30,9 @@ class User
 
   has_many :maps, inverse_of: :creator
 
+  index score: -1 # for ladder
+  index email: 1 # for login
+
   after_build :calculate_score
   before_save :calculate_score
 

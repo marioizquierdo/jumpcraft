@@ -2,7 +2,7 @@ class Game
   include Mongoid::Document
   include Mongoid::Timestamps
 
-  belongs_to :user
+  belongs_to :user, index: true
   belongs_to :map
 
   field :finished, type: Boolean # false while playing, true after the match ends
