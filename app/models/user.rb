@@ -103,6 +103,15 @@ class User
     self.where(_id: INFILTRATION_USER_ID).first
   end
 
+  # Given a map, return the difficutly: :easy, :medium, :hard, etc.
+  # If there is not enough confidence about it (high user or map skill_deviation), then return :unknown
+  def difficulty_of_playing(map)
+    return :unknown unless map # ensure map is not nil
+    return :unknown unless self.skill_mean # ensure not nil value errors
+    return :unknown if self.skill_deviation > 4 # more deviation means that we really don't know yet if the skill_mean is accurate
+    return map.dificulty_relative_to(self.skill_mean)
+  end
+
   # Reassign the score value, based on the skill mean and deviation
   # For users, use the same method as in Xbox Live: mean - 3 * deviation
   def calculate_score

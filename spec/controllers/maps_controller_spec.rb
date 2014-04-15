@@ -54,7 +54,7 @@ describe MapsController do
       maps = assigns(:maps)
       maps.should have(3).elements
       maps.each do |map|
-        map.dificulty_relative_to(@user.skill_mean).should == :medium
+        @user.difficulty_of_playing(map).should == :medium
       end
     end
     context "if didnt play the trial games" do

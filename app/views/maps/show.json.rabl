@@ -4,7 +4,7 @@ attributes :id, :name, :score, :played_games, :won_games, :created_at
 attributes :data unless params[:no_data]
 
 if current_user
-  node(:difficulty) { |map| map.dificulty_relative_to(current_user.skill_mean) }
+  node(:difficulty) { |map| current_user.difficulty_of_playing(map) }
   if @plays_count
     node(:played_by_current_user) { |map| @plays_count[map.id] || 0 }
   end
