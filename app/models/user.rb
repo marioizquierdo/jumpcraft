@@ -89,7 +89,7 @@ class User
   # Factory method to create the infiltration user
   def self.create_infiltration_user!
     u = self.new(
-      name: 'infiltration',
+      name: 'Infiltration',
       score: 1000,
       email: 'infiltration@infiltration.com',
       password: 'none'
