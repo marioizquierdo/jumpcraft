@@ -13,6 +13,7 @@ class Map
   field :won_games, type: Integer, default: 0 # number of times this map was NOT defeated in the ladder
 
   belongs_to :creator, class_name: "User", index: true
+  has_many :games, dependent: :delete
 
   index score: -1 # for ladder
   index skill_mean: -1 # for suggestions

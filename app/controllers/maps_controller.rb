@@ -25,8 +25,7 @@ class MapsController < ApplicationController
       @maps = current_user.suggested_map_ids.map{|id| maps.find{|m| m.id == id} } # ensure same order as in the suggested_map_ids
 
     else
-      skill = current_user.skill_mean
-      last_played = Game.last_played_map_ids(current_user, 20) # exclude last 20 maps
+      last_played = Game.last_played_map_ids(current_user, 20) # exclude last 20 played maps
       scope = ->(s) do
         if last_played.size < User::TRIAL_GAMES_BEFORE_REGULAR_SUGGESTIONS
           s.trial # if didn't play enough games, show only trial maps
@@ -34,6 +33,7 @@ class MapsController < ApplicationController
           s.ne(creator_id: current_user.id) # exclude own maps
         end
       end
+      skill = current_user.skill_mean
 
       map1 = Map.find_near_dificulty skill, :easy,   scope: scope, exclude: last_played
       map2 = Map.find_near_dificulty skill, :medium, scope: scope, exclude: last_played + [map1]
