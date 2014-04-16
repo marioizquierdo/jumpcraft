@@ -19,17 +19,18 @@
 # Load SWF only if user is signed in
 swf_container_id = 'swf-container'
 $swf_container = $('#' + swf_container_id)
-if $swf_container.length and window.current_user
+if $swf_container.length
 
   swf_url = "https://dl.dropboxusercontent.com/u/8856856/Infiltration.swf"
   flashvars = {}
-  flashvars.id =         window.current_user._id
-  flashvars.email =      window.current_user.email
-  flashvars.name =       window.current_user.name
-  flashvars.auth_token = window.current_user.authentication_token
-  flashvars.tutorial =   window.current_user.tutorial
   flashvars.host =       window.location.protocol + '//' + window.location.host
   flashvars.map_id =     window.flashvars_map_id if window.flashvars_map_id # null if not in a map view
+  if window.current_user
+    flashvars.id =         window.current_user._id
+    flashvars.email =      window.current_user.email
+    flashvars.name =       window.current_user.name
+    flashvars.auth_token = window.current_user.authentication_token
+    flashvars.tutorial =   window.current_user.tutorial
 
   swfobject.embedSWF(swf_url, swf_container_id, "640", "480", "10.0.0", false, flashvars)
   swfobject.addDomLoadEvent -> # Hack to try set the keyboard focus
