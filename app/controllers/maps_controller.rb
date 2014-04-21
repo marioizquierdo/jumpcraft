@@ -20,38 +20,26 @@ class MapsController < ApplicationController
   def suggestions
     authenticate_user!
 
+    # Check if there are cached suggestions on the user
     maps = Map.where(:_id.in => current_user.suggested_map_ids).compact if current_user.suggested_map_ids.present?
     if maps.present? # already suggested maps
       @maps = current_user.suggested_map_ids.map{|id| maps.find{|m| m.id == id} } # ensure same order as in the suggested_map_ids
 
     else
       last_played = Game.last_played_map_ids(current_user, 20) # exclude last 20 played maps
-      scope = ->(s) do
-        if last_played.size < User::TRIAL_GAMES_BEFORE_REGULAR_SUGGESTIONS
-          s.trial # if didn't play enough games, show only trial maps
-        else
-          s.ne(creator_id: current_user.id) # exclude own maps
-        end
-      end
-      skill = current_user.skill_mean
-
-      map1 = Map.find_near_dificulty skill, :easy,   scope: scope, exclude: last_played
-      map2 = Map.find_near_dificulty skill, :medium, scope: scope, exclude: last_played + [map1]
-      map3 = Map.find_near_dificulty skill, :hard,   scope: scope, exclude: last_played + [map1, map2]
-      @maps = [map1, map2, map3].compact
-
-      # if there are not enough maps on the DB yet, then try again without any filtering
-      if @maps.empty?
-        map1 = Map.find_near_dificulty skill, :easy
-        map2 = Map.find_near_dificulty skill, :medium, exclude: [map1]
-        map3 = Map.find_near_dificulty skill, :hard,   exclude: [map1, map2]
-        @maps = [map1, map2, map3].compact
+      if last_played.size < User::TRIAL_GAMES_BEFORE_REGULAR_SUGGESTIONS
+        @maps = get_trial_suggestions(last_played)
+      else
+        @maps = get_standard_suggestions(last_played)
       end
 
-      # Order by difficulty
-      @maps = @maps.sort_by(&:skill_mean)
+      if @maps.empty? # if for some reason there are not enough maps on the DB, then try again without filtering
+        @maps = get_unfiltered_suggestions()
+      end
 
-      # Save suggestions for next time
+      @maps = @maps.sort_by(&:skill_mean) # Order by difficulty
+
+      # Cache suggestions
       current_user.update_attribute(:suggested_map_ids, @maps.map(&:id))
     end
 
@@ -84,6 +72,7 @@ class MapsController < ApplicationController
     render json: {ok: true}
   end
 
+
 private
 
   # Return a hash where keys are maps ids,
@@ -97,5 +86,42 @@ private
       plays[rd['_id']] = rd['value'].to_i
     end
     plays
+  end
+
+  def get_trial_suggestions(last_played)
+    case last_played.size
+    when 0
+      Map.trial.where(skill_mean: 0).limit(3) # first 3 maps are just to practice
+    when 1
+      Map.trial.in(skill_mean: [0, 7]).nin(_id: last_played).limit(3)
+    when 2
+      Map.trial.in(skill_mean: [0, 7, 12]).nin(_id: last_played).limit(3)
+    when 3
+      Map.trial.in(skill_mean: [0, 7, 12, 14]).nin(_id: last_played).limit(3)
+    when 4
+      Map.trial.in(skill_mean: [0, 7, 12, 14, 18]).nin(_id: last_played).limit(3)
+    when 5
+      Map.trial.in(skill_mean: [0, 7, 12, 14, 18, 27]).nin(_id: last_played).limit(3)
+    when 6
+      Map.trial.in(skill_mean: [7, 12, 14, 18, 27, 35, 38]).nin(_id: last_played).limit(3)
+    end
+  end
+
+  def get_standard_suggestions(last_played)
+    skill = current_user.skill_mean
+    scope = ->(s){ s.ne(creator_id: current_user.id) } # exclude own maps
+
+    map1 = Map.find_near_dificulty skill, :easy,   scope: scope, exclude: last_played
+    map2 = Map.find_near_dificulty skill, :medium, scope: scope, exclude: last_played + [map1]
+    map3 = Map.find_near_dificulty skill, :hard,   scope: scope, exclude: last_played + [map1, map2]
+    [map1, map2, map3].compact
+  end
+
+  def get_unfiltered_suggestions
+    skill = current_user.skill_mean
+    map1 = Map.find_near_dificulty skill, :easy
+    map2 = Map.find_near_dificulty skill, :medium, exclude: [map1]
+    map3 = Map.find_near_dificulty skill, :hard,   exclude: [map1, map2]
+    @maps = [map1, map2, map3].compact
   end
 end

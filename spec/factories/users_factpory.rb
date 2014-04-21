@@ -4,7 +4,7 @@ FactoryGirl.define do
     sequence(:email) {|n| "user#{n}@email.com" }
     password 'aB%1234'
     skill_mean 25.0
-    skill_deviation 8.0
+    skill_deviation 3.0 # make it so it doesnt show "unknown" maps all the time
 
     ignore do
       score nil
