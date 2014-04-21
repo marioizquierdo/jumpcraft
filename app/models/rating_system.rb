@@ -6,8 +6,8 @@ class RatingSystem
   SCORE_FACTOR = 20 # Xbox Live uses a scale of 0-50 for the score. We want to use a scale of 0-1000 (then we just apply a factor of x20 to the calculated score)
   SCORE_MEAN_DEVIATION_K = 3 # Same as in Xbox Live, to calculate the score, we use the so-called "conservative skill estimate", that is mean - 3 * deviation
 
-  USER_INITIAL_SKILL_MEAN = 25.0 # use same as Xbox Live initial mean
-  USER_INITIAL_SKILL_DEVIATION = (USER_INITIAL_SKILL_MEAN/SCORE_MEAN_DEVIATION_K) # use same as Xbox Live initial deviation (so the initial score is 0)
+  USER_INITIAL_SKILL_MEAN = 22.0 # in Xbox Live the initial mean is 25, but here we start playing agains trivial maps where users always win
+  USER_INITIAL_SKILL_DEVIATION = 25.0/SCORE_MEAN_DEVIATION_K # use same as Xbox Live initial deviation
   MAP_INITIAL_SKILL_DEVIATION = 1.5*USER_INITIAL_SKILL_DEVIATION # for maps the initial deviation is higher, because good players could easily make trivial maps
 
   # Assign new skill properties (skill_mean and skill_deviation) to the winner and loser,
