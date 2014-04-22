@@ -4,7 +4,6 @@ class User
 
   # Id of the "infiltration" user. It is a constant, because is used to find trial maps.
   INFILTRATION_USER_ID = "5340a9730482933613000001"
-  TRIAL_GAMES_BEFORE_REGULAR_SUGGESTIONS = 6 # number of trial maps that the user needs to play before going against other user's maps
 
   # Include default devise modules. Others available are:
   # :token_authenticatable, :confirmable,

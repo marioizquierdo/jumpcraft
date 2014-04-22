@@ -82,7 +82,7 @@ describe MapsController do
     end
     context "after playing the trial games" do
       before do
-        stub_const("User::TRIAL_GAMES_BEFORE_REGULAR_SUGGESTIONS", 0)
+        MapsController.any_instance.stub(:get_trial_suggestions).and_return(nil)
       end
 
       it "responds successfully with an HTTP 200 status code" do
