@@ -91,20 +91,28 @@ private
   def get_trial_suggestions(last_played)
     case last_played.size
     when 0
-      Map.trial.where(skill_mean: 0).limit(3) # first 3 maps are just to practice
+      maps = Map.trial.in(skill_mean: [0, 2, 6]).limit(3)
+      maps.each{|m| m.relative_difficulty = { 0 => :very_easy, 2 => :medium, 6 => :hard }[m.skill_mean.to_i] }
     when 1
-      Map.trial.in(skill_mean: [0, 7]).nin(_id: last_played).limit(3)
+      maps = Map.trial.in(skill_mean: [0, 2, 6, 10]).nin(_id: last_played).limit(3)
+      maps.each{|m| m.relative_difficulty = { 0 => :very_easy, 2 => :easy, 6 => :medium, 10 => :hard }[m.skill_mean.to_i] }
     when 2
-      Map.trial.in(skill_mean: [0, 7, 12]).nin(_id: last_played).limit(3)
+      maps = Map.trial.in(skill_mean: [0, 2, 6, 10, 12]).nin(_id: last_played).limit(3)
+      maps.each{|m| m.relative_difficulty = { 0 => :trivial, 2 => :very_easy, 6 => :easy, 10 => :medium, 12 => :hard }[m.skill_mean.to_i] }
     when 3
-      Map.trial.in(skill_mean: [0, 7, 12, 14]).nin(_id: last_played).limit(3)
+      maps = Map.trial.in(skill_mean: [2, 6, 10, 12, 14, 16]).nin(_id: last_played).limit(3)
+      maps.each{|m| m.relative_difficulty = { 2 => :trivial, 6 => :very_easy, 10 => :medium, 12 => :medium, 14 => :hard, 16 => :hard }[m.skill_mean.to_i] }
     when 4
-      Map.trial.in(skill_mean: [0, 7, 12, 14, 18]).nin(_id: last_played).limit(3)
+      maps = Map.trial.in(skill_mean: [6, 7, 10, 12, 14, 16, 18]).nin(_id: last_played).limit(3)
+      maps.each{|m| m.relative_difficulty = { 6 => :very_easy, 7 => :easy, 10 => :easy, 12 => :medium, 14 => :medium, 16 => :hard, 18 => :hard }[m.skill_mean.to_i] }
     when 5
-      Map.trial.in(skill_mean: [0, 7, 12, 14, 18, 27]).nin(_id: last_played).limit(3)
+      maps = Map.trial.in(skill_mean: [7, 9, 10, 12, 14, 16, 18, 27]).nin(_id: last_played).limit(3)
+      maps.each{|m| m.relative_difficulty = { 7 => :very_easy, 9 => :easy, 10 => :easy, 12 => :medium, 14 => :medium, 16 => :hard, 18 => :hard, 27 => :very_hard }[m.skill_mean.to_i] }
     when 6
-      Map.trial.in(skill_mean: [7, 12, 14, 18, 27, 35, 38]).nin(_id: last_played).limit(3)
+      maps = Map.trial.in(skill_mean: [9, 10, 12, 14, 16, 18, 27, 35, 38]).nin(_id: last_played).limit(3)
+      maps.each{|m| m.relative_difficulty = { 9 => :very_easy, 10 => :easy, 12 => :easy, 14 => :medium, 16 => :medium, 18 => :medium, 27 => :hard, 35 => :very_hard, 38 => :very_hard }[m.skill_mean.to_i] }
     end
+    maps
   end
 
   def get_standard_suggestions(last_played)

@@ -36,9 +36,9 @@ describe MapsController do
       it "uses get_trial_suggestions to get initial trial maps" do
         @m_no_trial = create :map, skill_mean: @user.skill_mean # Not a Trial, this should not be used
         @m1 = create :map, skill_mean: 0, creator_id: User::INFILTRATION_USER_ID
-        @m2 = create :map, skill_mean: 0, creator_id: User::INFILTRATION_USER_ID
-        @m3 = create :map, skill_mean: 0, creator_id: User::INFILTRATION_USER_ID
-        @m4 = create :map, skill_mean: 7, creator_id: User::INFILTRATION_USER_ID
+        @m2 = create :map, skill_mean: 2, creator_id: User::INFILTRATION_USER_ID
+        @m3 = create :map, skill_mean: 6, creator_id: User::INFILTRATION_USER_ID
+        @m4 = create :map, skill_mean: 10, creator_id: User::INFILTRATION_USER_ID
         @m5 = create :map, skill_mean: 12, creator_id: User::INFILTRATION_USER_ID
         @m6 = create :map, skill_mean: 14, creator_id: User::INFILTRATION_USER_ID
 
