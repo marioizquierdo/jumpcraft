@@ -91,19 +91,19 @@ private
   def get_trial_suggestions
     case @last_played.size
     when 0
-      trials_by_skill 0 => :very_easy, 2 => :medium,    6 => :hard
+      trials_by_skill 1 => :very_easy, 2 => :easy,      3 => :easy
     when 1
-      trials_by_skill 0 => :very_easy, 2 => :easy,      6 => :medium,  10 => :hard
+      trials_by_skill 1 => :very_easy, 2 => :easy,      3 => :easy,    4 => :medium
     when 2
-      trials_by_skill 0 => :trivial,   2 => :very_easy, 6 => :easy,    10 => :medium, 12 => :hard
+      trials_by_skill 1 => :trivial,   3 => :very_easy, 4 => :easy,    5 => :medium,  6 => :medium
     when 3
-      trials_by_skill 2 => :trivial,   6 => :very_easy, 10 => :medium, 12 => :medium, 14 => :hard,   16 => :hard
+      trials_by_skill 3 => :trivial,   4 => :very_easy, 5 => :medium,  6 => :medium,  7 => :hard,    8 => :hard
     when 4
-      trials_by_skill 6 => :very_easy, 7 => :easy,      10 => :easy,   12 => :medium, 14 => :medium, 16 => :hard,   18 => :hard
+      trials_by_skill 4 => :very_easy, 5 => :easy,      6 => :easy,    7 => :medium,  8 => :medium,  12 => :hard,   14 => :hard
     when 5
-      trials_by_skill 7 => :very_easy, 9 => :easy,      10 => :easy,   12 => :medium, 14 => :medium, 16 => :hard,   18 => :hard, 27 => :very_hard
+      trials_by_skill 5 => :very_easy, 6 => :easy,      7 => :easy,    8 => :medium,  12 => :medium, 14 => :hard,   15 => :hard, 16 => :very_hard
     when 6
-      trials_by_skill 9 => :very_easy, 10 => :easy,     12 => :easy,   14 => :medium, 16 => :medium, 18 => :medium, 27 => :hard, 35 => :very_hard, 38 => :very_hard
+      trials_by_skill 6 => :very_easy, 7 => :easy,      8 => :easy,   12 => :medium,  14 => :medium, 15 => :medium, 16 => :hard, 16 => :very_hard, 17 => :very_hard
     else
       nil # if user already played more than 6 games, then return nil (will get delegated to get_standard_suggestions)
     end
