@@ -91,19 +91,83 @@ private
   def get_trial_suggestions
     case @last_played.size
     when 0
-      trials_by_skill 1 => :very_easy, 2 => :easy,      3 => :easy
+      load_trials({
+        'San Francisco'       => :very_easy,
+        'The Bunker'          => :very_easy,
+        'Caravel Ships'       => :easy,
+      })
     when 1
-      trials_by_skill 1 => :very_easy, 2 => :easy,      3 => :easy,    4 => :medium
+      load_trials({
+        'San Francisco'       => :very_easy,
+        'The Bunker'          => :very_easy,
+        'Caravel Ships'       => :easy,
+        'Tower in the Castle' => :medium,
+      })
     when 2
-      trials_by_skill 1 => :trivial,   3 => :very_easy, 4 => :easy,    5 => :medium,  6 => :medium
+      load_trials({
+        'San Francisco'       => :very_easy,
+        'Caravel Ships'       => :very_easy,
+        'Tower in the Castle' => :easy,
+        'Cat Mountain Climb'  => :medium,
+        'Moonlit Woods'       => :medium,
+      })
     when 3
-      trials_by_skill 3 => :trivial,   4 => :very_easy, 5 => :medium,  6 => :medium,  7 => :hard,    8 => :hard
+      load_trials({
+        'San Francisco'       => :very_easy,
+        'Tower in the Castle' => :easy,
+        'Cat Mountain Climb'  => :easy,
+        'Moonlit Woods'       => :easy,
+        'Egypt Pyramid'       => :medium,
+        'The Cave'            => :medium,
+      })
     when 4
-      trials_by_skill 4 => :very_easy, 5 => :easy,      6 => :easy,    7 => :medium,  8 => :medium,  12 => :hard,   14 => :hard
+      load_trials({
+        'Tower in the Castle' => :very_easy,
+        'Cat Mountain Climb'  => :easy,
+        'Moonlit Woods'       => :easy,
+        'Egypt Pyramid'       => :medium,
+        'The Cave'            => :medium,
+        'Cyberpunk Ruins'     => :hard,
+        'Steamport Town'      => :hard,
+      })
     when 5
-      trials_by_skill 5 => :very_easy, 6 => :easy,      7 => :easy,    8 => :medium,  12 => :medium, 14 => :hard,   15 => :hard, 16 => :very_hard
+      load_trials({
+        'Cat Mountain Climb'  => :very_easy,
+        'Moonlit Woods'       => :easy,
+        'Egypt Pyramid'       => :easy,
+        'The Cave'            => :easy,
+        'Cyberpunk Ruins'     => :medium,
+        'Steamport Town'      => :medium,
+        'Find the Dragon'     => :hard,
+        'Star Hopping'        => :hard,
+      })
     when 6
-      trials_by_skill 6 => :very_easy, 7 => :easy,      8 => :easy,   12 => :medium,  14 => :medium, 15 => :medium, 16 => :hard, 16 => :very_hard, 17 => :very_hard
+      load_trials({
+        'Cat Mountain Climb'  => :very_easy,
+        'Moonlit Woods'       => :very_easy,
+        'Egypt Pyramid'       => :easy,
+        'The Cave'            => :easy,
+        'Cyberpunk Ruins'     => :medium,
+        'Steamport Town'      => :medium,
+        'Find the Dragon'     => :hard,
+        'Star Hopping'        => :hard,
+        'Shadow of Valus'     => :very_hard,
+        'The Cube'            => :very_hard,
+      })
+    when 7
+      load_trials({
+        'Tower in the Castle' => :easy,
+        'Moonlit Woods'       => :very_easy,
+        'Egypt Pyramid'       => :easy,
+        'The Cave'            => :easy,
+        'Cyberpunk Ruins'     => :medium,
+        'Steamport Town'      => :medium,
+        'Find the Dragon'     => :hard,
+        'Star Hopping'        => :hard,
+        'Shadow of Valus'     => :very_hard,
+        'The Cube'            => :very_hard,
+        'Temple City'         => :very_hard,
+      })
     else
       nil # if user already played more than 6 games, then return nil (will get delegated to get_standard_suggestions)
     end
@@ -128,13 +192,30 @@ private
     maps.empty? ? nil : maps
   end
 
-  # Helper to load trial maps by skill_mean, and then assign relative_difficulty
-  def trials_by_skill(skill_difficulty_mapping)
-    skill_means = skill_difficulty_mapping.keys
-    maps = Map.trial.nin(_id: @last_played).in(skill_mean: skill_means).limit(3).to_a # load trials
+  # Helper to load trial maps by skill_mean, and then assign relative_difficulty.
+  # easier_or_harder is to select the most difficult ones or the easier ones if there are more than 3 results.
+  def load_trials(names_to_difficulties_map)
+    names = names_to_difficulties_map.keys
+    maps = Map.trial # only trials
+    maps = maps.in(name: names) # filter by name
+    maps = maps.nin(_id: @last_played) # take away already played maps
+
+    # order by difficulty, depending on the win/loss ratio
+    if @last_played.size > 0
+      win_loss_ratio = number_of_last_played_wins.to_f / @last_played.size
+      maps = maps.order_by(skill_mean: win_loss_ratio > 0.5 ? 'desc' : 'asc')
+    end
+
+    maps = maps.limit(3).to_a # load 3 trials
     maps.each do |m|
-      m.relative_difficulty = skill_difficulty_mapping[m.skill_mean.to_i] # assign relative_difficulty
+      m.relative_difficulty = names_to_difficulties_map[m.name] # assign relative_difficulty
     end
     maps
+  end
+
+  # Load games by @last_played and sum the number of times the map was defeated
+  def number_of_last_played_wins
+    games = Game.last_played_by(@current_user, 20).only(:map_defeated).to_a # load games
+    games.inject(0){|sum, game| game.map_defeated ? sum + 1 : sum } # sum number of times the map was defeated == number of wins
   end
 end

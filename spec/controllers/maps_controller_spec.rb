@@ -34,50 +34,72 @@ describe MapsController do
         expect(response.status).to eq(200)
       end
       it "uses get_trial_suggestions to get initial trial maps" do
-        @m_no_trial = create :map, skill_mean: @user.skill_mean # Not a Trial, this should not be used
-        @m1 = create :map, skill_mean: 0, creator_id: User::INFILTRATION_USER_ID
-        @m2 = create :map, skill_mean: 2, creator_id: User::INFILTRATION_USER_ID
-        @m3 = create :map, skill_mean: 6, creator_id: User::INFILTRATION_USER_ID
-        @m4 = create :map, skill_mean: 10, creator_id: User::INFILTRATION_USER_ID
-        @m5 = create :map, skill_mean: 12, creator_id: User::INFILTRATION_USER_ID
-        @m6 = create :map, skill_mean: 14, creator_id: User::INFILTRATION_USER_ID
+        @m_no_trial = create :map, name: 'San Francisco' # Not a Trial, this should not be used
+
+        $stdout.stub(:write) # silence puts
+        Infiltration::Application.load_tasks
+        Rake::Task['trial_maps:create'].invoke # create trial maps
+        $stdout.unstub(:write) # restore puts
 
         # last_played.size == 0
         Game.last_played_map_ids(@user, 20).size.should == 0
         get :suggestions, format: 'json'
         maps = assigns(:maps)
         maps.should have(3).elements
-        maps.should include(@m1, @m2, @m3)
-
-        # user plays @m1
-        play_and_finish_game(@user, @m1)
+        maps.map(&:name).should include('San Francisco', 'The Bunker', 'Caravel Ships')
 
         # last_played.size == 1
+        played_map = maps[0]
+        play_and_finish_game(@user, played_map) # user plays one of the maps
         Game.last_played_map_ids(@user, 20).size.should == 1
         get :suggestions, format: 'json'
         maps = assigns(:maps)
         maps.should have(3).elements
-        maps.should include(@m2, @m3, @m4)
-
-        # user plays @m2
-        play_and_finish_game(@user, @m2)
+        maps.map(&:name).should_not include(played_map.name)
 
         # last_played.size == 2
+        played_map = maps[1]
+        play_and_finish_game(@user, played_map) # user plays one of the maps
+        Game.last_played_map_ids(@user, 20).size.should == 2
         get :suggestions, format: 'json'
         maps = assigns(:maps)
-        maps.should have(3).elements
-        maps.should include(@m3, @m4, @m5)
-
-        # user plays @m4
-        play_and_finish_game(@user, @m4)
+        maps.map(&:name).should_not include(played_map.name)
 
         # last_played.size == 3
+        played_map = maps[2]
+        play_and_finish_game(@user, played_map) # user plays one of the maps
+        Game.last_played_map_ids(@user, 20).size.should == 3
         get :suggestions, format: 'json'
         maps = assigns(:maps)
         maps.should have(3).elements
-        maps.should include(@m3, @m5, @m6)
+        maps.map(&:name).should_not include(played_map.name)
 
-        # ... and so on
+        # last_played.size == 4
+        played_map = maps[1]
+        play_and_finish_game(@user, played_map) # user plays one of the maps
+        Game.last_played_map_ids(@user, 20).size.should == 4
+        get :suggestions, format: 'json'
+        maps = assigns(:maps)
+        maps.should have(3).elements
+        maps.map(&:name).should_not include(played_map.name)
+
+        # last_played.size == 5
+        played_map = maps[0]
+        play_and_finish_game(@user, played_map) # user plays one of the maps
+        Game.last_played_map_ids(@user, 20).size.should == 5
+        get :suggestions, format: 'json'
+        maps = assigns(:maps)
+        maps.should have(3).elements
+        maps.map(&:name).should_not include(played_map.name)
+
+        # last_played.size == 6
+        played_map = maps[1]
+        play_and_finish_game(@user, played_map) # user plays one of the maps
+        Game.last_played_map_ids(@user, 20).size.should == 6
+        get :suggestions, format: 'json'
+        maps = assigns(:maps)
+        maps.should have(3).elements
+        maps.map(&:name).should_not include(played_map.name)
       end
     end
     context "after playing the trial games" do

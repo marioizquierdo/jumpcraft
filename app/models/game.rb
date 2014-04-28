@@ -19,12 +19,15 @@ class Game
   scope :map, ->(map){ where map_id: map.id }
   scope :maps, ->(maps){ where :map_id.in => maps.collect(&:id) }
   scope :unfinished, ne( finished: true )
+  scope :last_played_by, ->(user, limit) {
+    user(user).desc(:_id).limit(limit) # order by id works ok to get the last inserted ones
+  }
 
   # Return a list of ids from already played maps by the user, starting by the most recent game.
   def self.last_played_map_ids(user, limit)
-    last_games = self.user(user).desc(:_id).limit(limit) # order by id works ok to get the last inserted ones
-    last_games.only(:map_id).map(&:map_id)
+    self.last_played_by(user, limit).only(:map_id).map(&:map_id)
   end
+
 
   def finish_and_save!
     self.finish
