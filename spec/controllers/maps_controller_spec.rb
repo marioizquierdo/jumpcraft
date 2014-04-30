@@ -37,6 +37,7 @@ describe MapsController do
         @m_no_trial = create :map, name: 'San Francisco' # Not a Trial, this should not be used
 
         $stdout.stub(:write) # silence puts
+        require 'rake'
         Infiltration::Application.load_tasks
         Rake::Task['trial_maps:create'].invoke # create trial maps
         $stdout.unstub(:write) # restore puts

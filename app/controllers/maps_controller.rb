@@ -208,7 +208,7 @@ private
 
     maps = maps.limit(3).to_a # load 3 trials
     maps.each do |m|
-      m.relative_difficulty = names_to_difficulties_map[m.name] # assign relative_difficulty
+      m.trial_difficulty = names_to_difficulties_map[m.name] # assign relative_difficulty
     end
     maps
   end

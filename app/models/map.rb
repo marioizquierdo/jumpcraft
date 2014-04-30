@@ -21,6 +21,7 @@ class Map
   after_build :calculate_score, unless: :skip_calculate_score_callback
   before_save :calculate_score, unless: :skip_calculate_score_callback
   attr_accessor :skip_calculate_score_callback # set to true on tests to skip calculate_score callback
+  attr_accessor :trial_difficulty # used to manually override dificulty_relative_to(user_skill) on trial maps
 
   scope :trial, where(creator_id: User::INFILTRATION_USER_ID) # get only trial maps
 
@@ -60,7 +61,6 @@ class Map
   # Return the label for the difficulty of the map score in relation to the user.
   # that is one of DIFFICULTY_TRESHOLDS: very_easy, easy, medium, etc..
   def dificulty_relative_to(user_skill)
-    return @relative_difficulty if @relative_difficulty # allow to manually set difficulty in some cases
     return :unknown unless self.skill_mean # ensure not nil value errors
     return :unknown if self.skill_deviation > 4 # more deviation means that we really don't know yet if the skill_mean is accurate
     skill_diff = self.skill_mean - user_skill
@@ -73,10 +73,6 @@ class Map
       end
     end
     difficulty
-  end
-
-  def relative_difficulty=(difficulty)
-    @relative_difficulty = difficulty
   end
 
   # Find a map based on the difficulty relative to the given score.

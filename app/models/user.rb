@@ -106,6 +106,7 @@ class User
   # If there is not enough confidence about it (high user or map skill_deviation), then return :unknown
   def difficulty_of_playing(map)
     return :unknown unless map # ensure map is not nil
+    return map.trial_difficulty if map.trial_difficulty && map.trial? # trial map suggestions have fixed difficulty
     return :unknown unless self.skill_mean # ensure not nil value errors
     return :unknown if self.skill_deviation > 4 # more deviation means that we really don't know yet if the skill_mean is accurate
     return map.dificulty_relative_to(self.skill_mean)
