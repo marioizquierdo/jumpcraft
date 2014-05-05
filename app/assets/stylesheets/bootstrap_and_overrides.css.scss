@@ -29,28 +29,28 @@
 .navbar {
 
   .nav>li>a {
-    color: white;
+    color: #ccc;
     text-decoration:none;
     text-shadow: none;
   }
 
   .nav>li>a:focus,.nav>li>a:hover {
     background-color:transparent;
-    color: #eee;
+    color: #fff;
     text-decoration:none;
   }
 
   .nav>.active>a,.nav>.active>a:hover,.nav>.active>a:focus {
-    color: #ddd;
+    color: #fff;
     text-decoration:none;
-    background-color:#333;
+    background-color:#444;
     -webkit-box-shadow:none;
     -moz-box-shadow:none;
     box-shadow:none;
   }
 
   .btn-navbar {
-    color:#ffffff;
+    color:#ccc;
     text-shadow:none;
     background-color:black;
     background-image:none !important;
@@ -62,17 +62,7 @@
   }
 
   .btn-navbar:hover,.btn-navbar:focus,.btn-navbar:active,.btn-navbar.active,.btn-navbar.disabled,.btn-navbar[disabled] {
-    color:#ffffff;
-    background-color:black;
-    *background-color:black;
-  }
-
-  .btn-navbar:active,.btn-navbar.active {
-    background-color:#000000 \9;
-  }
-
-  .btn-navbar:hover,.btn-navbar:focus,.btn-navbar:active,.btn-navbar.active,.btn-navbar.disabled,.btn-navbar[disabled] {
-    color:#ffffff;
+    color:#fff;
     background-color:black;
     *background-color:black;
   }

@@ -1,19 +1,13 @@
 
 %ul.nav.pull-left
-  %li.divider-vertical
-  %li= link_to 'Home', root_path
-  %li.divider-vertical
-  %li= link_to 'Play', play_path
-  %li.divider-vertical
-  %li= link_to 'Users Ranking', users_ladder_path
-  %li.divider-vertical
-  %li= link_to 'Maps Ranking', maps_ladder_path
-  %li.divider-vertical
+  %li{class: ('active' if current_page?(root_path))}= link_to 'Home', root_path
+  %li{class: ('active' if current_page?(play_path))}= link_to 'Play', play_path
+  %li{class: ('active' if current_page?(users_ladder_path))}= link_to 'Users Ranking', users_ladder_path
+  %li{class: ('active' if current_page?(maps_ladder_path))}= link_to 'Maps Ranking', maps_ladder_path
   - if user_signed_in?
-    %li= link_to 'My Maps', maps_my_maps_path
-    %li.divider-vertical
-    %li= link_to 'Played Maps', games_my_games_path
-    %li.divider-vertical
+    %li{class: ('active' if current_page?(maps_my_maps_path))}= link_to 'My Maps', maps_my_maps_path
+    %li{class: ('active' if current_page?(games_my_games_path))}= link_to 'Played Games', games_my_games_path
+
 
 %ul.nav.pull-right
   - if user_signed_in?

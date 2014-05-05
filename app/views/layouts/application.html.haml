@@ -28,13 +28,12 @@
     #wrap
       .navbar.navbar-fixed-top
         .navbar-inner
-          .container
-            %a.btn.btn-navbar(data-target=".nav-collapse" data-toggle="collapse")
-              %span.icon-bar
-              %span.icon-bar
-              %span.icon-bar
-            .container.nav-collapse
-              = render 'layouts/navigation'
+          %a.btn.btn-navbar(data-target=".nav-collapse" data-toggle="collapse")
+            %span.icon-bar
+            %span.icon-bar
+            %span.icon-bar
+          .nav-collapse
+            = render 'layouts/navigation'
 
       #top-padding
       = yield

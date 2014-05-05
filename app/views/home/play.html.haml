@@ -1,30 +1,20 @@
-.container-fluid
-  .row-fluid
-    .span2
-      %ul.nav.nav-tabs.nav-stacked
-        %li
-          %a{href: root_path} Button 1
-        %li
-          %a{href: root_path} Button 2
-        %li
-          %a{href: root_path} Button 3
+.container
 
-    .span10
-      - if user_signed_in?
-        #swf-container
-          / Container to load SWFObject with the infiltration flash project (done on home.js.coffee)
+  - if user_signed_in?
+    #swf-container
+      / Container to load SWFObject with the infiltration flash project (done on home.js.coffee)
 
-      - else
-        %p
-          = link_to 'Sign in', new_user_session_path
-          or
-          = link_to 'create a new account', new_user_registration_path
-          to
-          %b play ranked
-          and
-          %b create new maps.
-        %p
-          Or click on a map in the
-          = link_to 'Maps Ranking', maps_ladder_path
-          to play anonymously on
-          %b free-play mode.
+  - else
+    %p
+      = link_to 'Sign in', new_user_session_path
+      or
+      = link_to 'create a new account', new_user_registration_path
+      to
+      %b play ranked
+      and
+      %b create new maps.
+    %p
+      Or click on a map in the
+      = link_to 'Maps Ranking', maps_ladder_path
+      to play anonymously on
+      %b free-play mode.
