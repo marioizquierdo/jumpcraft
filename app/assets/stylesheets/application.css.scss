@@ -12,6 +12,18 @@
  *= require_tree .
 */
 
+// Flixel font face
+@font-face {
+  font-family: "Flixel";
+  src: url("/nokiafc22.ttf") format('truetype');
+}
+.btn,
+.navbar a,
+h1, h2, h3, h4 {
+  font-family: "Flixel", "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+}
+
+// Tables
 table {
   td.short {
     width: 60px;
