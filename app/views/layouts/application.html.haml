@@ -25,23 +25,28 @@
     = yield :bootstrap_javascripts
 
   %body
-    .navbar.navbar-fixed-top
-      .navbar-inner
-        .container
-          %a.btn.btn-navbar(data-target=".nav-collapse" data-toggle="collapse")
-            %span.icon-bar
-            %span.icon-bar
-            %span.icon-bar
-          %a.brand{href: root_path} Infiltration Prototype
-          .container.nav-collapse
-            = render 'layouts/navigation'
+    #wrap
+      .navbar.navbar-fixed-top
+        .navbar-inner
+          .container
+            %a.btn.btn-navbar(data-target=".nav-collapse" data-toggle="collapse")
+              %span.icon-bar
+              %span.icon-bar
+              %span.icon-bar
+            %a.brand{href: root_path} Infiltration Prototype
+            .container.nav-collapse
+              = render 'layouts/navigation'
 
-    .container
-      = yield
-      = bootstrap_flash
+      .container
+        = yield
+        = bootstrap_flash
 
-      %footer
-        %p Infiltration Prototype - Created by Mario Izquierdo and Alex Cho Snyder
+      #push
+
+    #footer
+      .container
+        %p.muted.credit
+          Infiltration Prototype - Created by Mario Izquierdo and Alex Cho Snyder
 
     / Javascripts
     / Placed at the end of the document so the pages load faster
