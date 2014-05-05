@@ -1,10 +1,8 @@
 Infiltration::Application.routes.draw do
-  authenticated :user do
-    root to: 'home#index'
-  end
   root to: "home#index"
   devise_for :users, token_authentication_key: 'auth_token', controllers: {sessions: 'sessions'}
 
+  get '/home/play'        => 'home#play', as: 'play'
   get '/users/ladder'     => 'users#ladder', as: 'users_ladder'
   get '/users/:id'        => 'users#show', as: 'user'
 

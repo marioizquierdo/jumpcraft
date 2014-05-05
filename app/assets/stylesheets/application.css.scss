@@ -30,3 +30,35 @@ table {
   margin: 10px auto 40px;
   border: 1px solid #ccc;
 }
+
+.infiltration-block {
+  background: black;
+  padding: 2px;
+  border: 2px dashed white;
+  box-shadow: 0 0 0 4px black;
+}
+
+#index-page {
+  #signup-buttons-wrapper { text-align: center; }
+  #signup-buttons {
+    display: inline-block;
+    margin: 10px auto 80px;
+    padding: 20px;
+    text-align: center;
+    &.one-button {
+
+    }
+    &.two-buttons {
+      a.btn:first-child {
+        margin-right: 20px;
+      }
+    }
+  }
+
+  #infiltration-logo-img {
+    display: block;
+    margin: auto;
+    width: 978px;
+    height: 422px;
+  }
+}

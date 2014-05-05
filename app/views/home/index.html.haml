@@ -1,37 +1,24 @@
-.container
+#index-page.container
 
-  - if user_signed_in?
-    #swf-container
-      / Container to load SWFObject with the infiltration flash project (done on home.js.coffee)
+  = bootstrap_flash
 
-  - else
+  = image_tag 'infiltration-logo.jpg', size: '978x422', id: 'infiltration-logo-img'
 
-    = bootstrap_flash
+  #signup-buttons-wrapper
+    - if user_signed_in?
+      #signup-buttons.infiltration-block.one-button
+        %a.btn.btn-large{href: play_path}
+          Play
 
-    .inline-signin-form
-      = form_for(resource, as: resource_name, url: session_path(resource_name),
-            html: {id: 'login-form', class: 'form-inline'}) do |f|
+    - else
+      #signup-buttons.infiltration-block.two-buttons
+        %a.btn.btn-large{href: new_user_session_path}
+          Sign in
 
-        = f.email_field :email, autofocus: true, class: 'input-small', placeholder: 'Email'
-        = f.password_field :password, class: 'input-small', placeholder: 'Password'
+        %a.btn.btn-large{href: new_user_registration_path}
+          Create account
 
-        - if devise_mapping.rememberable?
-          %label.checkbox
-            = f.check_box :remember_me
-            Remember me
-
-        &nbsp;&nbsp;&nbsp;
-        %button.btn{type: "submit"} Sign in
-        or
-        = link_to 'Create a new account', new_user_registration_path
-
-        (
-        = link_to 'Forgot your password?', new_password_path(resource_name)
-        )
-
-
-    = image_tag 'infiltration-logo.jpg', size: '978x422'
-
+  #game-info
     %h4 What is Infiltration?
     %p
       Play a game where all maps are created by the community. Would you be able to beat your friends's maps?

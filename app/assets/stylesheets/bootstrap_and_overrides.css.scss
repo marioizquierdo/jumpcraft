@@ -5,3 +5,91 @@
  * To use Glyphicons sprites instead of Font Awesome, replace with "require twitter-bootstrap-static/sprites"
  *=require twitter-bootstrap-static/fontawesome
 */
+
+
+.navbar-fixed-top .navbar-inner,
+.navbar-static-top .navbar-inner{
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+}
+
+.navbar-inner {
+  background-color: black !important;
+  background-image: none !important;
+  filter:progid:DXImageTransform.Microsoft.gradient(enabled = false);
+  border: none !important;
+  -webkit-box-shadow: none !important;
+  -moz-box-shadow: none !important;
+  box-shadow: none !important;
+}
+
+
+// Override navbar colors to use black background with white text
+.navbar {
+
+  .nav>li>a {
+    color: white;
+    text-decoration:none;
+    text-shadow: none;
+  }
+
+  .nav>li>a:focus,.nav>li>a:hover {
+    background-color:transparent;
+    color: #eee;
+    text-decoration:none;
+  }
+
+  .nav>.active>a,.nav>.active>a:hover,.nav>.active>a:focus {
+    color: #ddd;
+    text-decoration:none;
+    background-color:#333;
+    -webkit-box-shadow:none;
+    -moz-box-shadow:none;
+    box-shadow:none;
+  }
+
+  .btn-navbar {
+    color:#ffffff;
+    text-shadow:none;
+    background-color:black;
+    background-image:none !important;
+    border-color:none !important;
+    filter:progid:DXImageTransform.Microsoft.gradient(enabled = false);
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+  }
+
+  .btn-navbar:hover,.btn-navbar:focus,.btn-navbar:active,.btn-navbar.active,.btn-navbar.disabled,.btn-navbar[disabled] {
+    color:#ffffff;
+    background-color:black;
+    *background-color:black;
+  }
+
+  .btn-navbar:active,.btn-navbar.active {
+    background-color:#000000 \9;
+  }
+
+  .btn-navbar:hover,.btn-navbar:focus,.btn-navbar:active,.btn-navbar.active,.btn-navbar.disabled,.btn-navbar[disabled] {
+    color:#ffffff;
+    background-color:black;
+    *background-color:black;
+  }
+
+  .btn-navbar:active,.btn-navbar.active {
+    background-color:#000000 \9;
+  }
+
+  .btn-navbar .icon-bar {
+    background-color:#f5f5f5;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+  }
+
+  .divider-vertical {
+    border-left:1px solid #666;
+    border-right:1px solid #666;
+  }
+}
