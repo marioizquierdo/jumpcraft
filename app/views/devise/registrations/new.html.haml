@@ -1,21 +1,24 @@
-%h2 New Account
+.container
+  = bootstrap_flash
 
-= form_for(resource, :as => resource_name, :url => registration_path(resource_name)) do |f|
-  = devise_error_messages!
+  %h2 New Account
 
-  = f.label 'Email (for login only, not visible to other users)'
-  = f.email_field :email, placeholder: "example@gmail.com"
+  = form_for(resource, :as => resource_name, :url => registration_path(resource_name)) do |f|
+    = devise_error_messages!
 
-  = f.label 'Password'
-  = f.password_field :password, placeholder: "Enter Password"
+    = f.label 'Email (for login only, not visible to other users)'
+    = f.email_field :email, placeholder: "example@gmail.com"
 
-  = f.label 'Password Confirmation'
-  = f.password_field :password_confirmation, placeholder: "Repeat password"
+    = f.label 'Password'
+    = f.password_field :password, placeholder: "Enter Password"
 
-  = f.label 'Player Name (your identity in the game)'
-  = f.text_field :name, placeholder: "nickname"
+    = f.label 'Password Confirmation'
+    = f.password_field :password_confirmation, placeholder: "Repeat password"
 
-  %br/
-  %button.btn{type: "submit"} Sign Up
+    = f.label 'Player Name (your identity in the game)'
+    = f.text_field :name, placeholder: "nickname"
 
-= render "devise/shared/links"
+    %br/
+    %button.btn{type: "submit"} Sign Up
+
+  = render "devise/shared/links"

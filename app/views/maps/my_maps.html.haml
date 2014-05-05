@@ -1,31 +1,33 @@
-%h3 My created maps
+.container
 
-- if @maps.present?
-  %table.table.table-condensed
-    %thead
-      %th Score
-      %th Map Name
-      %th{title: 'Times this map was played on the ladder'} Games
-      %th{title: 'Ladder games where the played died on this map'} Deaths
-    %tbody
-      - n = 0 # count like this because .entries.size makes another query
-      - @maps.each_with_index do |map, i|
-        - n += 1
-        %tr
-          %td.short= map.score
-          %td
-            %canvas.map-canvas{width: '80px', height: '60px', style: 'border: 1px solid #d3d3d3;', 
-              'data-mapdata' => map.data, 'data-href' => url_for(map)}
-            = link_to map.name, map
-          %td= map.played_games
-          %td= map.won_games
+  %h3 My created maps
 
-  %p
-    You have created #{n} maps.
-    %a{href: root_path} Create another map
+  - if @maps.present?
+    %table.table.table-condensed
+      %thead
+        %th Score
+        %th Map Name
+        %th{title: 'Times this map was played on the ladder'} Games
+        %th{title: 'Ladder games where the played died on this map'} Deaths
+      %tbody
+        - n = 0 # count like this because .entries.size makes another query
+        - @maps.each_with_index do |map, i|
+          - n += 1
+          %tr
+            %td.short= map.score
+            %td
+              %canvas.map-canvas{width: '80px', height: '60px', style: 'border: 1px solid #d3d3d3;',
+                'data-mapdata' => map.data, 'data-href' => url_for(map)}
+              = link_to map.name, map
+            %td= map.played_games
+            %td= map.won_games
+
+    %p
+      You have created #{n} maps.
+      %a{href: root_path} Create another map
 
 
-- else
-  %p You have not created any map yet.
-  %p
-    %a{href: root_path} Create a new map
+  - else
+    %p You have not created any map yet.
+    %p
+      %a{href: root_path} Create a new map

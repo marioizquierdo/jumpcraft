@@ -1,18 +1,21 @@
-%h2 Sign in
+.container
+  = bootstrap_flash
 
-= form_for(resource, :as => resource_name, :url => session_path(resource_name), html: {id: 'login-form'}) do |f|
-  = f.label :email
-  = f.email_field :email, :autofocus => true
+  %h2 Sign in
 
-  = f.label :password
-  = f.password_field :password
+  = form_for(resource, :as => resource_name, :url => session_path(resource_name), html: {id: 'login-form'}) do |f|
+    = f.label :email
+    = f.email_field :email, :autofocus => true
 
-  - if devise_mapping.rememberable?
-    %label.checkbox
-      = f.check_box :remember_me
-      Remember me
+    = f.label :password
+    = f.password_field :password
 
-  %br/
-  %button.btn{type: "submit"} Sign in
+    - if devise_mapping.rememberable?
+      %label.checkbox
+        = f.check_box :remember_me
+        Remember me
 
-= render "devise/shared/links"
+    %br/
+    %button.btn{type: "submit"} Sign in
+
+  = render "devise/shared/links"

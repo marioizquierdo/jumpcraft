@@ -1,36 +1,38 @@
-%h3 Last maps played in the ladder
+.container
 
-- if @games.present?
-  %table.table.table-condensed.table-bordered.ranking
-    %thead
-      %th Score
-      %th Map
-      %th Coins
-    %tbody
-      - items_in_page = 0 # count like this because @games.entries.size makes another query
-      - @games.each_with_index do |game, i|
-        - items_in_page += 1
-        %tr{ class: ('success' if game.map_defeated) }
-          %td.short
-            - x = game.user_score_delta
-            = x > 0 ? "+#{x}" : x
-          %td
-            %canvas.map-canvas{width: '80px', height: '60px', style: 'border: 1px solid #d3d3d3;', 
-              'data-mapdata' => game.map.data, 'data-href' => url_for(game.map)}
-            = link_to game.map.name, game.map
-          %td.short
-            - x = game.coins
-            = x > 0 ? "+#{x}" : x
+  %h3 Last maps played in the ladder
 
-  %ul.pager
-    - if current_page > 1
-      %li
-        %a{href: url_for(page: current_page - 1)} &laquo; Previous
-    - if @page_size == items_in_page
-      %li
-        %a{href: url_for(page: current_page + 1)} Next &raquo;
+  - if @games.present?
+    %table.table.table-condensed.table-bordered.ranking
+      %thead
+        %th Score
+        %th Map
+        %th Coins
+      %tbody
+        - items_in_page = 0 # count like this because @games.entries.size makes another query
+        - @games.each_with_index do |game, i|
+          - items_in_page += 1
+          %tr{ class: ('success' if game.map_defeated) }
+            %td.short
+              - x = game.user_score_delta
+              = x > 0 ? "+#{x}" : x
+            %td
+              %canvas.map-canvas{width: '80px', height: '60px', style: 'border: 1px solid #d3d3d3;',
+                'data-mapdata' => game.map.data, 'data-href' => url_for(game.map)}
+              = link_to game.map.name, game.map
+            %td.short
+              - x = game.coins
+              = x > 0 ? "+#{x}" : x
 
-- else
-  %p You have not played any map in the ladder yet.
-  %p
-    %a{href: root_path} Go Play!
+    %ul.pager
+      - if current_page > 1
+        %li
+          %a{href: url_for(page: current_page - 1)} &laquo; Previous
+      - if @page_size == items_in_page
+        %li
+          %a{href: url_for(page: current_page + 1)} Next &raquo;
+
+  - else
+    %p You have not played any map in the ladder yet.
+    %p
+      %a{href: root_path} Go Play!

@@ -1,28 +1,29 @@
-%h3 User
-%p
-  User: #{@user.name}
-%p
-  Score: #{@user.score}
-%p
-  Coins: #{@user.coins}
+.container
+  %h3 User
+  %p
+    User: #{@user.name}
+  %p
+    Score: #{@user.score}
+  %p
+    Coins: #{@user.coins}
 
-%p
-  Times played on the ladder: #{@user.played_games}
-  - if @user.played_games > 0
-    %br/
-    #{@user.won_games} victories (#{(100 * @user.won_games / @user.played_games).to_i}% win rate)
+  %p
+    Times played on the ladder: #{@user.played_games}
+    - if @user.played_games > 0
+      %br/
+      #{@user.won_games} victories (#{(100 * @user.won_games / @user.played_games).to_i}% win rate)
 
-- if @maps.present?
-  %h5 Created Maps:
-  %ul
-    - @maps.each do |map|
-      %li
-        = link_to map.name, map
-        (
-        = map.score
-        )
-- else
-  %p Maps: none
+  - if @maps.present?
+    %h5 Created Maps:
+    %ul
+      - @maps.each do |map|
+        %li
+          = link_to map.name, map
+          (
+          = map.score
+          )
+  - else
+    %p Maps: none
 
-%p
-  Account created: #{l @user.created_at.to_date, :format => :long}
+  %p
+    Account created: #{l @user.created_at.to_date, :format => :long}
