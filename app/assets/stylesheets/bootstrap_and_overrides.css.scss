@@ -34,16 +34,19 @@
     text-shadow: none;
   }
 
-  .nav>li>a:focus,.nav>li>a:hover {
-    background-color:transparent;
+  .nav>li>a:focus,
+  .nav>li>a:hover {
+    background-color:#444;
     color: #fff;
     text-decoration:none;
   }
 
-  .nav>.active>a,.nav>.active>a:hover,.nav>.active>a:focus {
-    color: #fff;
+  .nav>.active>a,
+  .nav>.active>a:hover,
+  .nav>.active>a:focus {
+    color: #000;
+    background-color:#fff;
     text-decoration:none;
-    background-color:#444;
     -webkit-box-shadow:none;
     -moz-box-shadow:none;
     box-shadow:none;
@@ -61,13 +64,19 @@
     box-shadow: none;
   }
 
-  .btn-navbar:hover,.btn-navbar:focus,.btn-navbar:active,.btn-navbar.active,.btn-navbar.disabled,.btn-navbar[disabled] {
+  .btn-navbar:hover,
+  .btn-navbar:focus,
+  .btn-navbar:active,
+  .btn-navbar.active,
+  .btn-navbar.disabled,
+  .btn-navbar[disabled] {
     color:#fff;
     background-color:black;
     *background-color:black;
   }
 
-  .btn-navbar:active,.btn-navbar.active {
+  .btn-navbar:active,
+  .btn-navbar.active {
     background-color:#000000 \9;
   }
 
