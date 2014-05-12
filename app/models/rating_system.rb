@@ -27,7 +27,7 @@ class RatingSystem
     # Configure Trueskill graph
     opts = {
       beta: 5.0, # The length of the skill-chain, which is the difference of score between players that have an 80%/20% change of winning. Use a low value for games with a small amount of chance (Go, Chess, etc.) and a high value for games with a high amount of chance (Uno, Bridge, etc.)
-      draw_probability: 0, # We don't have draws in Infiltration.
+      draw_probability: 0, # We don't have draws in Jumpcraft.
     }
     graph = FactorGraph.new({winner_team => 1, loser_team => 2}, opts)
 

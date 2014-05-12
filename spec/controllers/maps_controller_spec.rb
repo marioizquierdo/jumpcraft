@@ -38,7 +38,7 @@ describe MapsController do
 
         $stdout.stub(:write) # silence puts
         require 'rake'
-        Infiltration::Application.load_tasks
+        Jumpcraft::Application.load_tasks
         Rake::Task['trial_maps:create'].invoke # create trial maps
         $stdout.unstub(:write) # restore puts
 

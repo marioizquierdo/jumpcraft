@@ -23,10 +23,10 @@ class Map
   attr_accessor :skip_calculate_score_callback # set to true on tests to skip calculate_score callback
   attr_accessor :trial_difficulty # used to manually override dificulty_relative_to(user_skill) on trial maps
 
-  scope :trial, where(creator_id: User::INFILTRATION_USER_ID) # get only trial maps
+  scope :trial, where(creator_id: User::JUMPCRAFT_USER_ID) # get only trial maps
 
   def trial? # check if this map is a trial map
-    self.creator_id.to_s == User::INFILTRATION_USER_ID
+    self.creator_id.to_s == User::JUMPCRAFT_USER_ID
   end
 
   def self.create_for_user(user, attrs = {})

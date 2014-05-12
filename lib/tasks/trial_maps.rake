@@ -4,15 +4,15 @@ namespace :trial_maps do
     puts "Destroy previous trial maps"
     Map.trial.destroy_all
 
-    puts "Destroy and re-create infiltration user"
-    infiltration_user = User.recreate_infiltration_user # destroy previous infiltration user and create a new one
+    puts "Destroy and re-create jumpcraft user"
+    jumpcraft_user = User.recreate_jumpcraft_user # destroy previous jumpcraft user and create a new one
 
-    # Assign each trial map to the infiltration user and save in DB
+    # Assign each trial map to the jumpcraft user and save in DB
     puts "Create new trial maps"
     trial_maps.each do |map|
       puts "  - #{map.name}"
       map.skill_deviation = 0.25 # We know for sure the skill_mean of this map. It helps to set player's skill mean and deviation faster.
-      map.creator = infiltration_user
+      map.creator = jumpcraft_user
       map.save!
     end
 

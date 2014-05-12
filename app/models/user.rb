@@ -2,8 +2,8 @@ class User
   include Mongoid::Document
   include Mongoid::Timestamps
 
-  # Id of the "infiltration" user. It is a constant, because is used to find trial maps.
-  INFILTRATION_USER_ID = "5340a9730482933613000001"
+  # Id of the "Jumpcraft" user. It is a constant, because is used to find trial maps.
+  JUMPCRAFT_USER_ID = "5340a9730482933613000001"
 
   # Include default devise modules. Others available are:
   # :token_authenticatable, :confirmable,
@@ -78,28 +78,27 @@ class User
   index({ email: 1 }, { unique: true, background: true })
   index({ authentication_token: 1 }, { unique: true, background: true })
 
-  # Rebuild the infiltration user in the DB
-  def self.recreate_infiltration_user
-    u = self.get_infiltration_user
+  # Rebuild the "Jumpcraft" user in the DB
+  def self.recreate_jumpcraft_user
+    u = self.get_jumpcraft_user
     u.destroy if u
-    self.create_infiltration_user!
+    self.create_jumpcraft_user!
   end
 
-  # Factory method to create the infiltration user
-  def self.create_infiltration_user!
+  # Factory method to create the jumpcraft user
+  def self.create_jumpcraft_user!
     u = self.new(
-      name: 'Infiltration',
-      score: 1000,
-      email: 'infiltration@infiltration.com',
+      name: 'Jumpcraft',
+      email: 'jumpcraft@jumpcraft.com',
       password: 'none'
     )
-    u.id = INFILTRATION_USER_ID # ensure id is known, so Map.trial scope works as expected
+    u.id = JUMPCRAFT_USER_ID # ensure id is known, so Map.trial scope works as expected
     u.save!
     u
   end
 
-  def self.get_infiltration_user
-    self.where(_id: INFILTRATION_USER_ID).first
+  def self.get_jumpcraft_user
+    self.where(_id: JUMPCRAFT_USER_ID).first
   end
 
   # Given a map, return the difficutly: :easy, :medium, :hard, etc.

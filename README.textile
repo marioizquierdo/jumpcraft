@@ -1,34 +1,28 @@
-h1. Infiltration
+h1. Jumpcraft
 
-This is the back end support for the Infiltration Prototype.
+This is the back end support for the Jumpcraft Prototype.
 It handles user signup and the API for users, maps and leaderboard.
 
 h2. Ruby on Rails
 
 This application requires:
 
-* Ruby version 1.9.3
+* Ruby version 2.0.0
 * Rails version 3.2.12
 
 Learn more about "Installing Rails":http://railsapps.github.com/installing-rails.html.
 
-h2. Database
-
-This application uses MongoDB with the Mongoid ORM.
-
 h2. Development
 
-* Template Engine: Haml
-* Testing Framework: RSpec and Factory GilR and Cucumber
-* Front-end Framework: None
-* Form Builder: None
+* View Template Engines: Haml and Rabl
+* Testing Frameworks: RSpec and Factory Gilr
 * Authentication: Devise
-* Authorization: None
+* Database: MongoDB (ORM: Mongoid)
 
 h2. Email
 
 The app will send emails to restore passwords, etc.
-We send emails as "infiltration.prototype@gmail.com", and the delibery system is smtp.sendgrid.net, using the free Sendgrid plan, that allows to send up to 200 emails per day.
+We send emails as "jumpcraft.prototype@gmail.com", and the delibery system is smtp.sendgrid.net, using the free Sendgrid plan, that allows to send up to 200 emails per day.
 
 h2. Contributing
 
@@ -43,7 +37,8 @@ If you add functionality to this application, create an alternative implementati
 
 h2. Credits
 
-Mario Izquierdo (work email: mario@lindenlab.com, personal email: tothemario@gmail.com)
+ * Backend/Rails app by Mario Izquierdo
+ * Actionscript/Flixel app by Alex Cho Snyder
 
 h2. License
 

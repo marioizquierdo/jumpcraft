@@ -6,12 +6,12 @@
 
   #signup-buttons-wrapper
     - if user_signed_in?
-      #signup-buttons.infiltration-block.one-button
+      #signup-buttons.jumpcraft-block.one-button
         %a.btn.btn-large{href: play_path}
           Play
 
     - else
-      #signup-buttons.infiltration-block.two-buttons
+      #signup-buttons.jumpcraft-block.two-buttons
         %a.btn.btn-large{href: new_user_session_path}
           Sign in
 
@@ -19,7 +19,7 @@
           Create account
 
   #game-info
-    %h4 What is Infiltration?
+    %h4 What is Jumpcraft?
     %p
       Play a game where all maps are created by the community. Would you be able to beat your friends's maps?
     %p
@@ -27,7 +27,7 @@
     %p
       Do you have what it takes to be a map designer master?
 
-    = image_tag 'infiltration-slogan.jpg', size: '300x270', class: 'img-rounded', style: 'float: left; margin-right: 20px'
+    = image_tag 'jumpcraft-slogan.jpg', size: '300x270', class: 'img-rounded', style: 'float: left; margin-right: 20px'
 
     %h4 How to play
     %p
@@ -37,7 +37,7 @@
 
     %h4 The Rankings
     %p
-      Infiltration is PvM (player versus map). This is a new concept, since both players and maps have a score.
+      Jumpcraft is PvM (player versus map). This is a new concept, since both players and maps have a score.
     %p
       Everytime you beat a map, you gain ranking score, and the map loses ranking score. But if you lose, the map will take the score from you.
     %p
@@ -52,7 +52,7 @@
 
     %h4 Credits
     %p
-      Infiltration Prototype was designed and implemented by Mario Izquierdo and Alex Cho Snyder.
+      Jumpcraft Prototype was designed and implemented by Mario Izquierdo and Alex Cho Snyder.
 
 
 

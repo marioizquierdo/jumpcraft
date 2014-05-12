@@ -4,4 +4,4 @@
 
 require File.expand_path('../config/application', __FILE__)
 
-Infiltration::Application.load_tasks
+Jumpcraft::Application.load_tasks

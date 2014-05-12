@@ -1,5 +1,5 @@
 if Rails.env.development?
-  Infiltration::Application.configure do
+  Jumpcraft::Application.configure do
 
     silence_warnings do
       require 'pry'
