@@ -8,8 +8,6 @@ body {
 }
 
 #top-padding {
-  display: block;
-  width: 100px;
   height: 40px; /* same as nav header */
   margin-bottom: 10px;
 }
