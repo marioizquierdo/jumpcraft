@@ -5,18 +5,18 @@
   #swf-container.map-practice
     / Container to load SWFObject with the jumpcraft flash project (done on map_show.js.coffee)
 
-  %h3 Map: #{@map.name}
+  %h3 Challenge: #{@map.name}
 
-  %p By #{link_to @map.creator.name, @map.creator}
+  %p Created by #{link_to @map.creator.name, @map.creator}
 
   - if @map.score
     %p
-      Score: #{@map.score}
+      Level: #{@map.score}
       - if user_signed_in?
         (difficulty: #{current_user.difficulty_of_playing(@map)})
 
   %p
-    Times this map was played on the ladder: #{@map.played_games}
+    Ranked games: #{@map.played_games}
     - if @map.played_games > 0
       %br/
       #{@map.played_games - @map.won_games} player victories (#{100 - (100 * @map.won_games / @map.played_games).to_i}% players win rate)

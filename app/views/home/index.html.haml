@@ -19,40 +19,31 @@
           Create account
 
   #game-info
-    %h4 What is Jumpcraft?
-    %p
-      Play a game where all maps are created by the community. Would you be able to beat your friends's maps?
-    %p
-      Design and create your own maps. It is easy and fun with our WYSIWYG map editor.
-    %p
-      Do you have what it takes to be a map designer master?
 
     = image_tag 'jumpcraft-slogan.jpg', size: '300x270', class: 'img-rounded', style: 'float: left; margin-right: 20px'
 
-    %h4 How to play
+    %h4 Players vs Challenges
     %p
-      Sign up with your email and a password. The password will be encrypted and secured.
-      %br/
-      = link_to 'Play now', new_user_registration_path
+      In the Jumpcraft universe, players beat challenges created by other players.
+      Who are the best players? Who can build the hardest challenges? Roll yourself in the seek for perfection,
+      = link_to 'join the jumpcraft community', new_user_registration_path
 
-    %h4 The Rankings
+    %h4 Build Challenges
     %p
-      Jumpcraft is PvM (player versus map). This is a new concept, since both players and maps have a score.
+      All challenges are created by other players, with the exception of a few introductory trials. Jumpcraft is not only about playing challenges, but also about building challenges.
+
+    %h4 Rankings and Rating System
     %p
-      Everytime you beat a map, you gain ranking score, and the map loses ranking score. But if you lose, the map will take the score from you.
+      Both players and challenges can level up and down. Every ranked game will update both player and challenge levels, making not only a competitive ranking for players but also for challenges. This also helps the system to suggest challenges that are of the appropriate difficulty level.
     %p
-      The score calculation is done using the ELO rating system, in a similar way to chess tournaments. This means that if you can create a map that is very difficult to beat, it will eventually get a better score. Also, the system will be able to offer you maps that are of your current player level.
+      After each ranked game, the player and challenge level update is done using the [Microsoft's Trueskill Rating System](http://research.microsoft.com/en-us/projects/trueskill/).
 
 
     %h4 Just a Prototype
     %p
-      This is a proof of concept. You should expect bugs and security flaws. Our goal is to try the concept of PvM and automatically ranked user generated content. Please, tell us what you feel in the blog.
+      Jumpcraft is a proof of concept. You should not expect full functionality. Our goal is to build a small prototype to try out automatically ranked user generated content, and well, also have some fun building a decent 2D platformer system.
     %p
       Good luck and have fun!
-
-    %h4 Credits
-    %p
-      Jumpcraft Prototype was designed and implemented by Mario Izquierdo and Alex Cho Snyder.
 
 
 

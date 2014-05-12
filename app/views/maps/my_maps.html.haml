@@ -1,14 +1,14 @@
 .container
 
-  %h3 My created maps
+  %h3 Created Challenges
 
   - if @maps.present?
-    %table.table.table-condensed.flixel-font
+    %table.table.table-condensed.table-bordered.flixel-font
       %thead
-        %th Score
-        %th Map Name
-        %th{title: 'Times this map was played on the ladder'} Games
-        %th{title: 'Ladder games where the played died on this map'} Deaths
+        %th Level
+        %th Challenge Name
+        %th{title: 'Played ranked games in this challenge.'} Ranked Games
+        %th{title: 'Players that played a ranked game in this challenge and lost.'} Players killed
       %tbody
         - n = 0 # count like this because .entries.size makes another query
         - @maps.each_with_index do |map, i|
@@ -23,11 +23,11 @@
             %td= map.won_games
 
     %p
-      You have created #{n} maps.
-      %a{href: root_path} Create another map
+      You have created #{n} challenges.
+      %a{href: play_path} Create another challenge
 
 
   - else
-    %p You have not created any map yet.
+    %p You have not created any challenge yet.
     %p
-      %a{href: root_path} Create a new map
+      %a{href: play_path} Build new challenge

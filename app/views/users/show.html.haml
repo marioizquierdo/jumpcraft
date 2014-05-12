@@ -1,20 +1,20 @@
 .container
-  %h3 User
+  %h3 Player
   %p
-    User: #{@user.name}
+    Player: #{@user.name}
   %p
-    Score: #{@user.score}
+    Level: #{@user.score}
   %p
     Coins: #{@user.coins}
 
   %p
-    Times played on the ladder: #{@user.played_games}
+    Ranked Games Played: #{@user.played_games}
     - if @user.played_games > 0
       %br/
       #{@user.won_games} victories (#{(100 * @user.won_games / @user.played_games).to_i}% win rate)
 
   - if @maps.present?
-    %h5 Created Maps:
+    %h5 Created Challenges:
     %ul
       - @maps.each do |map|
         %li
@@ -23,7 +23,7 @@
           = map.score
           )
   - else
-    %p Maps: none
+    %p Created Challenges: none
 
   %p
-    Account created: #{l @user.created_at.to_date, :format => :long}
+    Player since: #{l @user.created_at.to_date, :format => :long}

@@ -1,13 +1,13 @@
 .container
 
-  %h3 Last maps played in the ladder
+  %h3 Last Ranked Games
 
   - if @games.present?
     %table.table.table-condensed.table-bordered.ranking.flixel-font
       %thead
-        %th Score
-        %th Map
+        %th Level diff
         %th Coins
+        %th Challenge
       %tbody
         - items_in_page = 0 # count like this because @games.entries.size makes another query
         - @games.each_with_index do |game, i|
@@ -16,13 +16,13 @@
             %td.short
               - x = game.user_score_delta
               = x > 0 ? "+#{x}" : x
+            %td.short
+              - x = game.coins
+              = x > 0 ? "+#{x}" : x
             %td
               %canvas.map-canvas{width: '80px', height: '60px', style: 'border: 1px solid #d3d3d3;',
                 'data-mapdata' => game.map.data, 'data-href' => url_for(game.map)}
               = link_to game.map.name, game.map
-            %td.short
-              - x = game.coins
-              = x > 0 ? "+#{x}" : x
 
     %ul.pager
       - if current_page > 1
@@ -33,6 +33,6 @@
           %a{href: url_for(page: current_page + 1)} Next &raquo;
 
   - else
-    %p You have not played any map in the ladder yet.
+    %p You have not played ranked yet.
     %p
-      %a{href: root_path} Go Play!
+      %a{href: play_path} Go Play!

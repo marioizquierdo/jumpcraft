@@ -1,12 +1,12 @@
 .container
 
-  %h3 Maps Ranking
+  %h3 Challenges Ranking
 
   %table.table.table-condensed.ranking.flixel-font
     %thead
       %th Rank
-      %th Score
-      %th Map
+      %th Level
+      %th Challenge
       %th Created By
     %tbody
       - my_maps = current_user ? current_user.maps.to_a : []

@@ -2,11 +2,11 @@
 %ul.nav.pull-left
   %li{class: ('active' if current_page?(root_path))}= link_to 'Home', root_path
   %li{class: ('active' if current_page?(play_path))}= link_to 'Play', play_path
-  %li{class: ('active' if current_page?(users_ladder_path))}= link_to 'Users Ranking', users_ladder_path
-  %li{class: ('active' if current_page?(maps_ladder_path))}= link_to 'Maps Ranking', maps_ladder_path
+  %li{class: ('active' if current_page?(users_ladder_path))}= link_to 'Players Ranking', users_ladder_path
+  %li{class: ('active' if current_page?(maps_ladder_path))}= link_to 'Challenges Ranking', maps_ladder_path
   - if user_signed_in?
-    %li{class: ('active' if current_page?(maps_my_maps_path))}= link_to 'My Maps', maps_my_maps_path
-    %li{class: ('active' if current_page?(games_my_games_path))}= link_to 'Played Games', games_my_games_path
+    %li{class: ('active' if current_page?(maps_my_maps_path))}= link_to 'My Creations', maps_my_maps_path
+    %li{class: ('active' if current_page?(games_my_games_path))}= link_to 'My Play History', games_my_games_path
 
 
 %ul.nav.pull-right
