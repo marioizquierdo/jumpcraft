@@ -29,7 +29,7 @@ class User
 
   has_many :maps, inverse_of: :creator
 
-  index score: -1 # for ladder
+  index score: -1, coins: -1 # for ladder
   index email: 1 # for login
 
   after_build :calculate_score, unless: :skip_calculate_score_callback

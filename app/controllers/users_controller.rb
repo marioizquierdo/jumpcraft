@@ -7,7 +7,7 @@ class UsersController < ApplicationController
     @default_page = RatingSystem.ladder_page_for_score(User, current_user.score, @page_size) if current_user
     @offset = offset_from_page_param
 
-    @users = User.desc(:score).
+    @users = User.order_by(score: -1, coins: -1). # ranked by score, and then by coins when same score
       skip(@offset).limit(@page_size) # pagination
   end
 
