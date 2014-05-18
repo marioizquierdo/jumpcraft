@@ -17,6 +17,7 @@ class Map
 
   index score: -1 # for ladder
   index skill_mean: -1 # for suggestions
+  index({trial: 1}, {sparse: true}) # to get trial maps on first suggestions
 
   after_build :calculate_score, unless: :skip_calculate_score_callback
   before_save :calculate_score, unless: :skip_calculate_score_callback
