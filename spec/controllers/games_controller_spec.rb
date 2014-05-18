@@ -185,7 +185,7 @@ describe GamesController do
           @player.skill_deviation.should < player_previous[:skill_deviation] # more skill confidence
 
           @map.reload
-          @map.score.should > map_previous[:score] # more score
+          @map.score.should >= map_previous[:score] # more score
           @map.skill_mean.should > map_previous[:skill_mean] # more skill
           @map.skill_deviation.should < map_previous[:skill_deviation] # more skill confidence
         end

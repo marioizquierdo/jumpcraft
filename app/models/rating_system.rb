@@ -3,7 +3,7 @@ include Saulabs::TrueSkill
 
 class RatingSystem
 
-  SCORE_FACTOR = 20 # Xbox Live uses a scale of 0-50 for the score. We want to use a scale of 0-1000 (then we just apply a factor of x20 to the calculated score)
+  SCORE_FACTOR = 2 # Xbox Live uses a scale of 0-50 for the score. We want to use a scale of 0-100 (then we just apply a factor of x2 to the calculated score)
   SCORE_MEAN_DEVIATION_K = 3 # Same as in Xbox Live, to calculate the score, we use the so-called "conservative skill estimate", that is mean - 3 * deviation
 
   USER_INITIAL_SKILL_MEAN = 25.0 # in Xbox Live the initial mean is 25, but here we start playing agains trivial maps where users always win
