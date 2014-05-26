@@ -27,7 +27,8 @@ class User
   field :won_games, type: Integer, default: 0 # number of defeated maps in the ladder
   field :suggested_map_ids, type: Array # memory for last suggested maps, invalidated after playing one of them
 
-  has_many :maps, inverse_of: :creator
+  has_many :maps, inverse_of: :creator, dependent: :destroy
+  has_many :games, dependent: :delete
 
   index score: -1, coins: -1 # for ladder
   index email: 1 # for login
