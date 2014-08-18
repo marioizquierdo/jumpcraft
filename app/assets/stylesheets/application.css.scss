@@ -86,7 +86,9 @@ table {
   #home-game-info {
     background-color: #dedede;
     padding: 20px;
-    text-align: center;
+    h4 {
+      text-align: center;
+    }
   }
 
   #home-credits {
