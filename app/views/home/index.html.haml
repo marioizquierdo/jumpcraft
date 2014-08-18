@@ -1,49 +1,65 @@
-#index-page.container
+#home-page
+  #home-header
+    .container
+      = bootstrap_flash
 
-  = bootstrap_flash
+      %h1.jumpcraft-block
+        %img(src="jumpcraft-cover-city.png" alt="Jumpcraft")
 
-  %h1 Jumpcraft
+      #signup-buttons-wrapper
+        - if user_signed_in?
+          #signup-buttons.jumpcraft-block.one-button
+            %a.btn.btn-large{href: play_path}
+              Play
 
-  #signup-buttons-wrapper
-    - if user_signed_in?
-      #signup-buttons.jumpcraft-block.one-button
-        %a.btn.btn-large{href: play_path}
-          Play
+        - else
+          #signup-buttons.jumpcraft-block.two-buttons
+            %a.btn.btn-large{href: new_user_session_path}
+              Sign in
 
-    - else
-      #signup-buttons.jumpcraft-block.two-buttons
-        %a.btn.btn-large{href: new_user_session_path}
-          Sign in
+            %a.btn.btn-large{href: new_user_registration_path}
+              Create account
 
-        %a.btn.btn-large{href: new_user_registration_path}
-          Create account
+  #home-game-info
+    .container
 
-  #game-info
+      %h4 Jumpcraft is Player vs Challenge
+      %p
+        In the Jumpcraft universe, players beat challenges created by other players.
+        You can create your own challenges, but you will have to show that you can finalize your own challenge before making it public.
 
-    = image_tag 'jumpcraft-slogan.jpg', size: '300x270', class: 'img-rounded', style: 'float: left; margin-right: 20px'
+      %h4 Rankings and Rating System
+      %p
+        Both players and challenges can level up and down. Every ranked game will update both player and challenge levels, making not only a competitive ranking for players but also for challenges. This also helps the system to suggest challenges that are of the appropriate difficulty level.
+      %p
+        After each ranked game, the player and challenge level update is done using the Trueskill Rating System.
 
-    %h4 Players vs Challenges
-    %p
-      In the Jumpcraft universe, players beat challenges created by other players.
-      Who are the best players? Who can build the hardest challenges? Roll yourself in the seek for perfection,
-      = link_to 'join the jumpcraft community', new_user_registration_path
+  #home-credits
+    .container
 
-    %h4 Build Challenges
-    %p
-      All challenges are created by other players, with the exception of a few introductory trials. Jumpcraft is not only about playing challenges, but also about building challenges.
+    %h4 Credits
+    %table.credits
+      %tr
+        %td.credit Design
+        %td.dash -
+        %td.author Alex Cho & Mario Izquierdo
+      %tr
+        %td.credit Art & Animation
+        %td.dash -
+        %td.author Alex Cho
+      %tr
+        %td.credit Sounds and Music
+        %td.dash -
+        %td.author Mario Izquierdo
+      %tr
+        %td.credit Frontend programming (gameplay)
+        %td.dash -
+        %td.author Alex Cho
+      %tr
+        %td.credit Backend & Web programming (servers)
+        %td.dash -
+        %td.author Mario Izquierdo
 
-    %h4 Rankings and Rating System
-    %p
-      Both players and challenges can level up and down. Every ranked game will update both player and challenge levels, making not only a competitive ranking for players but also for challenges. This also helps the system to suggest challenges that are of the appropriate difficulty level.
-    %p
-      After each ranked game, the player and challenge level update is done using the [Microsoft's Trueskill Rating System](http://research.microsoft.com/en-us/projects/trueskill/).
-
-
-    %h4 Just a Prototype
-    %p
-      Jumpcraft is a proof of concept. You should not expect full functionality. Our goal is to build a small prototype to try out automatically ranked user generated content, and well, also have some fun building a decent 2D platformer system.
-    %p
-      Good luck and have fun!
 
 
 

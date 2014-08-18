@@ -51,12 +51,26 @@ table {
   box-shadow: 0 0 0 4px black;
 }
 
-#index-page {
-  h1 { text-align: center; font-size: 60px; line-height: 60px; margin: 40px auto; }
+#home-page {
+  h1 {
+    text-align: center;
+    font-size: 60px;
+    line-height: 60px;
+    display: block;
+    width: 411px;
+    height:372px;
+    padding: 5px;
+    margin: 28px auto 20px auto;
+    img {
+      display: block;
+      width: 411px;
+      height:372px;
+    }
+  }
   #signup-buttons-wrapper { text-align: center; }
   #signup-buttons {
     display: inline-block;
-    margin: 10px auto 80px;
+    margin: 10px auto 30px;
     padding: 20px;
     text-align: center;
     &.one-button {
@@ -69,10 +83,32 @@ table {
     }
   }
 
-  #jumpcraft-logo-img {
-    display: block;
-    margin: auto;
-    width: 978px;
-    height: 422px;
+  #home-game-info {
+    background-color: #dedede;
+    padding: 20px;
+    text-align: center;
+  }
+
+  #home-credits {
+    padding: 20px;
+    text-align: center;
+
+    table.credits {
+      margin: auto;
+      td.credit {
+        text-align: right;
+        width: 400px;
+        vertical-align: text-top;
+      }
+      td.dash {
+        text-align: center;
+        vertical-align: text-top;
+      }
+      td.author {
+        text-align: left;
+        width: 400px;
+        vertical-align: text-top;
+      }
+    }
   }
 }
