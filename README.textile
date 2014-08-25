@@ -1,6 +1,6 @@
 h1. Jumpcraft
 
-This is the back end support for the Jumpcraft Prototype.
+This is the back end support for the game [Jumpcraft](http://jumpcraft.herokuapp.com/).
 It handles user signup and the API for users, maps and leaderboard.
 
 h2. Ruby on Rails

@@ -1,9 +1,21 @@
+- content_for :og_meta do
+  - if user_signed_in? and current_user.id == @map.creator_id
+    %meta{property: "og:title",       content: "Jumpcraft Challenge"}
+    %meta{property: "og:description", content: "I created a Jumpcraft Challenge: #{@map.name}"}
+  - else
+    %meta{property: "og:title",       content: "Jumpcraft Challenge"}
+    %meta{property: "og:description", content: "Jumpcraft Challenge: '#{@map.name}', created by #{@map.creator.name}"}
+  %meta(property="og:image" content="http://jumpcraft.herokuapp.com/jumpcraft-cover-city.png")
+
 .container
   - content_for :bootstrap_javascripts do
     :javascript
       window.flashvars_map_id = "#{@map.id.to_s}"; // map id will be used as flashvars
   #swf-container.map-practice
     / Container to load SWFObject with the jumpcraft flash project (done on map_show.js.coffee)
+
+  #map-share-button-container
+    #share-button
 
   %h3 Challenge: #{@map.name}
 

@@ -14,7 +14,7 @@
 #= require jquery_ujs
 #= require twitter/bootstrap
 #= require swfobject
-#= require_tree .
+#= require share.min
 
 # Load SWF only if user is signed in
 swf_container_id = 'swf-container'
@@ -87,6 +87,15 @@ $ ->
     $el = $(el)
     draw_map_on_canvas(el, $el.attr('data-mapdata'))
     $el.on 'click', -> window.location.href = $el.attr('data-href')
+
+  # Activate Share-Button
+  new Share("#share-button",
+    ui: { flyout: 'middle right' }
+    networks:
+      facebook:  { app_id: "707434799326247" }
+      pinterest: { enabled: false }
+      email:     { enabled: false }
+  )
 
   # Close alert messages if any
   setTimeout ->
