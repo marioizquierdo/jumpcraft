@@ -22,7 +22,7 @@ h2. Development
 h2. Email
 
 The app will send emails to restore passwords, etc.
-We send emails as "jumpcraft.prototype@gmail.com", and the delibery system is smtp.sendgrid.net, using the free Sendgrid plan, that allows to send up to 200 emails per day.
+We send emails as "tothemario@gmail.com", and the delibery system is smtp.sendgrid.net, using the free Sendgrid plan, that allows to send up to 400 emails per day.
 
 h2. Contributing
 
