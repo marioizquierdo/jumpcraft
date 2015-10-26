@@ -48,9 +48,6 @@ Jumpcraft::Application.configure do
   # Precompile additional assets (application.js, application.css, and all non-JS/CSS are already added)
   # config.assets.precompile += %w( search.js )
 
-  # Disable delivery errors, bad email addresses will be ignored
-  # config.action_mailer.raise_delivery_errors = false
-
   # Enable threaded mode
   # config.threadsafe!
 
@@ -61,22 +58,21 @@ Jumpcraft::Application.configure do
   # Send deprecation notices to registered listeners
   config.active_support.deprecation = :notify
 
-  config.action_mailer.default_url_options = { :host => 'jumpcraft.herokuapp.com' }
+
   # ActionMailer Config
-  # Setup for production - deliveries, no errors raised
+  config.action_mailer.default_url_options = { :host => 'jumpcraft.herokuapp.com' }
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.perform_deliveries = true
-  config.action_mailer.raise_delivery_errors = false
+  config.action_mailer.raise_delivery_errors = true
   config.action_mailer.default :charset => "utf-8"
-
   config.action_mailer.smtp_settings = {
-    address: "smtp.sendgrid.net",
-    port: '587',
-    domain: "heroku.com",
-    authentication: :plain,
-    enable_starttls_auto: true,
-    user_name: ENV['SENDGRID_USERNAME'],
-    password: ENV['SENDGRID_PASSWORD']
+    :address        => 'smtp.sendgrid.net',
+    :port           => '587',
+    :authentication => :plain,
+    :user_name      => ENV['SENDGRID_USERNAME'],
+    :password       => ENV['SENDGRID_PASSWORD'],
+    :domain         => 'heroku.com',
+    :enable_starttls_auto => true
   }
 
 end
