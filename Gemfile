@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
 ruby '2.2.2'
-gem 'rails', '~> 3.2.12'
+gem 'rails', '~> 3.2.22'
 gem 'thin', '>= 1.6.4'
 
 gem 'mongoid', '>= 3.1.2'
@@ -14,6 +14,8 @@ gem 'twitter-bootstrap-rails'
 
 gem 'rabl' # JSON view template engine
 gem 'oj' # JSON parser (for rabl)
+
+gem 'test-unit' # workaround to make Rails 3.2 work with Ruby 2.2
 
 
 group :assets do

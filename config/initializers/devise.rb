@@ -238,6 +238,10 @@ Devise.setup do |config|
   # so you need to do it manually. For the users scope, it would be:
   # config.omniauth_path_prefix = "/my_engine/users/auth"
 
+  # Backwards compatibility
+  config.allow_insecure_token_lookup = true
+  config.allow_insecure_sign_in_after_confirmation = true
+
   # secret key
   config.secret_key = 'c656c1b3fd58c46cd021695da9cdf3c9bb7e43efe953ec9c23873e838d32cd254b04527b24726283becbe8c9ac5d425ca83b79b5759f195a2d4d2b4c26d530b6'
 end
