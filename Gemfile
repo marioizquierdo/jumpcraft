@@ -1,8 +1,8 @@
 source 'https://rubygems.org'
 
-ruby '2.0.0'
+ruby '2.2.2'
 gem 'rails', '~> 3.2.12'
-gem 'thin', '>= 1.5.0'
+gem 'thin', '>= 1.6.4'
 
 gem 'mongoid', '>= 3.1.2'
 
