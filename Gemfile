@@ -16,6 +16,7 @@ gem 'rabl' # JSON view template engine
 gem 'oj' # JSON parser (for rabl)
 
 gem 'test-unit' # workaround to make Rails 3.2 work with Ruby 2.2
+gem 'rails_12factor' # for Heroku, to avoid injecting plugins in Rails 3.x applications
 
 
 group :assets do
