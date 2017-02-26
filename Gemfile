@@ -4,7 +4,7 @@ ruby '2.2.4'
 gem 'rails', '~> 3.2.22'
 gem 'thin', '>= 1.6.4'
 
-gem 'mongoid', '>= 3.1.2'
+gem 'mongoid', '>= 3.1.6'
 
 gem 'jquery-rails'
 gem 'haml-rails', '>= 0.4'
