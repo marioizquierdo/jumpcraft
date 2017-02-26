@@ -190,7 +190,7 @@ DEPENDENCIES
   figaro (>= 0.6.3)
   haml-rails (>= 0.4)
   jquery-rails
-  mongoid (>= 3.1.2)
+  mongoid (>= 3.1.6)
   oj
   pry
   quiet_assets (>= 1.0.2)
@@ -204,5 +204,8 @@ DEPENDENCIES
   twitter-bootstrap-rails
   uglifier (>= 1.0.3)
 
+RUBY VERSION
+   ruby 2.2.4p230
+
 BUNDLED WITH
-   1.10.6
+   1.14.5
