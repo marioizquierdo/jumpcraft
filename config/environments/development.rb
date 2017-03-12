@@ -45,4 +45,6 @@ Jumpcraft::Application.configure do
 
   # Expands the lines which load the assets
   config.assets.debug = true
+
+  config.eager_load = false # added when updating from Rails 3.2 to 4.0
 end

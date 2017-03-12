@@ -75,4 +75,6 @@ Jumpcraft::Application.configure do
     :enable_starttls_auto => true
   }
 
+  config.eager_load = true # added when updating from Rails 3.2 to 4.0
+
 end

@@ -18,7 +18,7 @@ class Game
   scope :user, ->(user){ where user_id: user.id }
   scope :map, ->(map){ where map_id: map.id }
   scope :maps, ->(maps){ where :map_id.in => maps.collect(&:id) }
-  scope :unfinished, ne( finished: true )
+  scope :unfinished, -> { ne(finished: true) }
   scope :last_played_by, ->(user, limit) {
     user(user).desc(:_id).limit(limit) # order by id works ok to get the last inserted ones
   }

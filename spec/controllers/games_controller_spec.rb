@@ -43,7 +43,7 @@ describe GamesController do
         post :start, map_id: @game.map.id.to_s, format: 'json'
         @game.reload
         @game.should be_finished
-        @game.map_defeated.should be_false
+        @game.map_defeated.should be_falsey
       end
     end
 
@@ -169,7 +169,7 @@ describe GamesController do
         end
         it "records game.map_defeated = true" do
           post :finish, map_defeated: 'true', collected_coins: 99, format: 'json'
-          @game.reload.map_defeated.should be_true
+          @game.reload.map_defeated.should == true
         end
       end
       context "if the player loses" do
@@ -197,7 +197,7 @@ describe GamesController do
         end
         it "records game.map_defeated = false" do
           post :finish, map_defeated: 'false', collected_coins: 99, format: 'json'
-          @game.reload.map_defeated.should be_false
+          @game.reload.map_defeated.should be_falsey
         end
       end
     end

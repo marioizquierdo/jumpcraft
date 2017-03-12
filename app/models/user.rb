@@ -5,13 +5,8 @@ class User
   # Id of the "Jumpcraft" user. It is a constant, because is used to find trial maps.
   JUMPCRAFT_USER_ID = "5340a9730482933613000001"
 
-  # Include default devise modules. Others available are:
-  # :token_authenticatable, :confirmable,
-  # :lockable, :timeoutable and :omniauthable
-  devise :database_authenticatable, :token_authenticatable,
-    :registerable, :recoverable, :rememberable, :trackable, :validatable
-
-  attr_accessible :name, :email, :password, :password_confirmation, :remember_me, :created_at, :updated_at, :authentication_token
+  # Devise config
+  devise :database_authenticatable, :registerable, :recoverable, :rememberable, :trackable, :validatable
 
   ## -------------------
 
@@ -71,10 +66,6 @@ class User
   # field :unlock_token,    type: String # Only if unlock strategy is :email or :both
   # field :locked_at,       type: Time
 
-  ## Token authenticatable
-  field :authentication_token, type: String
-  before_save :ensure_authentication_token
-
   # run 'rake db:mongoid:create_indexes' to create indexes
   index({ email: 1 }, { unique: true, background: true })
   index({ authentication_token: 1 }, { unique: true, background: true })
@@ -118,4 +109,40 @@ class User
     self.score = RatingSystem::SCORE_FACTOR * (skill_mean - RatingSystem::SCORE_MEAN_DEVIATION_K * skill_deviation)
     self.score = [self.score.to_i, 0].max # ensure not negative
   end
+
+
+
+  ## Token authenticatable
+  ## Devise 3.2.0 removed support for (insecure) :token_authenticatable,
+  ## this is a pollifyl for that functionality after updating to Rails 4 and latest Devise
+
+  field :authentication_token, type: String
+  before_save :ensure_authentication_token
+  
+  def self.find_by_authentication_token(authentication_token = nil)
+    if authentication_token
+      where(authentication_token: authentication_token).first
+    end
+  end
+
+  def ensure_authentication_token
+    if authentication_token.blank?
+      self.authentication_token = generate_authentication_token
+    end
+  end
+
+  def reset_authentication_token!
+    self.authentication_token = generate_authentication_token
+    self.save
+  end
+
+  private
+
+  def generate_authentication_token
+    loop do
+      token = Devise.friendly_token
+      break token unless self.class.unscoped.where(authentication_token: token).first
+    end
+  end
+
 end

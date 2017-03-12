@@ -4,7 +4,7 @@ FactoryGirl.define do
     skill_mean 25.0
     skill_deviation 2.0
 
-    ignore do
+    transient do
       score nil
     end
 

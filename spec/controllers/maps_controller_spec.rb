@@ -46,7 +46,7 @@ describe MapsController do
         Game.last_played_map_ids(@user, 20).size.should == 0
         get :suggestions, format: 'json'
         maps = assigns(:maps)
-        maps.should have(3).elements
+        expect(maps.size).to eq(3)
         maps.map(&:name).should include('San Francisco', 'The Bunker', 'Caravel Ships')
 
         # last_played.size == 1
@@ -55,7 +55,7 @@ describe MapsController do
         Game.last_played_map_ids(@user, 20).size.should == 1
         get :suggestions, format: 'json'
         maps = assigns(:maps)
-        maps.should have(3).elements
+        expect(maps.size).to eq(3)
         maps.map(&:name).should_not include(played_map.name)
 
         # last_played.size == 2
@@ -72,7 +72,7 @@ describe MapsController do
         Game.last_played_map_ids(@user, 20).size.should == 3
         get :suggestions, format: 'json'
         maps = assigns(:maps)
-        maps.should have(3).elements
+        expect(maps.size).to eq(3)
         maps.map(&:name).should_not include(played_map.name)
 
         # last_played.size == 4
@@ -81,7 +81,7 @@ describe MapsController do
         Game.last_played_map_ids(@user, 20).size.should == 4
         get :suggestions, format: 'json'
         maps = assigns(:maps)
-        maps.should have(3).elements
+        expect(maps.size).to eq(3)
         maps.map(&:name).should_not include(played_map.name)
 
         # last_played.size == 5
@@ -90,7 +90,7 @@ describe MapsController do
         Game.last_played_map_ids(@user, 20).size.should == 5
         get :suggestions, format: 'json'
         maps = assigns(:maps)
-        maps.should have(3).elements
+        expect(maps.size).to eq(3)
         maps.map(&:name).should_not include(played_map.name)
 
         # last_played.size == 6
@@ -99,7 +99,7 @@ describe MapsController do
         Game.last_played_map_ids(@user, 20).size.should == 6
         get :suggestions, format: 'json'
         maps = assigns(:maps)
-        maps.should have(3).elements
+        expect(maps.size).to eq(3)
         maps.map(&:name).should_not include(played_map.name)
       end
     end
@@ -119,13 +119,13 @@ describe MapsController do
         create :map, skill_mean: 26
         get :suggestions, format: 'json'
         maps = assigns(:maps)
-        maps.should have(3).elements
+        expect(maps.size).to eq(3)
       end
       it "loads only one suggestion if that's the only available one" do
         create :map, skill_mean: 25
         get :suggestions, format: 'json'
         maps = assigns(:maps)
-        maps.should have(1).elements
+        expect(maps.size).to eq(1)
       end
       it "loads only medium maps if those are the only available maps" do
         create :map, skill_mean: @user.skill_mean
@@ -133,7 +133,7 @@ describe MapsController do
         create :map, skill_mean: @user.skill_mean
         get :suggestions, format: 'json'
         maps = assigns(:maps)
-        maps.should have(3).elements
+        expect(maps.size).to eq(3)
         maps.each do |map|
           @user.difficulty_of_playing(map).should == :medium
         end
@@ -143,7 +143,7 @@ describe MapsController do
         @m2 = create :map, skill_mean: @user.skill_mean, creator: @user
         get :suggestions, format: 'json'
         maps = assigns(:maps)
-        maps.should have(1).element
+        expect(maps.size).to eq(1)
         maps.first.should == @m1
       end
       it "excludes previosly played maps" do
@@ -152,7 +152,7 @@ describe MapsController do
         create :game, user: @user, map: @m2 # user played map @m2
         get :suggestions, format: 'json'
         maps = assigns(:maps)
-        maps.should have(1).element
+        expect(maps.size).to eq(1)
         maps.first.should == @m1
       end
       it "does not exclude own user maps or previosly played maps if those are the only ones available" do
@@ -163,7 +163,7 @@ describe MapsController do
         create :game, user: @user, map: @m2 # user played map @m2
         get :suggestions, format: 'json'
         maps = assigns(:maps)
-        maps.should have(3).elements
+        expect(maps.size).to eq(3)
         maps.should include @m1
         maps.should include @m2
         maps.should include @m3
@@ -174,14 +174,14 @@ describe MapsController do
         @m3 = create :map, skill_mean: @user.skill_mean - 22*Map::DIFFICULTY_RANGE # too easy
         get :suggestions, format: 'json'
         maps = assigns(:maps)
-        maps.should have(1).element
+        expect(maps.size).to eq(1)
         maps.first.should == @m1
       end
       it "returns same suggestions if called multiple times" do
         6.times{ create :map, skill_mean: @user.skill_mean }
         get :suggestions, format: 'json'
         maps = assigns(:maps)
-        maps.should have(3).elements
+        expect(maps.size).to eq(3)
 
         get :suggestions, format: 'json'
         maps2 = assigns(:maps)
@@ -194,18 +194,18 @@ describe MapsController do
       it "retries new suggestions if previously there were no suggestions" do
         get :suggestions, format: 'json'
         maps = assigns(:maps)
-        maps.should have(0).elements
+        expect(maps.size).to eq(0)
 
         3.times{ create :map, skill_mean: @user.skill_mean }
         get :suggestions, format: 'json'
         maps = assigns(:maps)
-        maps.should have(3).elements
+        expect(maps.size).to eq(3)
       end
       it "returns new suggestions after finishing a game" do
         4.times{ create :map, skill_mean: @user.skill_mean }
         get :suggestions, format: 'json'
         maps = assigns(:maps)
-        maps.should have(3).elements
+        expect(maps.size).to eq(3)
 
         # user plays one of the suggested maps
         play_and_finish_game(@user, maps[0])

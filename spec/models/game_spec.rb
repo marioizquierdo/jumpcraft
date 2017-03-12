@@ -24,7 +24,7 @@ describe Game do
     it "has a limit" do
       3.times { create :game, user: @user }
       ids = Game.last_played_map_ids(@user, 2)
-      ids.should have(2).elements
+      expect(ids.size).to eq(2)
     end
 
     it "does not include other people's games" do

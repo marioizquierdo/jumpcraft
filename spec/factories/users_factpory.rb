@@ -6,7 +6,7 @@ FactoryGirl.define do
     skill_mean 25.0
     skill_deviation 3.0 # make it so it doesnt show "unknown" maps all the time
 
-    ignore do
+    transient do
       score nil
     end
 
