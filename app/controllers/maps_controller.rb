@@ -81,7 +81,8 @@ private
     reduce = "function(key, result) { return result.length; }"
     plays = {}
     Game.all
-    Game.user(user).maps(maps).map_reduce(map, reduce).out(inline: true).each do |rd|
+    s = Game.user(user).maps(maps)
+    s.map_reduce(map, reduce).out(inline: true).each do |rd|
       plays[rd['_id']] = rd['value'].to_i
     end
     plays

@@ -3,6 +3,7 @@ source 'https://rubygems.org'
 ruby '2.2.4'
 gem 'rails', '~> 4.0'
 gem 'thin', '>= 1.7.0'
+gem 'rake', '~> 12.0.0'
 
 gem 'mongoid', '>= 4.0'
 
@@ -19,12 +20,13 @@ gem 'sass-rails',   '~> 5.0.6'
 gem 'coffee-rails', '~> 4.2.1'
 gem 'uglifier',     '>= 3.1.7'
 
+
 group :development do
   gem 'pry'
 end
 
 group :development, :test do
-  gem 'rspec-rails', '~> 2.0'
+  gem 'rspec-rails', '~> 3.5'
   gem 'factory_girl_rails'
 end
 

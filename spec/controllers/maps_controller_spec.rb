@@ -36,76 +36,76 @@ describe MapsController do
       it "uses get_trial_suggestions to get initial trial maps" do
         @m_no_trial = create :map, name: 'San Francisco' # Not a Trial, this should not be used
 
-        $stdout.stub(:write) # silence puts
+        #$stdout.stub(:write) # silence puts
         require 'rake'
         Jumpcraft::Application.load_tasks
         Rake::Task['trial_maps:create'].invoke # create trial maps
-        $stdout.unstub(:write) # restore puts
+        #$stdout.unstub(:write) # restore puts
 
         # last_played.size == 0
-        Game.last_played_map_ids(@user, 20).size.should == 0
+        expect(Game.last_played_map_ids(@user, 20).size).to eq(0)
         get :suggestions, format: 'json'
         maps = assigns(:maps)
         expect(maps.size).to eq(3)
-        maps.map(&:name).should include('San Francisco', 'The Bunker', 'Caravel Ships')
+        expect(maps.map(&:name)).to include('San Francisco', 'The Bunker', 'Caravel Ships')
 
         # last_played.size == 1
         played_map = maps[0]
         play_and_finish_game(@user, played_map) # user plays one of the maps
-        Game.last_played_map_ids(@user, 20).size.should == 1
+        expect(Game.last_played_map_ids(@user, 20).size).to eq(1)
         get :suggestions, format: 'json'
         maps = assigns(:maps)
         expect(maps.size).to eq(3)
-        maps.map(&:name).should_not include(played_map.name)
+        expect(maps.map(&:name)).to_not include(played_map.name)
 
         # last_played.size == 2
         played_map = maps[1]
         play_and_finish_game(@user, played_map) # user plays one of the maps
-        Game.last_played_map_ids(@user, 20).size.should == 2
+        expect(Game.last_played_map_ids(@user, 20).size).to eq(2)
         get :suggestions, format: 'json'
         maps = assigns(:maps)
-        maps.map(&:name).should_not include(played_map.name)
+        expect(maps.map(&:name)).to_not include(played_map.name)
 
         # last_played.size == 3
         played_map = maps[2]
         play_and_finish_game(@user, played_map) # user plays one of the maps
-        Game.last_played_map_ids(@user, 20).size.should == 3
+        expect(Game.last_played_map_ids(@user, 20).size).to eq(3)
         get :suggestions, format: 'json'
         maps = assigns(:maps)
         expect(maps.size).to eq(3)
-        maps.map(&:name).should_not include(played_map.name)
+        expect(maps.map(&:name)).to_not include(played_map.name)
 
         # last_played.size == 4
         played_map = maps[1]
         play_and_finish_game(@user, played_map) # user plays one of the maps
-        Game.last_played_map_ids(@user, 20).size.should == 4
+        expect(Game.last_played_map_ids(@user, 20).size).to eq(4)
         get :suggestions, format: 'json'
         maps = assigns(:maps)
         expect(maps.size).to eq(3)
-        maps.map(&:name).should_not include(played_map.name)
+        expect(maps.map(&:name)).to_not include(played_map.name)
 
         # last_played.size == 5
         played_map = maps[0]
         play_and_finish_game(@user, played_map) # user plays one of the maps
-        Game.last_played_map_ids(@user, 20).size.should == 5
+        expect(Game.last_played_map_ids(@user, 20).size).to eq(5)
         get :suggestions, format: 'json'
         maps = assigns(:maps)
         expect(maps.size).to eq(3)
-        maps.map(&:name).should_not include(played_map.name)
+        expect(maps.map(&:name)).to_not include(played_map.name)
 
         # last_played.size == 6
         played_map = maps[1]
         play_and_finish_game(@user, played_map) # user plays one of the maps
-        Game.last_played_map_ids(@user, 20).size.should == 6
+        expect(Game.last_played_map_ids(@user, 20).size).to eq(6)
         get :suggestions, format: 'json'
         maps = assigns(:maps)
         expect(maps.size).to eq(3)
-        maps.map(&:name).should_not include(played_map.name)
+        expect(maps.map(&:name)).to_not include(played_map.name)
       end
     end
     context "after playing the trial games" do
       before do
-        MapsController.any_instance.stub(:get_trial_suggestions).and_return(nil)
+        allow_any_instance_of(MapsController).to receive(:get_trial_suggestions).and_return(nil)
       end
 
       it "responds successfully with an HTTP 200 status code" do
@@ -135,7 +135,7 @@ describe MapsController do
         maps = assigns(:maps)
         expect(maps.size).to eq(3)
         maps.each do |map|
-          @user.difficulty_of_playing(map).should == :medium
+          expect(@user.difficulty_of_playing(map)).to eq(:medium)
         end
       end
       it "excludes own user maps" do
@@ -144,7 +144,7 @@ describe MapsController do
         get :suggestions, format: 'json'
         maps = assigns(:maps)
         expect(maps.size).to eq(1)
-        maps.first.should == @m1
+        expect(maps.first).to eq(@m1)
       end
       it "excludes previosly played maps" do
         @m1 = create :map, skill_mean: @user.skill_mean
@@ -153,7 +153,7 @@ describe MapsController do
         get :suggestions, format: 'json'
         maps = assigns(:maps)
         expect(maps.size).to eq(1)
-        maps.first.should == @m1
+        expect(maps.first).to eq(@m1)
       end
       it "does not exclude own user maps or previosly played maps if those are the only ones available" do
         @m1 = create :map, skill_mean: @user.skill_mean
@@ -164,9 +164,9 @@ describe MapsController do
         get :suggestions, format: 'json'
         maps = assigns(:maps)
         expect(maps.size).to eq(3)
-        maps.should include @m1
-        maps.should include @m2
-        maps.should include @m3
+        expect(maps).to include @m1
+        expect(maps).to include @m2
+        expect(maps).to include @m3
       end
       it "should not return maps that are too hard or too easy" do
         @m1 = create :map, skill_mean: @user.skill_mean
@@ -175,7 +175,7 @@ describe MapsController do
         get :suggestions, format: 'json'
         maps = assigns(:maps)
         expect(maps.size).to eq(1)
-        maps.first.should == @m1
+        expect(maps.first).to eq(@m1)
       end
       it "returns same suggestions if called multiple times" do
         6.times{ create :map, skill_mean: @user.skill_mean }
@@ -185,11 +185,11 @@ describe MapsController do
 
         get :suggestions, format: 'json'
         maps2 = assigns(:maps)
-        maps2.should == maps
+        expect(maps2).to eq(maps)
 
         get :suggestions, format: 'json'
         maps3 = assigns(:maps)
-        maps3.should == maps
+        expect(maps3).to eq(maps)
       end
       it "retries new suggestions if previously there were no suggestions" do
         get :suggestions, format: 'json'
@@ -212,7 +212,7 @@ describe MapsController do
 
         get :suggestions, format: 'json'
         maps_after = assigns(:maps)
-        maps_after.should_not == maps
+        expect(maps_after).to_not eq(maps)
       end
     end
   end
@@ -238,15 +238,15 @@ describe MapsController do
 
       get :near_score, format: 'json'
       maps = assigns(:maps)
-      maps.size.should == 50
+      expect(maps.size).to eq(50)
       under_score = @user.score - 26
       over_score = @user.score + 24
-      maps.first.score.should == under_score
-      maps.last.score.should == over_score
+      expect(maps.first.score).to eq(under_score)
+      expect(maps.last.score).to eq(over_score)
 
-      maps.select{|m| m.score < @user.score}.size.should == 25
-      maps.select{|m| m.score == @user.score }.size.should == 1
-      maps.select{|m| m.score > @user.score}.size.should == 24
+      expect(maps.select{|m| m.score < @user.score}.size).to eq(25)
+      expect(maps.select{|m| m.score == @user.score }.size).to eq(1)
+      expect(maps.select{|m| m.score > @user.score}.size).to eq(24)
     end
     context "rendered json" do
       render_views
@@ -257,7 +257,7 @@ describe MapsController do
         json = response.body
         maps_data_list = JSON.parse(json)['maps']
         map_data = maps_data_list.first
-        map_data['played_by_current_user'].should == 0
+        expect(map_data['played_by_current_user']).to eq(0)
       end
 
       it "includes played_by_current_user properly if the player did play the map before" do
@@ -269,7 +269,7 @@ describe MapsController do
         json = response.body
         maps_data_list = JSON.parse(json)['maps']
         map_data = maps_data_list.first
-        map_data['played_by_current_user'].should == 2
+        expect(map_data['played_by_current_user']).to eq(2)
       end
     end
   end

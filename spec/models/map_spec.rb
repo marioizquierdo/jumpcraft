@@ -8,16 +8,17 @@ describe Map do
     [:trivial, :very_easy, :easy, :medium, :hard, :very_hard, :impossible].each do |difficulty|
       it "returns :#{difficulty}" do
         map.skill_mean = skill_relative_to(user_skill, difficulty)
-        map.dificulty_relative_to(user_skill).should == difficulty
+        val = map.dificulty_relative_to(user_skill)
+        expect(val).to eq(difficulty)
       end
     end
     it "returns :unknown if the map.skill_deviation is too hight" do
       map.skill_deviation = 1
       map.skill_mean = user_skill
-      map.dificulty_relative_to(user_skill).should == :medium
+      expect(map.dificulty_relative_to(user_skill)).to eq(:medium)
 
       map.skill_deviation = 6
-      map.dificulty_relative_to(user_skill).should == :unknown
+      expect(map.dificulty_relative_to(user_skill)).to eq(:unknown)
     end
   end
 
@@ -26,16 +27,16 @@ describe Map do
     [:easy, :medium, :hard].each do |difficulty|
       it "returns :#{difficulty} maps" do
         map = create :map, skill_mean: skill_relative_to(user_skill, difficulty)
-        map.dificulty_relative_to(user_skill).should == difficulty
-        Map.find_near_dificulty(user_skill, difficulty).should == map
+        expect(map.dificulty_relative_to(user_skill)).to eq(difficulty)
+        expect(Map.find_near_dificulty(user_skill, difficulty)).to eq(map)
       end
     end
     it "finds other maps if can not find the desired difficulty" do
       map = create :map, skill_mean: skill_relative_to(user_skill, :very_hard)
-      Map.find_near_dificulty(user_skill, :easy).should == map # still find the very_hard one because it's the only one in DB
+      expect(Map.find_near_dificulty(user_skill, :easy)).to eq(map) # still find the very_hard one because it's the only one in DB
 
       map4 = create :map, skill_mean: skill_relative_to(user_skill, :easy)
-      Map.find_near_dificulty(user_skill, :easy).should == map4 # prefer to find the closest one
+      expect(Map.find_near_dificulty(user_skill, :easy)).to eq(map4) # prefer to find the closest one
     end
     it "finds a random map inside the scoped difficulty" do
       map1 = create :map, skill_mean: skill_relative_to(user_skill, :medium)
@@ -47,7 +48,7 @@ describe Map do
       while new_map == map
         new_map = Map.find_near_dificulty(user_skill, :medium)
       end
-      new_map.should_not == map
+      expect(new_map).to_not eq(map)
     end
     it "finds a random map inside the scoped difficulty also on the difficulties around the desired difficulty" do
       map1 = create :map, skill_mean: skill_relative_to(user_skill, :easy)
@@ -59,17 +60,17 @@ describe Map do
       while new_map == map
         new_map = Map.find_near_dificulty(user_skill, :medium)
       end
-      new_map.should_not == map
+      expect(new_map).to_not eq(map)
     end
 
     it "filters out the :exclude list of maps" do
       map = create :map, skill_mean: skill_relative_to(user_skill, :easy)
-      Map.find_near_dificulty(user_skill, :easy, exclude: [map]).should be_nil
+      expect(Map.find_near_dificulty(user_skill, :easy, exclude: [map])).to eq(nil)
 
       map2 = create :map, skill_mean: skill_relative_to(user_skill, :easy)
-      Map.find_near_dificulty(user_skill, :easy, exclude: [map]).should == map2
-      Map.find_near_dificulty(user_skill, :easy, exclude: [map, map2]).should be_nil
-      Map.find_near_dificulty(user_skill, :easy, exclude: [map, nil, map2]).should be_nil
+      expect(Map.find_near_dificulty(user_skill, :easy, exclude: [map])).to eq(map2)
+      expect(Map.find_near_dificulty(user_skill, :easy, exclude: [map, map2])).to eq(nil)
+      expect(Map.find_near_dificulty(user_skill, :easy, exclude: [map, nil, map2])).to eq(nil)
     end
   end
 
@@ -91,9 +92,9 @@ describe Map do
       it "returns one random map with the desired range" do
         5.times do # try several times because the result is random
           map = Map.find_random_within_skill(low_skill, upp_skill)
-          map.should_not be_nil
-          map.skill_mean.should be <= upp_skill
-          map.skill_mean.should be >= low_skill
+          expect(map).to_not eq(nil)
+          expect(map.skill_mean).to be <= upp_skill
+          expect(map.skill_mean).to be >= low_skill
         end
       end
       it "finds a random map" do
@@ -104,19 +105,19 @@ describe Map do
         while new_map == map
           new_map = Map.find_random_within_skill(low_skill, upp_skill)
         end
-        new_map.should_not == map
+        expect(new_map).to_not eq(map)
       end
       context "with :exclude option" do
         it "exludes those maps" do
           3.times do # try several times because the result is random
             map = Map.find_random_within_skill(low_skill, upp_skill, exclude: [@m1, @m2])
-            map.should == @m3 # this is the only one left under scope
+            expect(map).to eq(@m3) # this is the only one left under scope
           end
         end
         it "accepts maps, ids and nil values" do
           3.times do # try several times because the result is random
             map = Map.find_random_within_skill(low_skill, upp_skill, exclude: [@m1.id, nil, @m2])
-            map.should == @m3 # this is the only one left under scope
+            expect(map).to eq(@m3) # this is the only one left under scope
           end
         end
       end
@@ -129,16 +130,16 @@ describe Map do
         it "filters the maps based on that scope" do
           3.times do # try several times because the result is random
             map = Map.find_random_within_skill(low_skill, upp_skill, scope: @scope)
-            map.should == @map
+            expect(map).to eq(@map)
           end
         end
         it "works nicely with :exclude option" do
           3.times do # try several times because the result is random
             map = Map.find_random_within_skill(low_skill, upp_skill, scope: @scope, exclude: [@m1, @m2])
-            map.should == @map
+            expect(map).to eq(@map)
           end
           map = Map.find_random_within_skill(low_skill, upp_skill, scope: @scope, exclude: [@map])
-          map.should == nil
+          expect(map).to eq(nil)
         end
       end
     end
@@ -150,18 +151,18 @@ describe Map do
       end
       it "returns nil" do
         map = Map.find_random_within_skill(low_skill, upp_skill)
-        map.should be_nil
+        expect(map).to eq(nil)
       end
     end
     it "finds maps with skill == upper_skill" do
       create :map, skill_mean: upp_skill
       map = Map.find_random_within_skill(low_skill, upp_skill)
-      map.should_not be_nil
+      expect(map).to_not eq(nil)
     end
     it "finds maps with skill == lower_skill" do
       create :map, skill_mean: low_skill
       map = Map.find_random_within_skill(low_skill, upp_skill)
-      map.should_not be_nil
+      expect(map).to_not eq(nil)
     end
   end
 end

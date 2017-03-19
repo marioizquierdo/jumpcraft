@@ -8,17 +8,18 @@ describe Game do
 
     it "returns the last played maps" do
       ids = Game.last_played_map_ids(@user, 10)
-      ids.should == [] # no games yet
+      expect(ids).to eq([]) # no games yet
 
       @m1 = build :map
       @g1 = create :game, user: @user, map: @m1
       ids = Game.last_played_map_ids(@user, 10)
-      ids.should == [@m1].map(&:id) # just one id
+      expect(ids.size).to eq(1) # just one id
+      expect(ids[0]).to eq(@m1.id)
 
       @m2 = build :map
       @g2 = create :game, user: @user, map: @m2
       ids = Game.last_played_map_ids(@user, 10)
-      ids.should == [@m2, @m1].map(&:id) # in desc order
+      expect(ids).to eq([@m2, @m1].map(&:id)) # in desc order
     end
 
     it "has a limit" do
@@ -36,8 +37,8 @@ describe Game do
       @g2 = create :game, user: @u2, map: @m4
 
       ids = Game.last_played_map_ids(@user, 10)
-      ids.should include(@m1.id)
-      ids.should_not include(@m2.id)
+      expect(ids).to include(@m1.id)
+      expect(ids).to_not include(@m2.id)
     end
   end
 
