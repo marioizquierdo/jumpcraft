@@ -36,11 +36,11 @@ describe MapsController do
       it "uses get_trial_suggestions to get initial trial maps" do
         @m_no_trial = create :map, name: 'San Francisco' # Not a Trial, this should not be used
 
-        #$stdout.stub(:write) # silence puts
+        allow($stdout).to receive(:write) # silence puts
         require 'rake'
         Jumpcraft::Application.load_tasks
         Rake::Task['trial_maps:create'].invoke # create trial maps
-        #$stdout.unstub(:write) # restore puts
+        allow($stdout).to receive(:write).and_call_original # restore puts
 
         # last_played.size == 0
         expect(Game.last_played_map_ids(@user, 20).size).to eq(0)

@@ -77,12 +77,14 @@ private
   # Return a hash where keys are maps ids,
   # and values are the number of times the user played each map.
   def get_plays_count_for(user, maps)
+    scoped = Game.where user_id: user.id, :map_id.in => maps.collect(&:id)
+
     map = "function() { emit(this.map_id, 1); }"
     reduce = "function(key, result) { return result.length; }"
+    vals = scoped.map_reduce(map, reduce).out(inline: 1)
+
     plays = {}
-    Game.all
-    s = Game.user(user).maps(maps)
-    s.map_reduce(map, reduce).out(inline: true).each do |rd|
+    vals.each do |rd|
       plays[rd['_id']] = rd['value'].to_i
     end
     plays
