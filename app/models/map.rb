@@ -2,7 +2,7 @@ class Map
   include Mongoid::Document
   include Mongoid::Timestamps
 
-  AVERAGE_SKILL_PROPORTION_TO_CREATOR = 0.8 # estimate that the map difficulty will be a little less than the user skill, because we know it will not be better (users can not validate maps that are too hard for them), and we know that they could be trivial maps.
+  AVERAGE_SKILL_PROPORTION_TO_CREATOR = 1.1 # estimate that created maps will be a little more than the user skill, because they can play over an over so they create maps that are actualy really hard to beat in one attempt.
 
   field :name, type: String
   field :data, type: String # tiles map array serialized as String, only the client cares about understanding what this means
