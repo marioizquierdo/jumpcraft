@@ -146,3 +146,11 @@ test:
           mode: :primary
         max_pool_size: 1
 
+
+<% if ENV['MONGOHQ_URL'] %> <%# MONGOHQ_URL is defined as ENV variable in Heroku %>
+production:
+  clients:
+    default:
+      uri: <%= ENV['MONGOHQ_URL'] %>
+<% end %>
+

@@ -5,7 +5,7 @@ gem 'rails', '~> 4.0'
 gem 'thin', '>= 1.7.0'
 gem 'rake', '~> 12.0.0'
 
-gem 'mongoid', '>= 4.0'
+gem 'mongoid', '>= 5.0.0'
 
 gem 'jquery-rails'
 gem 'haml-rails', '~> 0.9'
