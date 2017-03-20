@@ -7,7 +7,7 @@ protected
   # Rails 4 moved the parameter sanitization from the model to the controller, causing Devise to handle this concern at the controller as well.
   # This allows to signup users with the extra parameter: name
   def configure_permitted_parameters
-    devise_parameter_sanitizer.for(:sign_up) << :name
+    devise_parameter_sanitizer.permit(:sign_up, keys: [:name])
   end
 
   # Calculate the @offset used for Mongoid skip from params[:page] and @page_size
