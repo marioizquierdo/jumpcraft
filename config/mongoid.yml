@@ -147,10 +147,10 @@ test:
         max_pool_size: 1
 
 
-<% if ENV['MONGOHQ_URL'] %> <%# MONGOHQ_URL is defined as ENV variable in Heroku %>
+<% if ENV['MLAB_MONGODB_URI'] %> <%# defined as ENV variable in Heroku %>
 production:
   clients:
     default:
-      uri: <%= ENV['MONGOHQ_URL'] %>
+      uri: <%= ENV['MLAB_MONGODB_URI'] %>
 <% end %>
 
