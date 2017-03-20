@@ -21,7 +21,7 @@ swf_container_id = 'swf-container'
 $swf_container = $('#' + swf_container_id)
 if $swf_container.length
 
-  swf_url = "https://dl.dropboxusercontent.com/u/8856856/Infiltration.swf"
+  swf_url = "/Infiltration.swf?dl=0"
   flashvars = {}
   flashvars.host =       window.location.protocol + '//' + window.location.host
   flashvars.map_id =     window.flashvars_map_id if window.flashvars_map_id # null if not in a map view
