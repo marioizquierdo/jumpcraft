@@ -11,7 +11,7 @@ gem 'jquery-rails'
 gem 'haml-rails', '~> 0.9'
 gem 'devise', '~> 3.5.10'
 gem 'figaro', '>= 1.1.1'
-gem 'twitter-bootstrap-rails'
+gem 'twitter-bootstrap-rails', '= 2.2.8'
 
 gem 'rabl' # JSON view template engine
 gem 'oj' # JSON parser (for rabl)
