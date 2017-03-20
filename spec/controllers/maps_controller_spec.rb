@@ -30,7 +30,7 @@ describe MapsController do
 
     context "before finishing the trial games" do
       it "responds successfully with an HTTP 200 status code" do
-        get :suggestions, format: 'json'
+        get :suggestions, params: { format: 'json' }
         expect(response.status).to eq(200)
       end
       it "uses get_trial_suggestions to get initial trial maps" do
@@ -44,7 +44,7 @@ describe MapsController do
 
         # last_played.size == 0
         expect(Game.last_played_map_ids(@user, 20).size).to eq(0)
-        get :suggestions, format: 'json'
+        get :suggestions, params: { format: 'json' }
         maps = assigns(:maps)
         expect(maps.size).to eq(3)
         expect(maps.map(&:name)).to include('San Francisco', 'The Bunker', 'Caravel Ships')
@@ -53,7 +53,7 @@ describe MapsController do
         played_map = maps[0]
         play_and_finish_game(@user, played_map) # user plays one of the maps
         expect(Game.last_played_map_ids(@user, 20).size).to eq(1)
-        get :suggestions, format: 'json'
+        get :suggestions, params: { format: 'json' }
         maps = assigns(:maps)
         expect(maps.size).to eq(3)
         expect(maps.map(&:name)).to_not include(played_map.name)
@@ -62,7 +62,7 @@ describe MapsController do
         played_map = maps[1]
         play_and_finish_game(@user, played_map) # user plays one of the maps
         expect(Game.last_played_map_ids(@user, 20).size).to eq(2)
-        get :suggestions, format: 'json'
+        get :suggestions, params: { format: 'json' }
         maps = assigns(:maps)
         expect(maps.map(&:name)).to_not include(played_map.name)
 
@@ -70,7 +70,7 @@ describe MapsController do
         played_map = maps[2]
         play_and_finish_game(@user, played_map) # user plays one of the maps
         expect(Game.last_played_map_ids(@user, 20).size).to eq(3)
-        get :suggestions, format: 'json'
+        get :suggestions, params: { format: 'json' }
         maps = assigns(:maps)
         expect(maps.size).to eq(3)
         expect(maps.map(&:name)).to_not include(played_map.name)
@@ -79,7 +79,7 @@ describe MapsController do
         played_map = maps[1]
         play_and_finish_game(@user, played_map) # user plays one of the maps
         expect(Game.last_played_map_ids(@user, 20).size).to eq(4)
-        get :suggestions, format: 'json'
+        get :suggestions, params: { format: 'json' }
         maps = assigns(:maps)
         expect(maps.size).to eq(3)
         expect(maps.map(&:name)).to_not include(played_map.name)
@@ -88,7 +88,7 @@ describe MapsController do
         played_map = maps[0]
         play_and_finish_game(@user, played_map) # user plays one of the maps
         expect(Game.last_played_map_ids(@user, 20).size).to eq(5)
-        get :suggestions, format: 'json'
+        get :suggestions, params: { format: 'json' }
         maps = assigns(:maps)
         expect(maps.size).to eq(3)
         expect(maps.map(&:name)).to_not include(played_map.name)
@@ -97,7 +97,7 @@ describe MapsController do
         played_map = maps[1]
         play_and_finish_game(@user, played_map) # user plays one of the maps
         expect(Game.last_played_map_ids(@user, 20).size).to eq(6)
-        get :suggestions, format: 'json'
+        get :suggestions, params: { format: 'json' }
         maps = assigns(:maps)
         expect(maps.size).to eq(3)
         expect(maps.map(&:name)).to_not include(played_map.name)
@@ -109,7 +109,7 @@ describe MapsController do
       end
 
       it "responds successfully with an HTTP 200 status code" do
-        get :suggestions, format: 'json'
+        get :suggestions, params: { format: 'json' }
         expect(response.status).to eq(200)
       end
       it "loads up to three map suggestions" do
@@ -117,13 +117,13 @@ describe MapsController do
         create :map, skill_mean: 25
         create :map, skill_mean: 26
         create :map, skill_mean: 26
-        get :suggestions, format: 'json'
+        get :suggestions, params: { format: 'json' }
         maps = assigns(:maps)
         expect(maps.size).to eq(3)
       end
       it "loads only one suggestion if that's the only available one" do
         create :map, skill_mean: 25
-        get :suggestions, format: 'json'
+        get :suggestions, params: { format: 'json' }
         maps = assigns(:maps)
         expect(maps.size).to eq(1)
       end
@@ -131,7 +131,7 @@ describe MapsController do
         create :map, skill_mean: @user.skill_mean
         create :map, skill_mean: @user.skill_mean
         create :map, skill_mean: @user.skill_mean
-        get :suggestions, format: 'json'
+        get :suggestions, params: { format: 'json' }
         maps = assigns(:maps)
         expect(maps.size).to eq(3)
         maps.each do |map|
@@ -141,7 +141,7 @@ describe MapsController do
       it "excludes own user maps" do
         @m1 = create :map, skill_mean: @user.skill_mean
         @m2 = create :map, skill_mean: @user.skill_mean, creator: @user
-        get :suggestions, format: 'json'
+        get :suggestions, params: { format: 'json' }
         maps = assigns(:maps)
         expect(maps.size).to eq(1)
         expect(maps.first).to eq(@m1)
@@ -150,7 +150,7 @@ describe MapsController do
         @m1 = create :map, skill_mean: @user.skill_mean
         @m2 = create :map, skill_mean: @user.skill_mean
         create :game, user: @user, map: @m2 # user played map @m2
-        get :suggestions, format: 'json'
+        get :suggestions, params: { format: 'json' }
         maps = assigns(:maps)
         expect(maps.size).to eq(1)
         expect(maps.first).to eq(@m1)
@@ -161,7 +161,7 @@ describe MapsController do
         @m3 = create :map, skill_mean: @user.skill_mean, creator: @user # own map
         create :game, user: @user, map: @m1 # user played map @m1
         create :game, user: @user, map: @m2 # user played map @m2
-        get :suggestions, format: 'json'
+        get :suggestions, params: { format: 'json' }
         maps = assigns(:maps)
         expect(maps.size).to eq(3)
         expect(maps).to include @m1
@@ -172,45 +172,45 @@ describe MapsController do
         @m1 = create :map, skill_mean: @user.skill_mean
         @m2 = create :map, skill_mean: @user.skill_mean + 22*Map::DIFFICULTY_RANGE # too hard
         @m3 = create :map, skill_mean: @user.skill_mean - 22*Map::DIFFICULTY_RANGE # too easy
-        get :suggestions, format: 'json'
+        get :suggestions, params: { format: 'json' }
         maps = assigns(:maps)
         expect(maps.size).to eq(1)
         expect(maps.first).to eq(@m1)
       end
       it "returns same suggestions if called multiple times" do
         6.times{ create :map, skill_mean: @user.skill_mean }
-        get :suggestions, format: 'json'
+        get :suggestions, params: { format: 'json' }
         maps = assigns(:maps)
         expect(maps.size).to eq(3)
 
-        get :suggestions, format: 'json'
+        get :suggestions, params: { format: 'json' }
         maps2 = assigns(:maps)
         expect(maps2).to eq(maps)
 
-        get :suggestions, format: 'json'
+        get :suggestions, params: { format: 'json' }
         maps3 = assigns(:maps)
         expect(maps3).to eq(maps)
       end
       it "retries new suggestions if previously there were no suggestions" do
-        get :suggestions, format: 'json'
+        get :suggestions, params: { format: 'json' }
         maps = assigns(:maps)
         expect(maps.size).to eq(0)
 
         3.times{ create :map, skill_mean: @user.skill_mean }
-        get :suggestions, format: 'json'
+        get :suggestions, params: { format: 'json' }
         maps = assigns(:maps)
         expect(maps.size).to eq(3)
       end
       it "returns new suggestions after finishing a game" do
         4.times{ create :map, skill_mean: @user.skill_mean }
-        get :suggestions, format: 'json'
+        get :suggestions, params: { format: 'json' }
         maps = assigns(:maps)
         expect(maps.size).to eq(3)
 
         # user plays one of the suggested maps
         play_and_finish_game(@user, maps[0])
 
-        get :suggestions, format: 'json'
+        get :suggestions, params: { format: 'json' }
         maps_after = assigns(:maps)
         expect(maps_after).to_not eq(maps)
       end

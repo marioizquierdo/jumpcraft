@@ -34,7 +34,7 @@ describe Game do
 
       @u2 = create :user
       @m2 = build :map
-      @g2 = create :game, user: @u2, map: @m4
+      @g2 = create :game, user: @u2, map: @m2
 
       ids = Game.last_played_map_ids(@user, 10)
       expect(ids).to include(@m1.id)

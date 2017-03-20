@@ -23,7 +23,7 @@ RSpec.configure do |config|
   config.include FactoryGirl::Syntax::Methods
 
   # Mock current_user if needed
-  config.include Devise::TestHelpers, type: :controller
+  config.include Devise::Test::ControllerHelpers, type: :controller
 
   config.before(:suite) do
     DatabaseCleaner.orm = :mongoid
