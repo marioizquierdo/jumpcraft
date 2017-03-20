@@ -110,6 +110,23 @@ class User
     self.score = [self.score.to_i, 0].max # ensure not negative
   end
 
+  # Attributes to be serialized as JSON for the flash player
+  def attrs_for_flash
+    {
+      _id:                  self._id.to_s,
+      name:                 self.name,
+      authentication_token: self.authentication_token, # unsafe, but this is what we are using for the prototype
+      coins:                self.coins,
+      played_games:         self.played_games,
+      won_games:            self.won_games,
+      tutorial:             self.tutorial,
+      score:                self.score,
+      skill_mean:           self.skill_mean,
+      skill_deviation:      self.skill_deviation,
+      suggested_map_ids:    (self.suggested_map_ids || []).map{|_id| _id.to_s},
+    }
+  end
+
 
 
   ## Token authenticatable

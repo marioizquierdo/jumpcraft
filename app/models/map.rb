@@ -31,7 +31,9 @@ class Map
   end
 
   def self.create_for_user(user, attrs = {})
-    map = Map.new(attrs)
+    map = Map.new
+    map.name = attrs[:name]
+    map.data = attrs[:data]
     map.creator = user
     map.skill_mean = AVERAGE_SKILL_PROPORTION_TO_CREATOR * user.skill_mean
     map.skill_deviation = RatingSystem::MAP_INITIAL_SKILL_DEVIATION

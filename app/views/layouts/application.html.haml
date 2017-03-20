@@ -27,7 +27,7 @@
     / Bootstrap current_user data in JS
     - if user_signed_in?
       :javascript
-        window.current_user = #{current_user.attributes.to_json};
+        window.current_user = #{current_user.attrs_for_flash.to_json};
 
     / Other JS bootstrap data from views
     = yield :bootstrap_javascripts
