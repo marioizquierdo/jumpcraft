@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-ruby '2.2.4'
+ruby '2.3.3'
 gem 'rails', '5.0.0'
 gem 'thin', '>= 1.7.0'
 gem 'rake', '~> 12.0'
